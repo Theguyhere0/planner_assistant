@@ -4,8 +4,10 @@ import 'profile.dart';
 ///
 /// Built to represent an academic course.
 class Course {
+  const Course({required this.profile});
+
   /// The parent [Profile] to reference to.
-  Profile profile;
+  final Profile profile;
 
   /// Retrieves the value of the specified [Field] for this [Course].
   dynamic getValue(String fieldName) {
@@ -26,6 +28,4 @@ class Course {
       fieldValue: fieldValue,
     );
   }
-
-  Course({required this.profile});
 }

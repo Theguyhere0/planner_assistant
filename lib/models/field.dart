@@ -3,6 +3,12 @@ import 'course.dart';
 
 /// An object to store data from every [Course] about a specific field.
 class Field {
+  Field({
+    required this.name,
+    required this.fieldType,
+    this.requiredField = false,
+  });
+
   /// The name to call the corresponding [Field] instance.
   String name;
 
@@ -14,10 +20,4 @@ class Field {
 
   /// The database for field data of each [Course].
   Map<Course, dynamic> database = {};
-
-  Field({
-    required this.name,
-    required this.fieldType,
-    this.requiredField = false,
-  });
 }

@@ -1,11 +1,21 @@
 import 'exceptions/field_exception.dart';
+import 'exceptions/id_exception.dart';
 import 'field.dart';
 import 'field_type.dart';
-import 'exceptions/id_exception.dart';
+import 'field_settings.dart';
 import 'course.dart';
+import 'presets.dart';
 
 /// All data from the current session on the Course Schedule Maker application.
 class Profile {
+  Profile({
+    required this.name,
+    this.courseName = 'Course',
+    List<Field> fields = const [],
+  }) {
+    if (fields.isNotEmpty) setFields(fields);
+  }
+
   /// The name of this [Profile].
   String name;
 
@@ -28,11 +38,6 @@ class Profile {
 
   /// A list of [Course] objects.
   List<Course> courses = [];
-
-  Profile({
-    required this.name,
-    required this.courseName,
-  });
 
   /// A safe way to retrieve values from a [Field].
   dynamic getFieldValue({
@@ -69,5 +74,21 @@ class Profile {
         1)
       throw IdException('Only one field with type FieldType.id can exist!');
     this._fields = _fields;
+  }
+
+  /// Creates a [Presets] from data of this [Profile].
+  Presets createPreset(String name) {
+    return Presets(
+      name: name,
+      courseName: courseName,
+      fields: _fields
+          .map(
+            (e) => FieldSettings(
+                name: e.name,
+                fieldType: e.fieldType,
+                requiredField: e.requiredField),
+          )
+          .toList(),
+    );
   }
 }
