@@ -19,3 +19,17 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+# VS Code related
+.vs/
+.vscode/
+
+# IntelliJ related
+.idea/
+*.iml
+
+# Build info
+android/
+ios/
+web/
+windows/
