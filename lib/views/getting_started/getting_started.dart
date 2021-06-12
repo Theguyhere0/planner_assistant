@@ -1,4 +1,5 @@
-import 'package:course_schedule_maker/views/getting_started/components/new_profile.dart';
+import 'package:course_schedule_maker/views/getting_started/components/import_profile.dart';
+import 'package:course_schedule_maker/views/getting_started/components/new_profile_button.dart';
 import 'package:course_schedule_maker/views/getting_started/components/welcome_message.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +19,8 @@ class GettingStarted extends StatelessWidget {
             fallbackWidth: 50,
           ),
           WelcomeMessage(),
-          NewProfile(),
-          ElevatedButton.icon(
-            onPressed: null,
-            icon: Icon(Icons.file_download),
-            label: Text('Import Profile'),
-          ),
+          NewProfileButton(),
+          ImportProfileButton(),
         ],
       ),
     );

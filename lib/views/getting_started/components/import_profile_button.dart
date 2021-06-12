@@ -1,10 +1,10 @@
-import 'package:course_schedule_maker/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../../../responsive.dart';
 
-class NewProfile extends StatelessWidget {
-  const NewProfile({
+class ImportProfileButton extends StatelessWidget {
+  const ImportProfileButton({
     Key? key,
   }) : super(key: key);
 
@@ -12,8 +12,8 @@ class NewProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: null,
-      icon: Icon(Icons.add),
-      label: Text('New Profile'),
+      icon: Icon(Icons.file_download),
+      label: Text('Import Profile'),
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(
           horizontal: defaultPadding * 1.5,

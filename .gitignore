@@ -33,3 +33,8 @@ android/
 ios/
 web/
 windows/
+
+# Flutter related
+.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
