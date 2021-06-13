@@ -8,11 +8,13 @@ class WelcomeMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Welcome to Course Schedule Maker',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-          color: Color(0xffffffff), fontFamily: 'Poppins', fontSize: 60),
+    return Center(
+      child: Text(
+        'Welcome to Course Schedule Maker',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Color(0xffffffff), fontFamily: 'Poppins', fontSize: 60),
+      ),
     );
   }
 }

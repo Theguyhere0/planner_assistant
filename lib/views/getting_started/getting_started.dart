@@ -1,4 +1,5 @@
-import 'package:course_schedule_maker/views/getting_started/components/import_profile.dart';
+import 'package:course_schedule_maker/constants.dart';
+import 'package:course_schedule_maker/views/getting_started/components/import_profile_button.dart';
 import 'package:course_schedule_maker/views/getting_started/components/new_profile_button.dart';
 import 'package:course_schedule_maker/views/getting_started/components/welcome_message.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +15,33 @@ class GettingStarted extends StatelessWidget {
       child: Column(
         children: [
           // Logo
-          Placeholder(
-            fallbackHeight: 50,
-            fallbackWidth: 50,
+          Container(
+            child: Placeholder(),
+            margin: EdgeInsets.all(defaultPadding),
+            width: 50,
+            height: 50,
           ),
-          WelcomeMessage(),
-          NewProfileButton(),
-          ImportProfileButton(),
+          Flexible(
+            fit: FlexFit.tight,
+            child: Container(
+              child: WelcomeMessage(),
+              margin: EdgeInsets.all(defaultPadding),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              child: NewProfileButton(),
+              margin: EdgeInsets.all(defaultPadding),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              child: ImportProfileButton(),
+              margin: EdgeInsets.all(defaultPadding),
+            ),
+          ),
         ],
+        mainAxisAlignment: MainAxisAlignment.center,
       ),
     );
   }

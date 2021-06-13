@@ -17,7 +17,9 @@ class CSMApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      home: GettingStarted(),
+      home: Scaffold(
+        body: GettingStarted(),
+      ),
     );
   }
 }

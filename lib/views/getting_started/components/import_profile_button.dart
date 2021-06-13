@@ -19,6 +19,7 @@ class ImportProfileButton extends StatelessWidget {
           horizontal: defaultPadding * 1.5,
           vertical: defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
         ),
+        backgroundColor: primaryColor,
       ),
     );
   }
