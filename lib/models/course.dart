@@ -1,13 +1,21 @@
+import 'dart:convert';
+
 import 'profile.dart';
+import 'package:crypto/crypto.dart';
 
 /// The basic unit of data for the Course Schedule Maker application.
 ///
 /// Built to represent an academic course.
 class Course {
-  const Course({required this.profile});
+  Course({required Profile profile}) {
+    this.profile = profile;
+    id = sha256.convert(utf8.encode(DateTime.now().toString())).toString();
+  }
 
   /// The parent [Profile] to reference to.
-  final Profile profile;
+  late final Profile profile;
+
+  late final String id;
 
   /// Retrieves the value of the specified [Field] for this [Course].
   dynamic getValue(String fieldName) {

@@ -12,7 +12,7 @@ class InputDialog extends StatefulWidget {
     required this.name,
   }) : super(key: key);
 
-  final Function(String) onPress;
+  final void Function() onPress;
   final String title;
   final String labelText;
   final String name;
@@ -84,7 +84,7 @@ class _InputDialogState extends State<InputDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: primaryColor,
               ),
-              onPressed: () {},
+              onPressed: widget.onPress,
               child: Text('Done'),
             )
           ],

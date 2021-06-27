@@ -2,8 +2,9 @@ import 'package:course_schedule_maker/views/getting_started/getting_started.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'constants.dart';
+import 'views/common/shift_right_fixer.dart';
 
-void main(List<String> args) => runApp(CSMApp());
+void main(List<String> args) => runApp(ShiftRightFixer(child: CSMApp()));
 
 class CSMApp extends StatelessWidget {
   @override
@@ -23,23 +24,3 @@ class CSMApp extends StatelessWidget {
     );
   }
 }
-
-// class CSMApp extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() {
-//     return _CSMState();
-//   }
-// }
-
-// class _CSMState extends State<CSMApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('My First App'),
-//         ),
-//       ),
-//     );
-//   }
-// }

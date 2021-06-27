@@ -16,7 +16,7 @@ class NewProfileButton extends StatelessWidget {
           context: context,
           builder: (context) {
             return InputDialog(
-              onPress: (something) {},
+              onPress: () {},
               title: 'New Profile Name',
               labelText: 'Write Profile Name',
               name: '',
