@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../utils/constants.dart';
 import '../../../responsive.dart';
 
 class ImportProfileButton extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'field_type.dart';
 import 'course.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'field.g.dart';
+// part 'field.g.dart';
 
 /// An object to store data from every [Course] about a specific field.
 @JsonSerializable()
@@ -25,7 +25,7 @@ class Field {
   /// The database for field data of each [Course].
   Map<Course, dynamic> database = {};
 
-  factory Field.fromJson(Map<String, dynamic> data) => _$FieldFromJson(data);
+  // factory Field.fromJson(Map<String, dynamic> data) => _$FieldFromJson(data);
 
-  Map<String, dynamic> toJson() => _$FieldToJson(this);
+  // Map<String, dynamic> toJson() => _$FieldToJson(this);
 }

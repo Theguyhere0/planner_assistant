@@ -1,7 +1,7 @@
-import 'package:course_schedule_maker/constants.dart';
-import 'package:course_schedule_maker/views/getting_started/components/import_profile_button.dart';
-import 'package:course_schedule_maker/views/getting_started/components/new_profile_button.dart';
-import 'package:course_schedule_maker/views/getting_started/components/welcome_message.dart';
+import 'package:planner_assistant/utils/constants.dart';
+import 'package:planner_assistant/views/getting_started/components/import_profile_button.dart';
+import 'package:planner_assistant/views/getting_started/components/new_profile_button.dart';
+import 'package:planner_assistant/views/getting_started/components/welcome_message.dart';
 import 'package:flutter/material.dart';
 
 class GettingStarted extends StatelessWidget {

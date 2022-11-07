@@ -1,5 +1,5 @@
-import 'package:course_schedule_maker/constants.dart';
-import 'package:course_schedule_maker/views/common/input_dialog.dart';
+import 'package:planner_assistant/utils/constants.dart';
+import 'package:planner_assistant/views/common/input_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../../../responsive.dart';
