@@ -1,7 +1,7 @@
 import 'package:planner_assistant/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
+import '../../utils/responsive.dart';
 
 class InputDialog extends StatefulWidget {
   const InputDialog({

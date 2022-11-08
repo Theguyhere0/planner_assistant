@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ShiftRightFixer extends StatefulWidget {
-  ShiftRightFixer({required this.child});
+  const ShiftRightFixer({Key? key, required this.child}) : super(key: key);
   final Widget child;
   @override
   State<StatefulWidget> createState() => _ShiftRightFixerState();
