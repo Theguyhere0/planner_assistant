@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planner_assistant/utils/constants.dart';
+
+import '../../../../utils/constants.dart';
 
 class VideoButton extends StatelessWidget {
   const VideoButton({
@@ -11,10 +12,8 @@ class VideoButton extends StatelessWidget {
     return const IconButton(
       onPressed: null,
       icon: Icon(Icons.ondemand_video_rounded),
-      iconSize: 45,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      color: highlightColor,
-      hoverColor: primaryTextColor,
+      iconSize: appBarButtonSize,
+      padding: EdgeInsets.symmetric(horizontal: defaultPadding * 2),
       tooltip: 'Video tutorial',
     );
   }

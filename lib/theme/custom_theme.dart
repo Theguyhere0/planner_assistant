@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:planner_assistant/theme/palette.dart';
+import './palette.dart';
 
 class CustomTheme {
-  static ThemeData darkTheme(BuildContext context) {
-    final theme = Theme.of(context);
-    return ThemeData(
-      colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: MaterialColor(
-          Palette.red500.value,
-          const {
-            100: Palette.red100,
-            200: Palette.red200,
-            300: Palette.red300,
-            400: Palette.red400,
-            500: Palette.red500,
-            600: Palette.red600,
-            700: Palette.red700,
-            800: Palette.red800,
-            900: Palette.red900,
-          },
+  static ThemeData theme() {
+    return ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: Palette.background,
+      cardColor: Palette.card,
+      hoverColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      disabledColor: Palette.suppressed,
+      colorScheme: const ColorScheme.dark(primary: Palette.highlight),
+      tooltipTheme: const TooltipThemeData(
+        waitDuration: Duration(milliseconds: 350),
+        decoration: BoxDecoration(
+          color: Palette.focus,
+          borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
-        brightness: Brightness.dark,
-        accentColor: Palette.red500,
+        textStyle: TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.primaryText,
+        ),
       ),
-      scaffoldBackgroundColor: Palette.almostBlack,
-      appBarTheme: const AppBarTheme(
-        elevation: 0,
-        color: Palette.almostBlack,
+      dividerColor: Colors.transparent,
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Palette.highlight,
       ),
-      textTheme: theme.primaryTextTheme
-          .copyWith(
-              button: theme.primaryTextTheme.button?.copyWith(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ))
-          .apply(
-            displayColor: Colors.white,
-          ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          backgroundColor: Palette.red500,
+      textTheme: const TextTheme(
+        displayLarge: TextStyle(
+          color: Palette.primaryText,
+          fontSize: 64,
+          height: 0.8,
+          leadingDistribution: TextLeadingDistribution.even,
+          fontFamily: 'M PLUS Rounded 1c',
+        ),
+        headlineLarge: TextStyle(
+          color: Palette.secondaryText,
+          fontSize: 32,
+          height: 0.8,
+          leadingDistribution: TextLeadingDistribution.even,
+          fontFamily: 'M PLUS Rounded 1c',
+        ),
+        headlineSmall: TextStyle(
+          color: Palette.suppressed,
+          fontSize: 20,
+          height: 0.8,
+          leadingDistribution: TextLeadingDistribution.even,
+          fontFamily: 'M PLUS Rounded 1c',
+        ),
+        titleLarge: TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.primaryText,
+          fontSize: 20,
+        ),
+        titleMedium: TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.primaryText,
+        ),
+        bodyMedium: TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.primaryText,
         ),
       ),
     );

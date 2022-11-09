@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planner_assistant/utils/constants.dart';
+
+import '../../../../utils/constants.dart';
 
 class VersionAndCredits extends StatelessWidget {
   const VersionAndCredits({
@@ -14,31 +15,19 @@ class VersionAndCredits extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
+          children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 8),
               child: Text(
                 'v0.1.0',
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: secondaryTextColor,
-                  fontSize: 32,
-                  height: 0.8,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  fontFamily: 'M PLUS Rounded 1c',
-                ),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
             Text(
               'Built by Theguyhere',
               textAlign: TextAlign.left,
-              style: TextStyle(
-                color: suppressedTextColor,
-                fontSize: 20,
-                height: 0.8,
-                leadingDistribution: TextLeadingDistribution.even,
-                fontFamily: 'M PLUS Rounded 1c',
-              ),
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ],
         ),
