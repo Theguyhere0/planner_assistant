@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/constants.dart';
+import '../../utils/constants.dart';
 import 'app_name.dart';
 import 'bug_report_button.dart';
 import 'donation_button.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
-import 'components/custom_app_bar/custom_app_bar.dart';
-import 'components/export_section/export_section.dart';
-import 'components/planning_section/planning_section.dart';
-import 'components/project_elements_section/project_elements_section.dart';
-import 'components/project_settings_section/project_settings_section_card.dart';
+import '../utils/constants.dart';
+import 'custom_app_bar/custom_app_bar.dart';
+import 'export_section/export_section.dart';
+import 'planning_section/planning_section.dart';
+import 'project_elements_section/project_elements_section.dart';
+import 'project_settings_section/project_settings_section_card.dart';
 
 class BuildPage extends StatelessWidget {
   const BuildPage({Key? key}) : super(key: key);
@@ -25,12 +25,18 @@ class BuildPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
-          CustomAppBar(),
-          ProjectSettingsSection(),
-          ProjectElementsSection(),
-          PlanOptimizationSection(),
-          ExportSection(),
+        children: <Widget>[
+          const CustomAppBar(),
+          Flexible(
+            child: ListView(
+              children: const <Widget>[
+                ProjectSettingsSection(),
+                ProjectElementsSection(),
+                PlanOptimizationSection(),
+                ExportSection(),
+              ],
+            ),
+          ),
         ],
       ),
     );

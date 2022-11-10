@@ -38,3 +38,4 @@ windows/
 .metadata
 .flutter-plugins
 .flutter-plugins-dependencies
+*.log

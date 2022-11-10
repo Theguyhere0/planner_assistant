@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/palette.dart';
-import '../../../../utils/constants.dart';
+import '../../theme/palette.dart';
+import '../../utils/constants.dart';
 
 class PageSection extends StatefulWidget {
   const PageSection(
@@ -34,18 +34,15 @@ class _PageSection extends State<PageSection> {
               padding: const EdgeInsets.only(right: defaultPadding),
               child: Icon(
                 widget.icon,
-                color: _sectionExpanded
-                    ? Palette.primaryText
-                    : Palette.secondaryText,
+                color: _sectionExpanded ? Palette.highlight : Palette.standard,
                 size: pageSectionIconSize,
               ),
             ),
             Text(
               widget.name,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: _sectionExpanded
-                        ? Palette.primaryText
-                        : Palette.secondaryText,
+                    color:
+                        _sectionExpanded ? Palette.highlight : Palette.standard,
                   ),
             ),
             Expanded(
@@ -54,9 +51,8 @@ class _PageSection extends State<PageSection> {
                     const EdgeInsets.symmetric(horizontal: defaultPadding * 2),
                 child: Divider(
                   thickness: 2,
-                  color: _sectionExpanded
-                      ? Palette.primaryText
-                      : Palette.secondaryText,
+                  color:
+                      _sectionExpanded ? Palette.highlight : Palette.standard,
                 ),
               ),
             ),
@@ -67,7 +63,7 @@ class _PageSection extends State<PageSection> {
           _sectionExpanded
               ? Icons.keyboard_arrow_down_rounded
               : Icons.chevron_right_rounded,
-          color: _sectionExpanded ? Palette.primaryText : Palette.secondaryText,
+          color: _sectionExpanded ? Palette.highlight : Palette.standard,
           size: pageSectionIconSize,
         ),
         onExpansionChanged: (bool expanded) {

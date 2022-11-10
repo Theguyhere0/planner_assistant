@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'theme/custom_theme.dart';
-import 'views/build_page/build_page.dart';
+import 'widgets/build_page.dart';
 
 void main(List<String> args) => runApp(const PlannerAssistantApp());
 

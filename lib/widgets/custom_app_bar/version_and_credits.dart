@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/constants.dart';
+import '../../utils/constants.dart';
 
 class VersionAndCredits extends StatelessWidget {
   const VersionAndCredits({

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/number_field_card_tile.dart';
+import '../common/list_card_tile.dart';
 import '../common/small_card.dart';
 import '../common/text_field_card_tile.dart';
-import '../common/toggle_card_tile.dart';
 
 class ActivityUnitSettingsCard extends StatelessWidget {
   const ActivityUnitSettingsCard({
@@ -14,20 +13,18 @@ class ActivityUnitSettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmallCard(
       'Activity Unit Settings',
+      infoContent:
+          'Set how activity units behave in this project. All settings are optional or have default values.',
       content: Column(children: const <Widget>[
         TextFieldCardTile(
-          'Name',
+          'General Name',
           hintText: 'Activity Unit',
         ),
-        ToggleCardTile(
-          'Type',
-          leftToggleOption: 'Unique',
-          rightToggleOption: 'Repeatable',
+        TextFieldCardTile(
+          'Plural Form',
+          hintText: 'Activity Units',
         ),
-        NumberFieldCardTile(
-          'Duration',
-          units: 'Time Units',
-        ),
+        ListCardTile('Properties'),
       ]),
     );
   }

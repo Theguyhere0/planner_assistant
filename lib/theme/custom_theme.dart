@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import './palette.dart';
+
+import 'palette.dart';
+import '../utils/constants.dart';
 
 class CustomTheme {
   static ThemeData theme() {
@@ -7,19 +9,26 @@ class CustomTheme {
       scaffoldBackgroundColor: Palette.background,
       cardColor: Palette.card,
       hoverColor: Colors.transparent,
+      focusColor: Palette.focus,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       disabledColor: Palette.suppressed,
+      hintColor: Palette.suppressed,
+      dialogTheme: DialogTheme(
+        backgroundColor: Palette.card,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(cardCornerRadius)),
+      ),
       colorScheme: const ColorScheme.dark(primary: Palette.highlight),
       tooltipTheme: const TooltipThemeData(
         waitDuration: Duration(milliseconds: 350),
         decoration: BoxDecoration(
-          color: Palette.focus,
+          color: Palette.card,
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         textStyle: TextStyle(
           fontFamily: 'Noto Sans',
-          color: Palette.primaryText,
+          color: Palette.highlight,
         ),
       ),
       dividerColor: Colors.transparent,
@@ -28,14 +37,14 @@ class CustomTheme {
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          color: Palette.primaryText,
+          color: Palette.highlight,
           fontSize: 64,
           height: 0.8,
           leadingDistribution: TextLeadingDistribution.even,
           fontFamily: 'M PLUS Rounded 1c',
         ),
         headlineLarge: TextStyle(
-          color: Palette.secondaryText,
+          color: Palette.standard,
           fontSize: 32,
           height: 0.8,
           leadingDistribution: TextLeadingDistribution.even,
@@ -50,16 +59,16 @@ class CustomTheme {
         ),
         titleLarge: TextStyle(
           fontFamily: 'Noto Sans',
-          color: Palette.primaryText,
+          color: Palette.highlight,
           fontSize: 20,
         ),
         titleMedium: TextStyle(
           fontFamily: 'Noto Sans',
-          color: Palette.primaryText,
+          color: Palette.standard,
         ),
         bodyMedium: TextStyle(
           fontFamily: 'Noto Sans',
-          color: Palette.primaryText,
+          color: Palette.standard,
         ),
       ),
     );

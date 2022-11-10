@@ -7,3 +7,5 @@ const double defaultPadding = 10;
 const double appBarButtonSize = 45;
 const double cardTileTitleWidth = 80;
 const double pageSectionIconSize = 30;
+const double infoIconSize = 20;
+const double cardCornerRadius = 10;

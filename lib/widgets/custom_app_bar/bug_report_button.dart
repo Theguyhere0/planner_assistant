@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/constants.dart';
+import 'custom_icon_button.dart';
 
 class BugReportButton extends StatelessWidget {
   const BugReportButton({
@@ -9,12 +9,10 @@ class BugReportButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const IconButton(
-      onPressed: null,
-      icon: Icon(Icons.bug_report_rounded),
-      iconSize: appBarButtonSize,
-      padding: EdgeInsets.symmetric(horizontal: defaultPadding * 2),
+    return CustomIconButton(
+      icon: Icons.bug_report_rounded,
       tooltip: 'Report a bug',
+      onPressed: () {}, // TODO: Open issue report in new tab
     );
   }
 }
