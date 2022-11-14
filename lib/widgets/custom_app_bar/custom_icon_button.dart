@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../theme/palette.dart';
 import '../../utils/constants.dart';
 
+/// A class to standardize icon buttons for this app.
 class CustomIconButton extends StatefulWidget {
+  /// Creates a standard icon button customized for the UI of this app.
   const CustomIconButton({
     Key? key,
     required this.icon,
@@ -11,8 +13,13 @@ class CustomIconButton extends StatefulWidget {
     required this.onPressed,
   }) : super(key: key);
 
+  /// A pictorial representation of the button's function.
   final IconData icon;
+
+  /// Some information about what this button does.
   final String tooltip;
+
+  /// What this button does when pressed.
   final void Function() onPressed;
 
   @override

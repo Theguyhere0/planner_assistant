@@ -7,6 +7,7 @@ import 'donation_button.dart';
 import 'version_and_credits.dart';
 import 'video_button.dart';
 
+/// The the top bar of the app with all the necessary header information.
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key}) : super(key: key);
 

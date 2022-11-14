@@ -4,6 +4,7 @@ import '../common/cards/small_card.dart';
 import '../common/card_tiles/list_card_tile.dart';
 import '../../utils/constants.dart';
 
+/// A card for managing the constraints of the project.
 class ProjectConstraintsCard extends StatelessWidget {
   const ProjectConstraintsCard({
     Key? key,

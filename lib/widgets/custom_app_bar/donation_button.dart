@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_icon_button.dart';
 
+/// A button to allow users to support me if they feel inspired to..
 class DonationButton extends StatelessWidget {
   const DonationButton({
     Key? key,

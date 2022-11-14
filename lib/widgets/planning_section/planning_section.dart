@@ -5,14 +5,15 @@ import 'dashboard_card.dart';
 import 'plan_generator_card.dart';
 import 'plan_editor_card.dart';
 
-class PlanOptimizationSection extends StatelessWidget {
-  const PlanOptimizationSection({Key? key}) : super(key: key);
+/// The section for creating plans of a project.
+class PlanningSection extends StatelessWidget {
+  const PlanningSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PageSection(
       'Planning',
-      icon: Icons.view_timeline_rounded,
+      icon: Icons.view_timeline_outlined,
       content: <Widget>[
         Column(
           children: <Widget>[

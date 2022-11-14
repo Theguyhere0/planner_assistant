@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../theme/palette.dart';
 import '../utils/constants.dart';
 
+/// This is a placeholder page to display when the screen width is not supported.
 class UnsupportedPage extends StatelessWidget {
+  /// Creates a placeholder page for screen width errors.
   const UnsupportedPage({Key? key}) : super(key: key);
 
   @override
@@ -17,6 +19,7 @@ class UnsupportedPage extends StatelessWidget {
         right: pageSidePadding - defaultPadding * 2,
         top: pageTopPadding,
       ),
+      // Error text
       child: Center(
         child: Text(
           'This window size is currently unsupported.',

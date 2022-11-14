@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../common/cards/large_card.dart';
 
+/// A card for inspecting and editing a plan of the project.
 class PlanEditorCard extends StatelessWidget {
   const PlanEditorCard({
     Key? key,

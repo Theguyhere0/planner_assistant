@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
 
+/// The name and face of the app.
 class AppName extends StatelessWidget {
   const AppName({
     Key? key,

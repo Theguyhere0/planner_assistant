@@ -7,6 +7,7 @@ import '../info_button.dart';
 ///
 /// Three of these are meant to fit in a row of a [PageSection].
 class SmallCard extends StatelessWidget {
+  /// Creates a small content card.
   const SmallCard(
     this.title, {
     Key? key,
@@ -14,8 +15,13 @@ class SmallCard extends StatelessWidget {
     required this.content,
   }) : super(key: key);
 
+  /// Name of the card.
   final String title;
+
+  /// The help information associated with this card.
   final String infoContent;
+
+  /// Content inside the card.
   final Widget content;
 
   @override
@@ -29,6 +35,7 @@ class SmallCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: defaultPadding),
           child: Column(
             children: <Widget>[
+              // Title
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -42,6 +49,7 @@ class SmallCard extends StatelessWidget {
                   )
                 ],
               ),
+              // Card content
               content,
             ],
           ),

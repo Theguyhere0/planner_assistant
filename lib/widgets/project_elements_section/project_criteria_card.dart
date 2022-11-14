@@ -4,6 +4,7 @@ import 'package:planner_assistant/widgets/common/card_tiles/ranked_list_card_til
 import '../common/cards/small_card.dart';
 import '../../utils/constants.dart';
 
+/// A card for managing the criteria of the project.
 class ProjectCriteriaCard extends StatelessWidget {
   const ProjectCriteriaCard({
     Key? key,

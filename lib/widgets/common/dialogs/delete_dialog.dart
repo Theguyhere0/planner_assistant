@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../../theme/palette.dart';
 
+/// A class to standardize deletion confirmation across the app.
 class DeleteDialog extends StatelessWidget {
+  /// Creates a standard deletion confirmation dialog customized for the UI of this app.
   const DeleteDialog({
     Key? key,
     required this.title,
   }) : super(key: key);
 
+  /// The dialog header.
   final String title;
 
   @override

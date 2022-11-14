@@ -13,9 +13,12 @@ class PlannerAssistantApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Just to make the debug screen look pretty
       debugShowCheckedModeBanner: false,
       title: 'Planner Assistant',
+      // Set up custom theme for the entire app
       theme: CustomTheme.theme(),
+      // Display app only if the screen is within desktop width limit
       home: const Scaffold(
         body: Responsive(
           desktop: BuildPage(),

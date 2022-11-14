@@ -5,6 +5,7 @@ import 'activity_units_card.dart';
 import 'project_constraints_card.dart';
 import 'project_criteria_card.dart';
 
+/// The section for managing project elements.
 class ProjectElementsSection extends StatelessWidget {
   const ProjectElementsSection({Key? key}) : super(key: key);
 

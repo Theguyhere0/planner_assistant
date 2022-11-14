@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../common/cards/small_card.dart';
 
+/// A card for exporting plans of the project in a neat format.
 class ExportPlanCard extends StatelessWidget {
   const ExportPlanCard({
     Key? key,

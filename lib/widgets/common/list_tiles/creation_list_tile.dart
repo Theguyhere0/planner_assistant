@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../theme/palette.dart';
 
+/// A tile for custom lists for adding elements.
 class CreationListTile extends StatelessWidget {
+  /// Creates a tile for adding elements.
   const CreationListTile({
     Key? key,
   }) : super(key: key);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
 
+/// Some meta information about the app.
 class VersionAndCredits extends StatelessWidget {
   const VersionAndCredits({
     Key? key,

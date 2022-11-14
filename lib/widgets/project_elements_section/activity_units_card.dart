@@ -4,6 +4,7 @@ import '../common/cards/small_card.dart';
 import '../common/card_tiles/list_card_tile.dart';
 import '../../utils/constants.dart';
 
+/// A card for managing the activity units of the project.
 class ActivityUnitsCard extends StatelessWidget {
   const ActivityUnitsCard({
     Key? key,

@@ -3,14 +3,19 @@ import 'package:flutter/services.dart';
 
 import '../../../utils/constants.dart';
 
+/// A tile for custom cards with a field for numbers.
 class NumberFieldCardTile extends StatelessWidget {
+  /// Creates a card tile with a field for numbers.
   const NumberFieldCardTile(
     this.title, {
     required this.units,
     Key? key,
   }) : super(key: key);
 
+  /// What the numbers are counting for.
   final String title;
+
+  /// The units at the numbers represent.
   final String units;
 
   @override

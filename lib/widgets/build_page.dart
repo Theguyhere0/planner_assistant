@@ -7,11 +7,14 @@ import 'planning_section/planning_section.dart';
 import 'project_elements_section/project_elements_section.dart';
 import 'project_settings_section/project_settings_section_card.dart';
 
+/// This is the primary page for the app.
 class BuildPage extends StatelessWidget {
+  /// Creates the primary functional page.
   const BuildPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Make sure the page is scrollable
     return SingleChildScrollView(
       child: SafeArea(
         // Bottom side shouldn't matter if it gets cut off
@@ -30,7 +33,7 @@ class BuildPage extends StatelessWidget {
             CustomAppBar(),
             ProjectSettingsSection(),
             ProjectElementsSection(),
-            PlanOptimizationSection(),
+            PlanningSection(),
             ExportSection(),
           ],
         ),

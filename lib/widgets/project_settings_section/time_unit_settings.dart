@@ -4,6 +4,7 @@ import '../common/cards/small_card.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
 import '../common/card_tiles/list_card_tile.dart';
 
+/// A card for managing the settings for time units of the project.
 class TimeUnitSettingsCard extends StatelessWidget {
   const TimeUnitSettingsCard({
     Key? key,

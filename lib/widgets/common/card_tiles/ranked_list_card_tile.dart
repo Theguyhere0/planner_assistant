@@ -4,7 +4,9 @@ import '../../../utils/constants.dart';
 import '../list_tiles/creation_list_tile.dart';
 import '../list_tiles/ranked_list_tile.dart';
 
+/// A tile for custom cards with a modifiable ranked list.
 class RankedListCardTile extends StatefulWidget {
+  /// Creates a card tile with a modifiable ranked list.
   const RankedListCardTile({Key? key}) : super(key: key);
 
   @override

@@ -5,6 +5,7 @@ import 'activity_unit_settings_card.dart';
 import 'import_projects_card.dart';
 import 'time_unit_settings.dart';
 
+/// The section for managing project settings.
 class ProjectSettingsSection extends StatelessWidget {
   const ProjectSettingsSection({Key? key}) : super(key: key);
 

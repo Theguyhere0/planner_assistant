@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_icon_button.dart';
 
+/// A button to redirect users to a video for a full tutorial if they want one.
 class VideoButton extends StatelessWidget {
   const VideoButton({
     Key? key,

@@ -4,14 +4,19 @@ import '../../theme/palette.dart';
 import '../../utils/constants.dart';
 import 'dialogs/info_dialog.dart';
 
+/// A class to standardize information buttons across the app.
 class InfoButton extends StatefulWidget {
+  /// Creates a standard information button customized for the UI of this app.
   const InfoButton({
     Key? key,
     required this.title,
     required this.content,
   }) : super(key: key);
 
+  /// What the information is for.
   final String title;
+
+  /// The extra information to be displayed.
   final String content;
 
   @override

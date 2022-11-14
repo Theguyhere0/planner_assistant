@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../theme/palette.dart';
 import '../../utils/constants.dart';
 
+/// A class for creating collapsible sections of a page.
 class PageSection extends StatefulWidget {
+  /// Creates a collapsible section of a page.
   const PageSection(
     this.name, {
     Key? key,
@@ -11,8 +13,13 @@ class PageSection extends StatefulWidget {
     required this.content,
   }) : super(key: key);
 
+  /// An icon for the page section.
   final IconData icon;
+
+  /// The name of the page section.
   final String name;
+
+  /// The contents to display inside the page section.
   final List<Widget> content;
 
   @override
@@ -30,6 +37,7 @@ class _PageSection extends State<PageSection> {
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            // The icon of the section
             Padding(
               padding: const EdgeInsets.only(right: defaultPadding),
               child: Icon(
@@ -38,6 +46,7 @@ class _PageSection extends State<PageSection> {
                 size: pageSectionIconSize,
               ),
             ),
+            // The name of the section
             Text(
               widget.name,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
@@ -45,6 +54,7 @@ class _PageSection extends State<PageSection> {
                         _sectionExpanded ? Palette.highlight : Palette.standard,
                   ),
             ),
+            // A divider taking up the rest of the section
             Expanded(
               child: Padding(
                 padding:
@@ -59,6 +69,7 @@ class _PageSection extends State<PageSection> {
           ],
         ),
         controlAffinity: ListTileControlAffinity.leading,
+        // Toggle arrow
         leading: Icon(
           _sectionExpanded
               ? Icons.keyboard_arrow_down_rounded
