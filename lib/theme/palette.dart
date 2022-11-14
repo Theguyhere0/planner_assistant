@@ -7,4 +7,5 @@ class Palette {
   static const suppressed = Color(0x778d91a6);
   static const standard = Color(0xffa3b1fc);
   static const highlight = Color(0xffeceef9);
+  static const failure = Color(0xffff6c7e);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/small_card.dart';
+import '../common/cards/small_card.dart';
+import '../common/card_tiles/list_card_tile.dart';
+import '../../utils/constants.dart';
 
 class ActivityUnitsCard extends StatelessWidget {
   const ActivityUnitsCard({
@@ -13,7 +15,12 @@ class ActivityUnitsCard extends StatelessWidget {
       'Activity Units',
       infoContent:
           'Input the activity units that this project needs to work with.',
-      content: Column(children: const <Widget>[]),
+      content: Column(children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+          child: ListCardTile(),
+        ),
+      ]),
     );
   }
 }

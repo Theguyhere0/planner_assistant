@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/list_card_tile.dart';
-import '../common/small_card.dart';
-import '../common/text_field_card_tile.dart';
+import '../common/card_tiles/list_card_tile.dart';
+import '../common/cards/small_card.dart';
+import '../common/card_tiles/text_field_card_tile.dart';
 
 class ActivityUnitSettingsCard extends StatelessWidget {
   const ActivityUnitSettingsCard({
@@ -24,7 +24,7 @@ class ActivityUnitSettingsCard extends StatelessWidget {
           'Plural Form',
           hintText: 'Activity Units',
         ),
-        ListCardTile('Properties'),
+        ListCardTile(title: 'Properties'),
       ]),
     );
   }

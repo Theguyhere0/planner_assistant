@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/small_card.dart';
-import '../common/text_field_card_tile.dart';
+import '../common/cards/small_card.dart';
+import '../common/card_tiles/text_field_card_tile.dart';
+import '../common/card_tiles/list_card_tile.dart';
 
 class TimeUnitSettingsCard extends StatelessWidget {
   const TimeUnitSettingsCard({
@@ -23,6 +24,7 @@ class TimeUnitSettingsCard extends StatelessWidget {
           'Plural Form',
           hintText: 'Time Units',
         ),
+        ListCardTile(title: 'Labels')
       ]),
     );
   }

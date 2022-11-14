@@ -10,7 +10,7 @@ class DonationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomIconButton(
-      icon: Icons.attach_money_rounded,
+      icon: Icons.favorite_rounded,
       tooltip: 'Support the developer!',
       onPressed: () {}, // TODO: Open ko-fi page in new tab
     );

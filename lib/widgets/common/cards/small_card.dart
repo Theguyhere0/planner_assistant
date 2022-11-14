@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
-import 'info_button.dart';
+import '../../../utils/constants.dart';
+import '../info_button.dart';
 
-/// A large card for a [PageSection].
+/// A small card for a [PageSection].
 ///
-/// Only one of these is meant to fit in a row of a [PageSection].
-class LargeCard extends StatelessWidget {
-  const LargeCard(
+/// Three of these are meant to fit in a row of a [PageSection].
+class SmallCard extends StatelessWidget {
+  const SmallCard(
     this.title, {
     Key? key,
     required this.infoContent,

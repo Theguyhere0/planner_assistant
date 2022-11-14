@@ -13,6 +13,7 @@ class CustomTheme {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       disabledColor: Palette.suppressed,
+      canvasColor: Palette.card,
       hintColor: Palette.suppressed,
       dialogTheme: DialogTheme(
         backgroundColor: Palette.card,
@@ -69,6 +70,57 @@ class CustomTheme {
         bodyMedium: TextStyle(
           fontFamily: 'Noto Sans',
           color: Palette.standard,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+            (Set<MaterialState> states) => const TextStyle(
+              fontFamily: 'Noto Sans',
+            ),
+          ),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Palette.focus;
+              }
+              return Colors.transparent;
+            },
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Palette.highlight;
+              }
+              return Palette.standard;
+            },
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+            (Set<MaterialState> states) => const TextStyle(
+              fontFamily: 'Noto Sans',
+              fontSize: 20,
+            ),
+          ),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Palette.focus;
+              }
+              return Colors.transparent;
+            },
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Palette.highlight;
+              }
+              return Palette.standard;
+            },
+          ),
         ),
       ),
     );

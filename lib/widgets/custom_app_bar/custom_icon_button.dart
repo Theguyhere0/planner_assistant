@@ -24,26 +24,29 @@ class _CustomIconButton extends State<CustomIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      child: IconButton(
-        onPressed: widget.onPressed,
-        mouseCursor: SystemMouseCursors.click,
-        color: _hover ? Palette.highlight : Palette.suppressed,
-        icon: Icon(widget.icon),
-        iconSize: appBarButtonSize,
-        padding: const EdgeInsets.symmetric(horizontal: defaultPadding * 2),
-        tooltip: widget.tooltip,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: defaultPadding * 2),
+      child: MouseRegion(
+        child: IconButton(
+          onPressed: widget.onPressed,
+          mouseCursor: SystemMouseCursors.click,
+          color: _hover ? Palette.highlight : Palette.suppressed,
+          icon: Icon(widget.icon),
+          iconSize: appBarButtonSize,
+          padding: const EdgeInsets.all(0),
+          tooltip: widget.tooltip,
+        ),
+        onHover: (event) {
+          setState(() {
+            _hover = true;
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            _hover = false;
+          });
+        },
       ),
-      onHover: (event) {
-        setState(() {
-          _hover = true;
-        });
-      },
-      onExit: (event) {
-        setState(() {
-          _hover = false;
-        });
-      },
     );
   }
 }

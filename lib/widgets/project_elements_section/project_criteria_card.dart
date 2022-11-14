@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:planner_assistant/widgets/common/card_tiles/ranked_list_card_tile.dart';
 
-import '../common/small_card.dart';
+import '../common/cards/small_card.dart';
+import '../../utils/constants.dart';
 
 class ProjectCriteriaCard extends StatelessWidget {
   const ProjectCriteriaCard({
@@ -12,7 +14,12 @@ class ProjectCriteriaCard extends StatelessWidget {
     return SmallCard(
       'Project Criteria',
       infoContent: 'Add criteria that this project should optimize for.',
-      content: Column(children: const <Widget>[]),
+      content: Column(children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+          child: RankedListCardTile(),
+        ),
+      ]),
     );
   }
 }

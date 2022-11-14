@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/small_card.dart';
+import '../common/cards/small_card.dart';
+import '../common/card_tiles/list_card_tile.dart';
+import '../../utils/constants.dart';
 
 class ProjectConstraintsCard extends StatelessWidget {
   const ProjectConstraintsCard({
@@ -12,7 +14,12 @@ class ProjectConstraintsCard extends StatelessWidget {
     return SmallCard(
       'Project Constraints',
       infoContent: 'Add constraints that apply to the entire project.',
-      content: Column(children: const <Widget>[]),
+      content: Column(children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+          child: ListCardTile(),
+        ),
+      ]),
     );
   }
 }

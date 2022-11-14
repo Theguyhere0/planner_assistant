@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/palette.dart';
 import '../../utils/constants.dart';
-import '../../utils/responsive.dart';
+import 'dialogs/info_dialog.dart';
 
 class InfoButton extends StatefulWidget {
   const InfoButton({
@@ -27,14 +27,9 @@ class _InfoButton extends State<InfoButton> {
       child: IconButton(
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: Text(widget.title),
-            content: Container(
-              child: Text(widget.content),
-              width: Responsive.isDesktop(context)
-                  ? 750
-                  : (Responsive.isTablet(context) ? 600 : 400),
-            ),
+          builder: (BuildContext context) => InfoDialog(
+            title: widget.title,
+            content: widget.content,
           ),
         ),
         mouseCursor: SystemMouseCursors.click,
