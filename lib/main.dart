@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'theme/custom_theme.dart';
+import 'utils/responsive.dart';
 import 'widgets/build_page.dart';
+import 'widgets/unsupported_page.dart';
 
 void main(List<String> args) => runApp(const PlannerAssistantApp());
 
@@ -15,7 +17,10 @@ class PlannerAssistantApp extends StatelessWidget {
       title: 'Planner Assistant',
       theme: CustomTheme.theme(),
       home: const Scaffold(
-        body: BuildPage(),
+        body: Responsive(
+          desktop: BuildPage(),
+          mobile: UnsupportedPage(),
+        ),
       ),
     );
   }

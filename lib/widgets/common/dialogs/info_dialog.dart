@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/responsive.dart';
-
 class InfoDialog extends StatelessWidget {
   const InfoDialog({
     Key? key,
@@ -18,9 +16,7 @@ class InfoDialog extends StatelessWidget {
       title: Text(title),
       content: SizedBox(
         child: Text(content),
-        width: Responsive.isDesktop(context)
-            ? 750
-            : (Responsive.isTablet(context) ? 600 : 400),
+        width: 750,
       ),
     );
   }
