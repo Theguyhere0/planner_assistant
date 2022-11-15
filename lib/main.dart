@@ -1,26 +1,29 @@
-import 'package:planner_assistant/views/getting_started/getting_started.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'utils/constants.dart';
-import 'views/common/shift_right_fixer.dart';
 
-void main(List<String> args) =>
-    runApp(ShiftRightFixer(child: PlannerAssistantApp()));
+import 'theme/custom_theme.dart';
+import 'utils/responsive.dart';
+import 'widgets/build_page.dart';
+import 'widgets/unsupported_page.dart';
+
+void main(List<String> args) => runApp(const PlannerAssistantApp());
 
 class PlannerAssistantApp extends StatelessWidget {
+  const PlannerAssistantApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Just to make the debug screen look pretty
       debugShowCheckedModeBanner: false,
       title: 'Planner Assistant',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: bgColor,
-        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: Colors.white),
-        canvasColor: secondaryColor,
-      ),
+      // Set up custom theme for the entire app
+      theme: CustomTheme.theme(),
+      // Display app only if the screen is within desktop width limit
       home: const Scaffold(
-        body: GettingStarted(),
+        body: Responsive(
+          desktop: BuildPage(),
+          mobile: UnsupportedPage(),
+        ),
       ),
     );
   }

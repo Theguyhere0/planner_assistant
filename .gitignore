@@ -9,7 +9,10 @@ pubspec.lock
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
-doc/api/
+# doc/api/
+
+# Directy created by peanut
+temp_dir/
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -33,8 +36,11 @@ android/
 ios/
 web/
 windows/
+macos/
+linux/
 
 # Flutter related
 .metadata
 .flutter-plugins
 .flutter-plugins-dependencies
+*.log

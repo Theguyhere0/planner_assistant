@@ -1,14 +1,11 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 
 class Palette {
-  static const Color almostBlack = Color(0xff040B13);
-  static const Color red100 = Color(0xfffce5e8);
-  static const Color red200 = Color(0xfff7b2ba);
-  static const Color red300 = Color(0xfff27f8d);
-  static const Color red400 = Color(0xffec4b5f);
-  static const Color red500 = Color(0xffe82139);
-  static const Color red600 = Color(0xffb41326);
-  static const Color red700 = Color(0xff800d1b);
-  static const Color red800 = Color(0xff4d0810);
-  static const Color red900 = Color(0xff1a0305);
+  static const background = Color(0xff0B0514);
+  static const card = Color(0xff0e0e22);
+  static const focus = Color(0xbf1a1c4b);
+  static const suppressed = Color(0x778d91a6);
+  static const standard = Color(0xffa3b1fc);
+  static const highlight = Color(0xffeceef9);
+  static const failure = Color(0xffff6c7e);
 }

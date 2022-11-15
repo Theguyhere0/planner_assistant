@@ -1,8 +1,13 @@
-import 'package:flutter/cupertino.dart';
+// Margin and padding constants
+const double pageSidePadding = 80;
+const double pageTopPadding = 40;
+const double defaultPadding = 10;
 
-const primaryColor = Color(0xff0088ff);
-const secondaryColor = Color(0xff2f3357);
-const bgColor = Color(0xff1a1e3d);
-
-/// 16.0
-const defaultPadding = 16.0;
+// Size constants
+const double appBarButtonSize = 45;
+const double cardTileTitleWidth = 80;
+const double pageSectionIconSize = 30;
+const double infoIconSize = 20;
+const double cardCornerRadius = 10;
+const double desktopWidthLimit = 1200;
+const double tabletWidthLimit = 850;
