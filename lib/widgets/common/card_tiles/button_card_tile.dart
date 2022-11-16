@@ -19,6 +19,7 @@ class ButtonCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
+        alignment: Alignment.center,
         child: OutlinedButton.icon(
           onPressed: () {},
           icon: Icon(
@@ -27,7 +28,6 @@ class ButtonCardTile extends StatelessWidget {
           ),
           label: Text(title),
         ),
-        alignment: Alignment.center,
       ),
     );
   }

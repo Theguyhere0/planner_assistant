@@ -22,8 +22,8 @@ class InstanceListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
-        child: Text(name),
         alignment: Alignment.topLeft,
+        child: Text(name),
       ),
       trailing: DeleteButton(title: 'Delete $type?'),
       tileColor: Palette.card,

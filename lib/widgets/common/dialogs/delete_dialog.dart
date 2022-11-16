@@ -28,7 +28,6 @@ class DeleteDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Delete'),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
@@ -47,6 +46,7 @@ class DeleteDialog extends StatelessWidget {
               },
             ),
           ),
+          child: const Text('Delete'),
         ),
       ],
     );

@@ -42,13 +42,13 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
         // Title is displayed on the left
         ? ListTile(
             leading: Container(
+              width: cardTileTitleWidth,
+              alignment: Alignment.centerRight,
               child: Text(
                 widget.title,
                 textAlign: TextAlign.right,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              width: cardTileTitleWidth,
-              alignment: Alignment.centerRight,
             ),
             title: Container(
               alignment: Alignment.centerLeft,
@@ -87,6 +87,7 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
         // Title is displayed as the hint and the dropdown menu is centered
         : ListTile(
             title: Container(
+              alignment: Alignment.center,
               child: Theme(
                 data: Theme.of(context).copyWith(
                   focusColor: Colors.transparent,
@@ -117,7 +118,6 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                   },
                 ),
               ),
-              alignment: Alignment.center,
             ),
           );
   }

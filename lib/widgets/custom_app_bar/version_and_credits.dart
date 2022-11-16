@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../theme/palette.dart';
 import '../../utils/constants.dart';
+import '../common/hypertext.dart';
 
 /// Some meta information about the app.
 class VersionAndCredits extends StatelessWidget {
@@ -17,18 +20,45 @@ class VersionAndCredits extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            // Version
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                'v0.1.0',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.headlineLarge,
+              child: Hypertext(
+                hypertext: 'v0.2.0',
+                normalStyle: Theme.of(context).textTheme.headlineLarge!,
+                hypertextStyle: Theme.of(context)
+                    .textTheme
+                    .headlineLarge!
+                    .copyWith(color: Palette.highlight),
+                onTap: () {
+                  launchUrl(
+                    Uri(
+                      scheme: 'https',
+                      host: 'github.com',
+                      path: 'Theguyhere0/planner_assistant/releases/tag/v0.2.0',
+                    ),
+                  );
+                },
               ),
             ),
-            Text(
-              'Built by Theguyhere',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.headlineSmall,
+            // Credits
+            Hypertext(
+              prefix: 'Built by ',
+              hypertext: 'Theguyhere',
+              normalStyle: Theme.of(context).textTheme.headlineSmall!,
+              hypertextStyle: Theme.of(context)
+                  .textTheme
+                  .headlineSmall!
+                  .copyWith(color: Palette.standard),
+              underline: true,
+              onTap: () {
+                launchUrl(
+                  Uri(
+                    scheme: 'https',
+                    host: 'theguyhere0.github.io',
+                  ),
+                );
+              },
             ),
           ],
         ),

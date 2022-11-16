@@ -10,10 +10,10 @@ class VideoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomIconButton(
+    return const CustomIconButton(
       icon: Icons.ondemand_video_rounded,
       tooltip: 'Watch the tutorial',
-      onPressed: () {}, // TODO: Open tutorial video in new tab
+      onPressed: null, // TODO: Open tutorial video in new tab
     );
   }
 }

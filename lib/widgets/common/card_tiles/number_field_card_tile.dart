@@ -22,17 +22,18 @@ class NumberFieldCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
+        width: cardTileTitleWidth,
+        alignment: Alignment.centerRight,
         child: Text(
           title,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        width: cardTileTitleWidth,
-        alignment: Alignment.centerRight,
       ),
       title: Row(
         children: <Widget>[
           SizedBox(
+            width: 40,
             child: TextFormField(
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
@@ -43,7 +44,6 @@ class NumberFieldCardTile extends StatelessWidget {
                 FilteringTextInputFormatter.digitsOnly
               ],
             ),
-            width: 40,
           ),
           Padding(
             padding: const EdgeInsets.only(left: defaultPadding),

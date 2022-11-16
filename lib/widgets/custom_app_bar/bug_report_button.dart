@@ -10,10 +10,10 @@ class BugReportButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomIconButton(
+    return const CustomIconButton(
       icon: Icons.bug_report_rounded,
       tooltip: 'Report a bug',
-      onPressed: () {}, // TODO: Open issue report in new tab
+      onPressed: null, // TODO: Open issue report in new tab
     );
   }
 }

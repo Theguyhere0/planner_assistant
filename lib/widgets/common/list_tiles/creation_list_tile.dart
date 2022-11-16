@@ -13,11 +13,11 @@ class CreationListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
+        alignment: Alignment.topLeft,
         child: const Text(
           '+ New',
           style: TextStyle(color: Palette.suppressed),
         ),
-        alignment: Alignment.topLeft,
       ),
       tileColor: Colors.transparent,
       hoverColor: Palette.focus,

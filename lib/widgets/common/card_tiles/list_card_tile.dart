@@ -21,6 +21,7 @@ class ListCardTile extends StatelessWidget {
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: SizedBox(
+              height: 290,
               child: Card(
                 elevation: 0,
                 child: ListView(
@@ -62,23 +63,23 @@ class ListCardTile extends StatelessWidget {
                   ],
                 ),
               ),
-              height: 290,
             ),
           )
         // Embedded variant
         : ListTile(
             leading: Container(
+              width: cardTileTitleWidth,
+              alignment: Alignment.topRight,
               child: Text(
                 title!,
                 textAlign: TextAlign.right,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              width: cardTileTitleWidth,
-              alignment: Alignment.topRight,
             ),
             title: Padding(
               padding: const EdgeInsets.only(top: 2),
               child: SizedBox(
+                height: 185,
                 child: Card(
                   elevation: 0,
                   child: ListView(
@@ -112,7 +113,6 @@ class ListCardTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                height: 185,
               ),
             ),
           );
