@@ -21,7 +21,7 @@ class ButtonCardTile extends StatelessWidget {
       title: Container(
         alignment: Alignment.center,
         child: OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: null,
           icon: Icon(
             icon,
             size: 24,

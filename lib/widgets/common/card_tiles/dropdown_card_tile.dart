@@ -101,16 +101,17 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                   borderRadius: BorderRadius.circular(defaultPadding),
                   underline: Container(),
                   menuMaxHeight: 250,
-                  items: list.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPadding),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
+                  items: null,
+                  // list.map<DropdownMenuItem<String>>((String value) {
+                  //   return DropdownMenuItem<String>(
+                  //     value: value,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(
+                  //           horizontal: defaultPadding),
+                  //       child: Text(value),
+                  //     ),
+                  //   );
+                  // }).toList(),
                   onChanged: (String? value) {
                     setState(() {
                       dropdownValue = value!;
