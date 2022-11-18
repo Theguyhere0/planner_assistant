@@ -23,6 +23,10 @@ temp_dir/
 *.js.deps
 *.js.map
 
+# Avoid committing generated Flutter files:
+*.g.dart
+*.freezed.dart
+
 # VS Code related
 .vs/
 .vscode/

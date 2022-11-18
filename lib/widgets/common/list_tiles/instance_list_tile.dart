@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/palette.dart';
-import '../delete_button.dart';
+import '../buttons/delete_button.dart';
 
 /// A tile for custom lists for editing an element.
 class InstanceListTile extends StatelessWidget {

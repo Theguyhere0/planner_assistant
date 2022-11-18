@@ -1,12 +1,8 @@
-enum FieldType {
-  id,
+enum PropertyType {
   string,
   boolean,
   integer,
   float,
-  percent,
   date,
   time,
-  tags,
-  course,
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'theme/custom_theme.dart';
 import 'utils/responsive.dart';
 import 'widgets/build_page.dart';
 import 'widgets/unsupported_page.dart';
 
-void main(List<String> args) => runApp(const PlannerAssistantApp());
+void main(List<String> args) =>
+    runApp(const ProviderScope(child: PlannerAssistantApp()));
 
 class PlannerAssistantApp extends StatelessWidget {
   const PlannerAssistantApp({Key? key}) : super(key: key);

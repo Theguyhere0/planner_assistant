@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/palette.dart';
-import '../../utils/constants.dart';
-import 'dialogs/delete_dialog.dart';
+import '../../../theme/palette.dart';
+import '../../../utils/constants.dart';
+import '../dialogs/delete_dialog.dart';
 
 /// A class to standardize deletion buttons across the app.
 class DeleteButton extends StatelessWidget {

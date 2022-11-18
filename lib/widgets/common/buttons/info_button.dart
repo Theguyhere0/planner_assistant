@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/palette.dart';
-import '../../utils/constants.dart';
-import 'dialogs/info_dialog.dart';
+import '../../../theme/palette.dart';
+import '../../../utils/constants.dart';
+import '../dialogs/info_dialog.dart';
 
 /// A class to standardize information buttons across the app.
 class InfoButton extends StatefulWidget {

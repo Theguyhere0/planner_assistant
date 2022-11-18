@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants.dart';
-import '../info_button.dart';
+import '../buttons/info_button.dart';
 
 /// A large card for a [PageSection].
 ///

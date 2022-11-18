@@ -52,6 +52,7 @@ class _RankedListCardTileState extends State<RankedListCardTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
       child: SizedBox(
+        height: 290,
         child: Card(
           elevation: 0,
           child: ReorderableListView(
@@ -65,11 +66,10 @@ class _RankedListCardTileState extends State<RankedListCardTile> {
                 // _items.insert(newIndex, item);
               });
             },
-            children: _items,
             footer: const CreationListTile(key: Key('7')),
+            children: _items,
           ),
         ),
-        height: 290,
       ),
     );
   }

@@ -25,13 +25,13 @@ class ToggleCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
+        width: cardTileTitleWidth,
+        alignment: Alignment.centerRight,
         child: Text(
           title,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        width: cardTileTitleWidth,
-        alignment: Alignment.centerRight,
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,

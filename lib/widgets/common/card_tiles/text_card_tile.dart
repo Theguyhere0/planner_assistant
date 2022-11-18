@@ -15,11 +15,11 @@ class TextCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
+        alignment: Alignment.center,
         child: Text(
           title,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        alignment: Alignment.center,
       ),
     );
   }

@@ -8,6 +8,8 @@ class TextFieldCardTile extends StatelessWidget {
   const TextFieldCardTile(
     this.title, {
     required this.hintText,
+    this.value,
+    this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -17,23 +19,31 @@ class TextFieldCardTile extends StatelessWidget {
   /// Default option or hint for what to input.
   final String hintText;
 
+  /// What value the text input holds.
+  final String? value;
+
+  /// What the input should do when changes occur.
+  final void Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
+        width: cardTileTitleWidth,
+        alignment: Alignment.centerRight,
         child: Text(
           title,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        width: cardTileTitleWidth,
-        alignment: Alignment.centerRight,
       ),
       title: TextFormField(
+        initialValue: value,
         decoration: InputDecoration(
           border: const UnderlineInputBorder(),
           hintText: hintText,
         ),
+        onChanged: onChanged,
       ),
     );
   }
