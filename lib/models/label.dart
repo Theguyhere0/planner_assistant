@@ -1,13 +1,15 @@
 import 'package:isar/isar.dart';
 
 import '../utils/conversions.dart';
+import 'data.dart';
 
 part 'label.g.dart';
 
 /// A way to categorize, group, and divide up time units.
-@collection
-class Label {
-  Id get id => Conversions.fastHash(name);
+@Collection()
+class Label implements Data {
+  @Id()
+  int get id => Conversions.fastHash(name);
 
   /// The name for this [Label].
   ///
@@ -23,4 +25,10 @@ class Label {
 
   /// The time units after the first [Label] ends before it repeats, if it does.
   int? period;
+
+  @override
+  String get dataType => 'Label';
+
+  @override
+  String get dataName => name;
 }

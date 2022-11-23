@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/project_controller.dart';
 import '../common/cards/small_card.dart';
 import '../common/card_tiles/list_card_tile.dart';
 import '../../utils/constants.dart';
 
 /// A card for managing the constraints of the project.
-class ProjectConstraintsCard extends StatelessWidget {
+class ProjectConstraintsCard extends ConsumerWidget {
   const ProjectConstraintsCard({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SmallCard(
       'Project Constraints',
       infoContent: 'Add constraints that apply to the entire project.',
-      content: Column(children: const <Widget>[
+      content: Column(children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-          child: ListCardTile(),
+          padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+          child: ListCardTile(
+            cardDialogContent: const Text('test'),
+            instances:
+                ref.watch(projectControllerProvider).projectConstraints.when(
+                      data: (data) => data,
+                      error: ((error, stackTrace) => []),
+                      loading: (() => []),
+                    ),
+            createNew: () {},
+          ),
         ),
       ]),
     );

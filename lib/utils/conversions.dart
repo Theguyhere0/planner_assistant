@@ -4,9 +4,9 @@ class Conversions {
   ///
   /// Borrowed from Isar
   static int fastHash(String string) {
-    var hash = 0xcbf29ce484222325;
+    int hash = BigInt.parse('0xcbf29ce484222325').toInt();
 
-    var i = 0;
+    int i = 0;
     while (i < string.length) {
       final codeUnit = string.codeUnitAt(i++);
       hash ^= codeUnit >> 8;

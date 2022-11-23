@@ -5,9 +5,10 @@ import '../../../theme/palette.dart';
 /// A tile for custom lists for adding elements.
 class CreationListTile extends StatelessWidget {
   /// Creates a tile for adding elements.
-  const CreationListTile({
-    Key? key,
-  }) : super(key: key);
+  const CreationListTile({Key? key, required this.onClick}) : super(key: key);
+
+  /// What should happen when the tile is clicked.
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class CreationListTile extends StatelessWidget {
       ),
       tileColor: Colors.transparent,
       hoverColor: Palette.focus,
-      onTap: () {},
+      onTap: onClick,
     );
   }
 }

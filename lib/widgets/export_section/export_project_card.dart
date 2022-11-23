@@ -11,7 +11,7 @@ class ExportProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SmallCard(
-      'Save a Project',
+      'Save the Project',
       infoContent:
           'Save the project settings, along with any important plans, in a data file to open up later.',
       content: Column(children: const <Widget>[]),

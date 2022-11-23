@@ -66,7 +66,10 @@ class _RankedListCardTileState extends State<RankedListCardTile> {
                 // _items.insert(newIndex, item);
               });
             },
-            footer: const CreationListTile(key: Key('7')),
+            footer: const CreationListTile(
+              key: Key('7'),
+              onClick: null,
+            ),
             children: _items,
           ),
         ),

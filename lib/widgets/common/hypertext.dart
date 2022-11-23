@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -37,10 +35,10 @@ class Hypertext extends StatefulWidget {
   final void Function() onTap;
 
   @override
-  _HypertextState createState() => _HypertextState();
+  HypertextState createState() => HypertextState();
 }
 
-class _HypertextState extends State<Hypertext> {
+class HypertextState extends State<Hypertext> {
   bool _hover = false;
   late final TextDecoration? _underline =
       widget.underline ? TextDecoration.underline : null;

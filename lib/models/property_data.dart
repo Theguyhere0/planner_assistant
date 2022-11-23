@@ -1,17 +1,18 @@
 import 'package:isar/isar.dart';
 
 import 'activity_unit.dart';
-import 'property.dart';
+import 'property_definition.dart';
 
 part 'property_data.g.dart';
 
 /// The data associated with a property that an [ActivityUnit] has.
-@collection
+@Collection()
 class PropertyData {
-  Id id = Isar.autoIncrement;
+  @Id()
+  int id = Isar.autoIncrement;
 
-  /// What [Property] this data fulfills.
-  final property = IsarLink<Property>();
+  /// What [PropertyDefinition] this data fulfills.
+  final property = IsarLink<PropertyDefinition>();
 
   /// The integer data stored.
   int? intData;

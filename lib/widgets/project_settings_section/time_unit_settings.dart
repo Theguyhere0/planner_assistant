@@ -14,8 +14,6 @@ class TimeUnitSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = ref.watch(projectControllerProvider).timeUnitName;
-
     return SmallCard(
       'Time Unit Settings',
       infoContent:
@@ -24,20 +22,30 @@ class TimeUnitSettingsCard extends ConsumerWidget {
         TextFieldCardTile(
           'Name',
           hintText: 'Time Unit',
-          value: name,
+          value: ref.watch(projectControllerProvider).timeUnitName,
           onChanged: (newValue) => ref
               .read(projectControllerProvider.notifier)
               .updateTimeUnitName(newValue),
         ),
         TextFieldCardTile(
           'Plural Form',
-          hintText: '${name.isEmpty ? 'Time Unit' : name}s',
+          hintText:
+              ref.watch(projectControllerProvider).displayTimeUnitPluralName,
           value: ref.watch(projectControllerProvider).timeUnitPluralName,
           onChanged: (newValue) => ref
               .read(projectControllerProvider.notifier)
               .updateTimeUnitPluralName(newValue),
         ),
-        const ListCardTile(title: 'Labels')
+        ListCardTile(
+          title: 'Labels',
+          cardDialogContent: const Text('test'),
+          instances: ref.watch(projectControllerProvider).labels.when(
+                data: (data) => data,
+                error: ((error, stackTrace) => []),
+                loading: (() => []),
+              ),
+          createNew: () {},
+        ),
       ]),
     );
   }

@@ -5,9 +5,10 @@ import 'activity_unit.dart';
 part 'activity_instance.g.dart';
 
 /// An instance of an [ActivityUnit] to put in a plan.
-@collection
+@Collection()
 class ActivityInstance {
-  Id id = Isar.autoIncrement;
+  @Id()
+  int id = Isar.autoIncrement;
 
   /// The [ActivityUnit] that was instantiated.
   final parent = IsarLink<ActivityUnit>();

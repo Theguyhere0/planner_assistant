@@ -1,14 +1,15 @@
 import 'package:isar/isar.dart';
 
 import 'label.dart';
-import 'property.dart';
+import 'property_definition.dart';
 
 part 'criteria.g.dart';
 
 /// Important metrics that are being optimized in the project.
-@collection
+@Collection()
 class Criteria {
-  Id id = Isar.autoIncrement;
+  @Id()
+  int id = Isar.autoIncrement;
 
   /// Priority of this [Criteria].
   ///
@@ -16,10 +17,10 @@ class Criteria {
   @Index(unique: true)
   late int rank;
 
-  /// A possible [Property] that is being constrained.
+  /// A possible [PropertyDefinition] that is being constrained.
   ///
   /// If the link is empty, the threshold will represent number of [ActivityInstance]s that start in the time period of evaluation.
-  final property = IsarLink<Property>();
+  final property = IsarLink<PropertyDefinition>();
 
   /// The integer target to check against. Only useful for matching.
   int? intTarget;

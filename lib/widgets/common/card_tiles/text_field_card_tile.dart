@@ -10,6 +10,7 @@ class TextFieldCardTile extends StatelessWidget {
     required this.hintText,
     this.value,
     this.onChanged,
+    this.validator,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +25,9 @@ class TextFieldCardTile extends StatelessWidget {
 
   /// What the input should do when changes occur.
   final void Function(String)? onChanged;
+
+  /// Verifies the input is valid.
+  final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,8 @@ class TextFieldCardTile extends StatelessWidget {
           hintText: hintText,
         ),
         onChanged: onChanged,
+        validator: validator,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
   }
