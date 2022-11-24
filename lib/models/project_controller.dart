@@ -1,21 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:planner_assistant/models/property_definition.dart';
 
 import 'activity_unit.dart';
+import 'database.dart';
 import 'label.dart';
 import 'project_constraint.dart';
 import 'project_state.dart';
 import 'isar_service.dart';
+import 'property.dart';
 
 final projectControllerProvider =
     StateNotifierProvider<ProjectController, ProjectState>((ref) {
   return ProjectController(
     ProjectState(
-      bufferedPropertyDefinition: PropertyDefinition()..name = '',
+      bufferedProperty: Property(name: ''),
       bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
-      propertyDefinitions: const AsyncData([]),
+      properties:
+          Database<Property>(validator: (e) => e.name.trim().isNotEmpty),
       labels: const AsyncData([]),
       activityUnits: const AsyncData([]),
       projectConstraints: const AsyncData([]),
@@ -54,48 +56,52 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   void resetBuffers() {
     state = state.copyWith(
-      bufferedPropertyDefinition: PropertyDefinition()..name = '',
+      bufferedProperty: Property(name: ''),
       bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
     );
   }
 
-  void updateBufferedPropertyDefinition({String? updatedName}) {
+  /// Attempt to load a specific [Property] to the buffer.
+  void loadBufferedProperty(String name) {
+    state = state.copyWith(
+        bufferedProperty:
+            state.properties.searchEntry((e) => e.name == name)?.copy ??
+                Property(name: ''));
+  }
+
+  /// Make some changes to the buffered [Property].
+  void updateBufferedPropertyDefinition(String? updatedName) {
     if (updatedName != null) {
       state = state.copyWith(
-          bufferedPropertyDefinition: state.bufferedPropertyDefinition
-            ..name = updatedName);
+          bufferedProperty: state.bufferedProperty..name = updatedName);
     }
   }
 
-  /// Checks to see if the buffered [PropertyDefinition] has a unique, non-empty name.
+  /// Checks to see if the buffered [Property] is valid.
   bool validateBufferedPropertyDefinition() =>
-      state.bufferedPropertyDefinition.name.isNotEmpty &&
-      !state.propertyDefinitions
-          .when(
-              data: (data) => data,
-              error: (error, stackTrace) => [],
-              loading: () => [])
-          .map((e) => e.name)
-          .contains(state.bufferedPropertyDefinition.name);
+      state.properties.validator(state.bufferedProperty);
 
-  /// Saves the buffered [PropertyDefinition] to Isar.
+  /// Saves the buffered [Property] to the database.
   void saveBufferedPropertyDefinition() {
-    isarService.savePropertyDefinition(state.bufferedPropertyDefinition);
-    loadData();
+    state = state.copyWith(
+        properties: state.properties..setEntry(state.bufferedProperty));
   }
 
-  Future<void> loadData() async {
+  /// Removes the buffered [Property] from the database.
+  void removeBufferedPropertyDefinition() {
     state = state.copyWith(
-      propertyDefinitions: const AsyncValue.loading(),
+        properties: state.properties..removeEntry(state.bufferedProperty));
+  }
+
+  void loadData() async {
+    state = state.copyWith(
       labels: const AsyncValue.loading(),
       activityUnits: const AsyncValue.loading(),
       projectConstraints: const AsyncValue.loading(),
     );
     state = state.copyWith(
-      propertyDefinitions:
-          AsyncValue.data(await isarService.getAllPropertyDefinitions()),
       labels: AsyncValue.data(await isarService.getAllLabels()),
       activityUnits: AsyncValue.data(await isarService.getAllActivityUnits()),
       projectConstraints:

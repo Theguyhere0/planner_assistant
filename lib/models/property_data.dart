@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import 'activity_unit.dart';
-import 'property_definition.dart';
+import 'property.dart';
 
 part 'property_data.g.dart';
 
@@ -11,8 +11,9 @@ class PropertyData {
   @Id()
   int id = Isar.autoIncrement;
 
-  /// What [PropertyDefinition] this data fulfills.
-  final property = IsarLink<PropertyDefinition>();
+  /// What [Property] this data fulfills.
+  @Ignore()
+  final property = IsarLink<Property>();
 
   /// The integer data stored.
   int? intData;

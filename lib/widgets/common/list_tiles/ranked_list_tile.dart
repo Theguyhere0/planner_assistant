@@ -10,6 +10,7 @@ class RankedListTile extends StatelessWidget {
     this.name, {
     required Key key,
     required this.type,
+    required this.delete,
   }) : super(key: key);
 
   /// The name of the element.
@@ -18,6 +19,9 @@ class RankedListTile extends StatelessWidget {
   /// The type of element being displayed.
   final String type;
 
+  /// The function to call to delete this instance.
+  final void Function() delete;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -25,7 +29,10 @@ class RankedListTile extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Text(name),
       ),
-      trailing: DeleteButton(title: 'Delete $type?'),
+      trailing: DeleteButton(
+        title: 'Delete $type?',
+        delete: delete,
+      ),
       tileColor: Palette.card,
       hoverColor: Palette.focus,
       onTap: () {},

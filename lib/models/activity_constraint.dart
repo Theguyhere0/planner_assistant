@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import 'activity_unit.dart';
-import 'property_definition.dart';
+import 'property.dart';
 
 part 'activity_constraint.g.dart';
 
@@ -11,10 +11,11 @@ class ActivityConstraint {
   @Id()
   int id = isarAutoIncrementId;
 
-  /// A possible [PropertyDefinition] that is being constrained.
+  /// A possible [Property] that is being constrained.
   ///
   /// If the link is empty, the threshold will represent number of time units.
-  final property = IsarLink<PropertyDefinition>();
+  @Ignore()
+  final property = IsarLink<Property>();
 
   /// What [ActivityUnit] this constraint applies to.
   final parent = IsarLink<ActivityUnit>();

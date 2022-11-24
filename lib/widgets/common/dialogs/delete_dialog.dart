@@ -8,10 +8,14 @@ class DeleteDialog extends StatelessWidget {
   const DeleteDialog({
     Key? key,
     required this.title,
+    required this.delete,
   }) : super(key: key);
 
   /// The dialog header.
   final String title;
+
+  /// The function to call to perform the delete.
+  final void Function() delete;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class DeleteDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
+            delete();
             Navigator.pop(context);
           },
           style: ButtonStyle(

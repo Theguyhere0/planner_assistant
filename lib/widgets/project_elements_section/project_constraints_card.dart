@@ -21,7 +21,7 @@ class ProjectConstraintsCard extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
           child: ListCardTile(
-            cardDialogContent: const Text('test'),
+            dialog: (setState) => const Text('test'),
             instances:
                 ref.watch(projectControllerProvider).projectConstraints.when(
                       data: (data) => data,
@@ -29,6 +29,7 @@ class ProjectConstraintsCard extends ConsumerWidget {
                       loading: (() => []),
                     ),
             createNew: () {},
+            delete: () {},
           ),
         ),
       ]),

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'activity_unit.dart';
+import 'database.dart';
 import 'label.dart';
 import 'project_constraint.dart';
-import 'property_definition.dart';
+import 'property.dart';
 
 /// The top level metadata for a project.
 @immutable
@@ -21,8 +22,8 @@ class ProjectState {
   /// The plural variant of the name for time units in this project.
   final String timeUnitPluralName;
 
-  /// A buffer for modifying a [PropertyDefinition] safely.
-  final PropertyDefinition bufferedPropertyDefinition;
+  /// A buffer for modifying a [Property] safely.
+  final Property bufferedProperty;
 
   /// A buffer for modifying a [Label] safely.
   final Label bufferedLabel;
@@ -33,8 +34,8 @@ class ProjectState {
   /// A buffer for modifying a [ProjectConstraint] safely.
   final ProjectConstraint bufferedProjectConstraint;
 
-  /// Resolved [PropertyDefinition] for the project
-  final AsyncValue<List<PropertyDefinition>> propertyDefinitions;
+  /// The database of all [Property]s for the project.
+  final Database<Property> properties;
 
   /// Resolved [Label]s for the project
   final AsyncValue<List<Label>> labels;
@@ -50,11 +51,11 @@ class ProjectState {
     this.activityUnitPluralName = '',
     this.timeUnitName = '',
     this.timeUnitPluralName = '',
-    required this.bufferedPropertyDefinition,
+    required this.bufferedProperty,
     required this.bufferedLabel,
     required this.bufferedActivityUnit,
     required this.bufferedProjectConstraint,
-    required this.propertyDefinitions,
+    required this.properties,
     required this.labels,
     required this.activityUnits,
     required this.projectConstraints,
@@ -65,11 +66,11 @@ class ProjectState {
     String? activityUnitPluralName,
     String? timeUnitName,
     String? timeUnitPluralName,
-    PropertyDefinition? bufferedPropertyDefinition,
+    Property? bufferedProperty,
     Label? bufferedLabel,
     ActivityUnit? bufferedActivityUnit,
     ProjectConstraint? bufferedProjectConstraint,
-    AsyncValue<List<PropertyDefinition>>? propertyDefinitions,
+    Database<Property>? properties,
     AsyncValue<List<Label>>? labels,
     AsyncValue<List<ActivityUnit>>? activityUnits,
     AsyncValue<List<ProjectConstraint>>? projectConstraints,
@@ -80,13 +81,12 @@ class ProjectState {
           activityUnitPluralName ?? this.activityUnitPluralName,
       timeUnitName: timeUnitName ?? this.timeUnitName,
       timeUnitPluralName: timeUnitPluralName ?? this.timeUnitPluralName,
-      bufferedPropertyDefinition:
-          bufferedPropertyDefinition ?? this.bufferedPropertyDefinition,
+      bufferedProperty: bufferedProperty ?? this.bufferedProperty,
       bufferedLabel: bufferedLabel ?? this.bufferedLabel,
       bufferedActivityUnit: bufferedActivityUnit ?? this.bufferedActivityUnit,
       bufferedProjectConstraint:
           bufferedProjectConstraint ?? this.bufferedProjectConstraint,
-      propertyDefinitions: propertyDefinitions ?? this.propertyDefinitions,
+      properties: properties ?? this.properties,
       labels: labels ?? this.labels,
       activityUnits: activityUnits ?? this.activityUnits,
       projectConstraints: projectConstraints ?? this.projectConstraints,
@@ -118,11 +118,11 @@ class ProjectState {
         other.activityUnitPluralName == activityUnitPluralName &&
         other.timeUnitName == timeUnitName &&
         other.timeUnitPluralName == timeUnitPluralName &&
-        other.bufferedPropertyDefinition == bufferedPropertyDefinition &&
+        other.bufferedProperty == bufferedProperty &&
         other.bufferedLabel == bufferedLabel &&
         other.bufferedActivityUnit == bufferedActivityUnit &&
         other.bufferedProjectConstraint == bufferedProjectConstraint &&
-        other.propertyDefinitions == propertyDefinitions &&
+        other.properties == properties &&
         other.labels == labels &&
         other.activityUnits == activityUnits &&
         other.projectConstraints == projectConstraints;
@@ -134,11 +134,11 @@ class ProjectState {
         activityUnitPluralName.hashCode ^
         timeUnitName.hashCode ^
         timeUnitPluralName.hashCode ^
-        bufferedPropertyDefinition.hashCode ^
+        bufferedProperty.hashCode ^
         bufferedLabel.hashCode ^
         bufferedActivityUnit.hashCode ^
         bufferedProjectConstraint.hashCode ^
-        propertyDefinitions.hashCode ^
+        properties.hashCode ^
         labels.hashCode ^
         activityUnits.hashCode ^
         projectConstraints.hashCode;

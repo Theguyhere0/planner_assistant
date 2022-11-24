@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/card_tiles/button_card_tile.dart';
-import '../common/card_tiles/dropdown_card_tile.dart';
 import '../common/card_tiles/list_card_tile.dart';
 import '../common/cards/small_card.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
 import '../../models/project_controller.dart';
-import '../common/dialogs/card_dialog.dart';
+import 'create_property_dialog.dart';
+import 'edit_property_dialog.dart';
 
 /// A card for managing the settings for activity units of the project.
 class ActivityUnitSettingsCard extends ConsumerWidget {
@@ -42,67 +41,23 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
         ),
         ListCardTile(
           title: 'Properties',
-          cardDialogContent: const Text('test'),
-          instances:
-              ref.watch(projectControllerProvider).propertyDefinitions.when(
-                    data: (data) => data,
-                    error: ((error, stackTrace) => []),
-                    loading: (() => []),
-                  ),
+          dialog: (setState) => EditPropertyDialog(setState: setState),
+          instances: ref.watch(projectControllerProvider).properties.getAll(),
           createNew: () {
             ref.read(projectControllerProvider.notifier).resetBuffers();
             showDialog(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) {
-                  bool valid = ref
-                      .read(projectControllerProvider.notifier)
-                      .validateBufferedPropertyDefinition();
-                  return CardDialog(
-                    title:
-                        'Property: ${ref.watch(projectControllerProvider).bufferedPropertyDefinition.name}',
-                    content: Column(
-                      children: <Widget>[
-                        TextFieldCardTile(
-                          'Property Name',
-                          hintText: 'Enter a unique name',
-                          value: ref
-                              .watch(projectControllerProvider)
-                              .bufferedPropertyDefinition
-                              .name,
-                          onChanged: (newValue) => setState(() {
-                            ref
-                                .read(projectControllerProvider.notifier)
-                                .updateBufferedPropertyDefinition(
-                                    updatedName: newValue);
-                          }),
-                          validator: (value) {
-                            if (valid) {
-                              return null;
-                            } else {
-                              return 'Property name must exist and be unique';
-                            }
-                          },
-                        ),
-                        const DropdownCardTile('Type'),
-                        ButtonCardTile(
-                          'Save',
-                          icon: Icons.save_alt_rounded,
-                          onPressed: valid
-                              ? () {
-                                  ref
-                                      .read(projectControllerProvider.notifier)
-                                      .saveBufferedPropertyDefinition();
-                                  Navigator.pop(context);
-                                }
-                              : null,
-                        )
-                      ],
-                    ),
-                  );
-                },
+                builder: (context, setState) => CreatePropertyDialog(
+                  setState: setState,
+                ),
               ),
             );
+          },
+          delete: () {
+            ref
+                .read(projectControllerProvider.notifier)
+                .removeBufferedPropertyDefinition();
           },
         ),
       ]),

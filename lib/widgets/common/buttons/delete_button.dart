@@ -10,10 +10,14 @@ class DeleteButton extends StatelessWidget {
   const DeleteButton({
     Key? key,
     required this.title,
+    required this.delete,
   }) : super(key: key);
 
   /// What is begin deleted.
   final String title;
+
+  /// The function to call to perform the delete.
+  final void Function() delete;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,7 @@ class DeleteButton extends StatelessWidget {
         context: context,
         builder: (BuildContext context) => DeleteDialog(
           title: title,
+          delete: delete,
         ),
       ),
       mouseCursor: SystemMouseCursors.click,

@@ -8,7 +8,6 @@ import 'criteria.dart';
 import 'label.dart';
 import 'project_constraint.dart';
 import 'property_data.dart';
-import 'property_definition.dart';
 
 final isarServiceProvider = Provider<IsarService>(((ref) => IsarService()));
 
@@ -25,7 +24,6 @@ class IsarService {
         LabelSchema,
         ProjectConstraintSchema,
         PropertyDataSchema,
-        PropertyDefinitionSchema,
       ],
       // inspector: true,
     );
@@ -112,18 +110,6 @@ class IsarService {
   Future<List<PropertyData>> getAllPropertyData() async {
     final isar = await db;
     return isar.propertyDatas.where().findAll();
-  }
-
-  Future<void> savePropertyDefinition(
-      PropertyDefinition newPropertyDefinition) async {
-    final isar = await db;
-    isar.writeTxn((isar) async =>
-        await isar.propertyDefinitions.put(newPropertyDefinition));
-  }
-
-  Future<List<PropertyDefinition>> getAllPropertyDefinitions() async {
-    final isar = await db;
-    return isar.propertyDefinitions.where().findAll();
   }
 
   Future<void> clean() async {

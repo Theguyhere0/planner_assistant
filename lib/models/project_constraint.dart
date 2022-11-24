@@ -2,7 +2,7 @@ import 'package:isar/isar.dart';
 
 import 'data.dart';
 import 'label.dart';
-import 'property_definition.dart';
+import 'property.dart';
 import 'property_type.dart';
 
 part 'project_constraint.g.dart';
@@ -10,13 +10,13 @@ part 'project_constraint.g.dart';
 /// Constraints that apply to the entire project.
 @Collection()
 class ProjectConstraint implements Data {
-  @Id()
-  int id = Isar.autoIncrement;
+  int? id;
 
-  /// A possible [PropertyDefinition] that is being constrained.
+  /// A possible [Property] that is being constrained.
   ///
   /// If the link is empty, the threshold will represent number of [ActivityInstance]s.
-  final property = IsarLink<PropertyDefinition>();
+  @Ignore()
+  final property = IsarLink<Property>();
 
   /// The integer threshold to check against.
   int? intThreshold;
@@ -50,14 +50,14 @@ class ProjectConstraint implements Data {
         greaterThan == null ? 'Match' : (greaterThan! ? 'Over' : 'Under');
     String value;
     String units;
-    PropertyDefinition? def = property.value;
+    Property? def = property.value;
 
     if (def == null) {
       value = intThreshold! as String;
       units = 'Activity Units';
     } else {
       units = def.name;
-      switch (def.type) {
+      switch (def.type!) {
         case PropertyType.string:
           value = stringThreshold!;
           break;
@@ -82,4 +82,7 @@ class ProjectConstraint implements Data {
 
   @override
   String get dataType => 'Project Constraint';
+
+  @override
+  ProjectConstraint get copy => ProjectConstraint();
 }

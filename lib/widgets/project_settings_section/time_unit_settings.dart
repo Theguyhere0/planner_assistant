@@ -38,13 +38,14 @@ class TimeUnitSettingsCard extends ConsumerWidget {
         ),
         ListCardTile(
           title: 'Labels',
-          cardDialogContent: const Text('test'),
+          dialog: (setState) => const Text('test'),
           instances: ref.watch(projectControllerProvider).labels.when(
                 data: (data) => data,
                 error: ((error, stackTrace) => []),
                 loading: (() => []),
               ),
           createNew: () {},
+          delete: () {},
         ),
       ]),
     );

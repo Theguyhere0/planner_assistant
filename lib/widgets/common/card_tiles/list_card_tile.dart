@@ -11,9 +11,10 @@ class ListCardTile extends StatelessWidget {
   const ListCardTile({
     Key? key,
     this.title,
-    required this.cardDialogContent,
+    required this.dialog,
     required this.instances,
     required this.createNew,
+    required this.delete,
   }) : super(key: key);
 
   /// A possible descriptor for the list.
@@ -21,14 +22,17 @@ class ListCardTile extends StatelessWidget {
   /// A null title will result in an expanded variant that is meant to take up an entire [SmallCard].
   final String? title;
 
-  /// The content that will display in the card dialog when an instance tile is clicked.
-  final Widget cardDialogContent;
+  /// A callback for the dialog to display when an instance tile is clicked.
+  final Widget Function(void Function(void Function())) dialog;
 
   /// All the instances that need to be displayed by this list card tile.
   final List<Data> instances;
 
   /// The function to call when creating a new instance.
   final void Function() createNew;
+
+  /// The function to call to delete an instance.
+  final void Function() delete;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,8 @@ class ListCardTile extends StatelessWidget {
                         return InstanceListTile(
                           instances[index].dataName,
                           type: instances[index].dataType,
-                          content: cardDialogContent,
+                          dialog: dialog,
+                          delete: delete,
                         );
                       },
                     ),
@@ -89,7 +94,8 @@ class ListCardTile extends StatelessWidget {
                           return InstanceListTile(
                             instances[index].dataName,
                             type: instances[index].dataType,
-                            content: cardDialogContent,
+                            dialog: dialog,
+                            delete: delete,
                           );
                         },
                       ),

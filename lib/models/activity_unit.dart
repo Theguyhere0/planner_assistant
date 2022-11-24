@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 
-import '../utils/conversions.dart';
 import 'data.dart';
 import 'property_data.dart';
 import 'activity_instance.dart';
@@ -11,8 +10,7 @@ part 'activity_unit.g.dart';
 /// The basic units of activity that a project needs to have planned.
 @Collection()
 class ActivityUnit implements Data {
-  @Id()
-  int get id => Conversions.fastHash(name);
+  int? id;
 
   /// The name for this [ActivityUnit].
   ///
@@ -42,4 +40,7 @@ class ActivityUnit implements Data {
 
   @override
   String get dataType => throw UnimplementedError();
+
+  @override
+  ActivityUnit get copy => ActivityUnit();
 }

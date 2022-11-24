@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 
-import '../utils/conversions.dart';
 import 'data.dart';
 
 part 'label.g.dart';
@@ -8,8 +7,7 @@ part 'label.g.dart';
 /// A way to categorize, group, and divide up time units.
 @Collection()
 class Label implements Data {
-  @Id()
-  int get id => Conversions.fastHash(name);
+  int? id;
 
   /// The name for this [Label].
   ///
@@ -31,4 +29,7 @@ class Label implements Data {
 
   @override
   String get dataName => name;
+
+  @override
+  Label get copy => Label();
 }

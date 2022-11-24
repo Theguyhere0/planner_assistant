@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import 'label.dart';
-import 'property_definition.dart';
+import 'property.dart';
 
 part 'criteria.g.dart';
 
@@ -17,10 +17,11 @@ class Criteria {
   @Index(unique: true)
   late int rank;
 
-  /// A possible [PropertyDefinition] that is being constrained.
+  /// A possible [Property] that is being constrained.
   ///
   /// If the link is empty, the threshold will represent number of [ActivityInstance]s that start in the time period of evaluation.
-  final property = IsarLink<PropertyDefinition>();
+  @Ignore()
+  final property = IsarLink<Property>();
 
   /// The integer target to check against. Only useful for matching.
   int? intTarget;
