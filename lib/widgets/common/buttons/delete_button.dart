@@ -22,7 +22,7 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => showDialog<String>(
+      onPressed: () => showDialog(
         context: context,
         builder: (BuildContext context) => DeleteDialog(
           title: title,

@@ -5,7 +5,6 @@ import 'activity_constraint.dart';
 import 'activity_instance.dart';
 import 'activity_unit.dart';
 import 'criteria.dart';
-import 'label.dart';
 import 'project_constraint.dart';
 import 'property_data.dart';
 
@@ -21,7 +20,6 @@ class IsarService {
         ActivityInstanceSchema,
         ActivityUnitSchema,
         CriteriaSchema,
-        LabelSchema,
         ProjectConstraintSchema,
         PropertyDataSchema,
       ],
@@ -77,16 +75,6 @@ class IsarService {
   Future<List<Criteria>> getAllCriteria() async {
     final isar = await db;
     return isar.criterias.where().findAll();
-  }
-
-  Future<void> saveLabel(Label newLabel) async {
-    final isar = await db;
-    isar.writeTxn((isar) async => await isar.labels.put(newLabel));
-  }
-
-  Future<List<Label>> getAllLabels() async {
-    final isar = await db;
-    return isar.labels.where().findAll();
   }
 
   Future<void> saveProjectConstraint(

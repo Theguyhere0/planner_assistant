@@ -8,7 +8,7 @@ class TextFieldCardTile extends StatelessWidget {
   const TextFieldCardTile(
     this.title, {
     required this.hintText,
-    this.value,
+    required this.value,
     this.onChanged,
     this.validator,
     Key? key,

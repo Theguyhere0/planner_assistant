@@ -47,5 +47,6 @@ class Criteria {
   /// A potential time [Label] to apply the constraint to.
   ///
   /// If the link is empty, the threshold will represent number of [ActivityInstance]s. Ignored if global is set to true.
+  @Ignore()
   final label = IsarLink<Label>();
 }

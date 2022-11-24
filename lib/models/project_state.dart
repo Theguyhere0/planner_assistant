@@ -34,11 +34,11 @@ class ProjectState {
   /// A buffer for modifying a [ProjectConstraint] safely.
   final ProjectConstraint bufferedProjectConstraint;
 
-  /// The database of all [Property]s for the project.
+  /// The [Database] of all [Property]s for the project.
   final Database<Property> properties;
 
-  /// Resolved [Label]s for the project
-  final AsyncValue<List<Label>> labels;
+  /// The [Database] for all [Label]s for the project
+  final Database<Label> labels;
 
   /// Resolved [ActivityUnit]s for the project
   final AsyncValue<List<ActivityUnit>> activityUnits;
@@ -71,7 +71,7 @@ class ProjectState {
     ActivityUnit? bufferedActivityUnit,
     ProjectConstraint? bufferedProjectConstraint,
     Database<Property>? properties,
-    AsyncValue<List<Label>>? labels,
+    Database<Label>? labels,
     AsyncValue<List<ActivityUnit>>? activityUnits,
     AsyncValue<List<ProjectConstraint>>? projectConstraints,
   }) {

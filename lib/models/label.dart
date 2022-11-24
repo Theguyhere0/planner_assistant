@@ -1,28 +1,28 @@
-import 'package:isar/isar.dart';
-
 import 'data.dart';
 
-part 'label.g.dart';
-
 /// A way to categorize, group, and divide up time units.
-@Collection()
 class Label implements Data {
+  @override
   int? id;
 
   /// The name for this [Label].
-  ///
-  /// Must be unique because id hash depends on it.
-  @Index()
-  late String name;
+  String name;
 
   /// How many time units this [Label] spans.
-  late int duration;
+  int duration;
 
   /// On what time unit this [Label] starts.
-  late int start;
+  int start;
 
-  /// The time units after the first [Label] ends before it repeats, if it does.
+  /// The time units after the previous instance of this [Label] ends before it repeats, if it does.
   int? period;
+
+  Label({required this.name, this.duration = 1, this.start = 1, this.period});
+
+  Label.init()
+      : name = '',
+        duration = 1,
+        start = 1;
 
   @override
   String get dataType => 'Label';
@@ -31,5 +31,7 @@ class Label implements Data {
   String get dataName => name;
 
   @override
-  Label get copy => Label();
+  Label get copy =>
+      Label(name: name, duration: duration, start: start, period: period)
+        ..id = id;
 }

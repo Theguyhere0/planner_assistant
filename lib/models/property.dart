@@ -14,6 +14,8 @@ class Property implements Data {
 
   Property({required this.name, this.type});
 
+  Property.init() : name = '';
+
   @override
   String get dataName => name;
 

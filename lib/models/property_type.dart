@@ -1,8 +1,12 @@
 enum PropertyType {
-  string,
-  boolean,
-  integer,
-  float,
-  date,
-  time,
+  string('String'),
+  boolean('Boolean'),
+  integer('Integer'),
+  decimal('Decimal'),
+  date('Date'),
+  time('Time');
+
+  final String value;
+
+  const PropertyType(this.value);
 }

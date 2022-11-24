@@ -3,49 +3,47 @@ import 'package:flutter/material.dart';
 import '../../../theme/palette.dart';
 import '../../../utils/constants.dart';
 
-const List<String> list = <String>[
-  'One',
-  'Two',
-  'Three',
-  'Four',
-  'Five',
-  'Six',
-  'Seven',
-  'Eight'
-];
-
 /// A tile for custom cards with a dropdown menu.
-class DropdownCardTile extends StatefulWidget {
+class DropdownCardTile extends StatelessWidget {
   /// Creates a card tile with a dropdown menu.
   const DropdownCardTile(
     this.title, {
     Key? key,
+    this.hintText,
     this.label = true,
+    required this.options,
+    required this.value,
+    this.onChanged,
   }) : super(key: key);
 
   /// What the dropdown is for.
   final String title;
 
+  /// Default option or hint for what to input.
+  final String? hintText;
+
   /// Whether the title will display as a label on the left or as the hint inside the dropdown.
   final bool label;
 
-  @override
-  State<DropdownCardTile> createState() => _DropdownCardTileState();
-}
+  /// The options available for this dropdown.
+  final List<String> options;
 
-class _DropdownCardTileState extends State<DropdownCardTile> {
-  String? dropdownValue;
+  /// What value the dropdown currently holds.
+  final String? value;
+
+  /// What should happen when changes occur.
+  final void Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return widget.label
+    return label
         // Title is displayed on the left
         ? ListTile(
             leading: Container(
               width: cardTileTitleWidth,
               alignment: Alignment.centerRight,
               child: Text(
-                widget.title,
+                title,
                 textAlign: TextAlign.right,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
@@ -58,14 +56,14 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                   hoverColor: Palette.focus,
                 ),
                 child: DropdownButton(
-                  value: dropdownValue,
-                  hint: const Text('Choose an option'),
+                  value: value,
+                  hint: Text(hintText ?? ''),
                   iconEnabledColor: Palette.standard,
                   focusColor: Colors.transparent,
                   borderRadius: BorderRadius.circular(defaultPadding),
                   underline: Container(),
                   menuMaxHeight: 250,
-                  items: list.map<DropdownMenuItem<String>>((String value) {
+                  items: options.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Padding(
@@ -75,11 +73,7 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                       ),
                     );
                   }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      dropdownValue = value!;
-                    });
-                  },
+                  onChanged: onChanged,
                 ),
               ),
             ),
@@ -94,8 +88,8 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                   hoverColor: Palette.focus,
                 ),
                 child: DropdownButton(
-                  value: dropdownValue,
-                  hint: Text(widget.title),
+                  value: value,
+                  hint: Text(title),
                   iconEnabledColor: Palette.standard,
                   focusColor: Colors.transparent,
                   borderRadius: BorderRadius.circular(defaultPadding),
@@ -112,11 +106,7 @@ class _DropdownCardTileState extends State<DropdownCardTile> {
                   //     ),
                   //   );
                   // }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      dropdownValue = value!;
-                    });
-                  },
+                  onChanged: onChanged,
                 ),
               ),
             ),

@@ -16,6 +16,12 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void delete(name) {
+      ref.read(projectControllerProvider.notifier)
+        ..loadBufferedProperty(name)
+        ..removeBufferedProperty();
+    }
+
     return SmallCard(
       'Activity Unit Settings',
       infoContent:
@@ -41,7 +47,20 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
         ),
         ListCardTile(
           title: 'Properties',
-          dialog: (setState) => EditPropertyDialog(setState: setState),
+          dialog: (name) {
+            ref
+                .read(projectControllerProvider.notifier)
+                .loadBufferedProperty(name);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => StatefulBuilder(
+                builder: (context, setState) => EditPropertyDialog(
+                  setState: setState,
+                  delete: delete,
+                ),
+              ),
+            );
+          },
           instances: ref.watch(projectControllerProvider).properties.getAll(),
           createNew: () {
             ref.read(projectControllerProvider.notifier).resetBuffers();
@@ -54,11 +73,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
               ),
             );
           },
-          delete: () {
-            ref
-                .read(projectControllerProvider.notifier)
-                .removeBufferedPropertyDefinition();
-          },
+          delete: delete,
         ),
       ]),
     );

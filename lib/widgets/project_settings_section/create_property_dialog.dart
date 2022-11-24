@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/project_controller.dart';
+import '../../models/property.dart';
+import '../../models/property_type.dart';
 import '../common/card_tiles/button_card_tile.dart';
 import '../common/card_tiles/dropdown_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
@@ -18,41 +20,50 @@ class CreatePropertyDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool valid = ref
-        .read(projectControllerProvider.notifier)
-        .validateBufferedPropertyDefinition();
+    Property property = ref.watch(projectControllerProvider).bufferedProperty;
 
     return CardDialog(
-      title:
-          'Property: ${ref.watch(projectControllerProvider).bufferedProperty.name}',
+      title: 'Property: ${property.name}',
       content: Column(
         children: <Widget>[
           TextFieldCardTile(
             'Property Name',
-            hintText: 'Enter a unique name',
-            value: ref.watch(projectControllerProvider).bufferedProperty.name,
+            hintText: 'Enter a name',
+            value: property.name,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedPropertyDefinition(newValue);
+                  .updateBufferedProperty(updatedName: newValue);
             }),
             validator: (value) {
-              if (valid) {
+              if (value!.trim().isNotEmpty) {
                 return null;
               } else {
                 return 'Property name cannot be blank';
               }
             },
           ),
-          const DropdownCardTile('Type'),
+          DropdownCardTile(
+            'Type',
+            hintText: 'Select an option',
+            options: PropertyType.values.map((e) => e.value).toList(),
+            value: property.type?.value,
+            onChanged: (newValue) => setState(() {
+              ref
+                  .read(projectControllerProvider.notifier)
+                  .updateBufferedProperty(updatedType: newValue);
+            }),
+          ),
           ButtonCardTile(
             'Save',
             icon: Icons.save_alt_rounded,
-            onPressed: valid
+            onPressed: ref
+                    .read(projectControllerProvider.notifier)
+                    .validateBufferedProperty()
                 ? () {
                     ref
                         .read(projectControllerProvider.notifier)
-                        .saveBufferedPropertyDefinition();
+                        .saveBufferedProperty();
                     Navigator.pop(context);
                   }
                 : null,

@@ -22,6 +22,7 @@ class CustomTheme {
             borderRadius: BorderRadius.circular(cardCornerRadius)),
       ),
       colorScheme: const ColorScheme.dark(primary: Palette.highlight),
+      toggleableActiveColor: Palette.standard,
       tooltipTheme: const TooltipThemeData(
         waitDuration: Duration(milliseconds: 350),
         decoration: BoxDecoration(

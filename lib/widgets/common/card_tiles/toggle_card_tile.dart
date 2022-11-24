@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../theme/palette.dart';
 import '../../../utils/constants.dart';
 
 /// A tile for custom cards with a toggle switch.
@@ -7,19 +8,27 @@ class ToggleCardTile extends StatelessWidget {
   /// Creates a card tile with a toggle switch.
   const ToggleCardTile(
     this.title, {
-    required this.leftToggleOption,
-    required this.rightToggleOption,
+    required this.offOption,
+    required this.onOption,
+    required this.value,
+    required this.onChanged,
     Key? key,
   }) : super(key: key);
 
   /// What the toggle selection is for.
   final String title;
 
-  /// What option is selected when the toggle is switched to the left.
-  final String leftToggleOption;
+  /// What option is selected when the toggle is switched off.
+  final String offOption;
 
-  /// What option is selected when the toggle is switched to the right.
-  final String rightToggleOption;
+  /// What option is selected when the toggle is switched on.
+  final String onOption;
+
+  /// The value of the toggle.
+  final bool value;
+
+  /// What should happen when changes occur.
+  final void Function(bool) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +45,25 @@ class ToggleCardTile extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(leftToggleOption),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+          Text(
+            offOption,
+            style: DefaultTextStyle.of(context)
+                .style
+                .copyWith(color: value ? Palette.suppressed : Palette.standard),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Switch(
-              value: false,
-              onChanged: null,
+              value: value,
+              onChanged: onChanged,
             ),
           ),
-          Text(rightToggleOption),
+          Text(
+            onOption,
+            style: DefaultTextStyle.of(context)
+                .style
+                .copyWith(color: value ? Palette.standard : Palette.suppressed),
+          ),
         ],
       ),
     );

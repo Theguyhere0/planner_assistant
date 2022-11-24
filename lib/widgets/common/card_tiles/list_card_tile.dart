@@ -23,7 +23,7 @@ class ListCardTile extends StatelessWidget {
   final String? title;
 
   /// A callback for the dialog to display when an instance tile is clicked.
-  final Widget Function(void Function(void Function())) dialog;
+  final void Function(String) dialog;
 
   /// All the instances that need to be displayed by this list card tile.
   final List<Data> instances;
@@ -32,7 +32,7 @@ class ListCardTile extends StatelessWidget {
   final void Function() createNew;
 
   /// The function to call to delete an instance.
-  final void Function() delete;
+  final void Function(String) delete;
 
   @override
   Widget build(BuildContext context) {

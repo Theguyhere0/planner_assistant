@@ -42,6 +42,7 @@ class ProjectConstraint implements Data {
   /// A potential time [Label] to apply the constraint to.
   ///
   /// If the link is empty, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
+  @Ignore()
   final label = IsarLink<Label>();
 
   @override
@@ -67,7 +68,7 @@ class ProjectConstraint implements Data {
         case PropertyType.integer:
           value = intThreshold! as String;
           break;
-        case PropertyType.float:
+        case PropertyType.decimal:
           value = doubleThreshold! as String;
           break;
         case PropertyType.date:

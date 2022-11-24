@@ -26,6 +26,8 @@ class ImportProjectsCard extends StatelessWidget {
         DropdownCardTile(
           'From Template',
           label: false,
+          options: [],
+          value: null,
         ),
       ]),
     );

@@ -7,18 +7,21 @@ import 'project_constraint.dart';
 import 'project_state.dart';
 import 'isar_service.dart';
 import 'property.dart';
+import 'property_type.dart';
 
 final projectControllerProvider =
     StateNotifierProvider<ProjectController, ProjectState>((ref) {
   return ProjectController(
     ProjectState(
-      bufferedProperty: Property(name: ''),
-      bufferedLabel: Label(),
+      bufferedProperty: Property.init(),
+      bufferedLabel: Label.init(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
-      properties:
-          Database<Property>(validator: (e) => e.name.trim().isNotEmpty),
-      labels: const AsyncData([]),
+      properties: Database<Property>(
+          validator: (e) => e.name.trim().isNotEmpty && e.type != null),
+      labels: Database<Label>(
+          validator: (e) =>
+              e.name.trim().isNotEmpty && e.duration > 0 && e.start > 0),
       activityUnits: const AsyncData([]),
       projectConstraints: const AsyncData([]),
     ),
@@ -30,9 +33,7 @@ class ProjectController extends StateNotifier<ProjectState> {
   ProjectController(
     ProjectState state,
     this.isarService,
-  ) : super(state) {
-    loadData();
-  }
+  ) : super(state);
 
   /// The service layer for the Isar database.
   final IsarService isarService;
@@ -56,8 +57,8 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   void resetBuffers() {
     state = state.copyWith(
-      bufferedProperty: Property(name: ''),
-      bufferedLabel: Label(),
+      bufferedProperty: Property.init(),
+      bufferedLabel: Label.init(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
     );
@@ -68,44 +69,91 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(
         bufferedProperty:
             state.properties.searchEntry((e) => e.name == name)?.copy ??
-                Property(name: ''));
+                Property.init());
   }
 
   /// Make some changes to the buffered [Property].
-  void updateBufferedPropertyDefinition(String? updatedName) {
+  void updateBufferedProperty({String? updatedName, String? updatedType}) {
+    Property newProperty = state.bufferedProperty.copy;
+
     if (updatedName != null) {
-      state = state.copyWith(
-          bufferedProperty: state.bufferedProperty..name = updatedName);
+      newProperty.name = updatedName;
     }
+    if (updatedType != null) {
+      newProperty.type = PropertyType.values
+          .firstWhere((element) => element.value == updatedType);
+    }
+
+    state = state.copyWith(bufferedProperty: newProperty);
   }
 
   /// Checks to see if the buffered [Property] is valid.
-  bool validateBufferedPropertyDefinition() =>
+  bool validateBufferedProperty() =>
       state.properties.validator(state.bufferedProperty);
 
   /// Saves the buffered [Property] to the database.
-  void saveBufferedPropertyDefinition() {
+  void saveBufferedProperty() {
     state = state.copyWith(
         properties: state.properties..setEntry(state.bufferedProperty));
   }
 
   /// Removes the buffered [Property] from the database.
-  void removeBufferedPropertyDefinition() {
+  void removeBufferedProperty() {
     state = state.copyWith(
         properties: state.properties..removeEntry(state.bufferedProperty));
   }
 
-  void loadData() async {
+  /// Attempt to load a specific [Label] to the buffer.
+  void loadBufferedLabel(String name) {
     state = state.copyWith(
-      labels: const AsyncValue.loading(),
-      activityUnits: const AsyncValue.loading(),
-      projectConstraints: const AsyncValue.loading(),
-    );
-    state = state.copyWith(
-      labels: AsyncValue.data(await isarService.getAllLabels()),
-      activityUnits: AsyncValue.data(await isarService.getAllActivityUnits()),
-      projectConstraints:
-          AsyncValue.data(await isarService.getAllProjectConstraints()),
-    );
+        bufferedLabel: state.labels.searchEntry((e) => e.name == name)?.copy ??
+            Label.init());
+  }
+
+  /// Make some changes to the buffered [Label].
+  void updateBufferedLabel({
+    String? updatedName,
+    int? updatedDuration,
+    int? updatedStart,
+    bool? periodOn,
+    int? updatedPeriod,
+  }) {
+    Label newLabel = state.bufferedLabel.copy;
+
+    if (updatedName != null) {
+      newLabel.name = updatedName;
+    }
+    if (updatedDuration != null) {
+      newLabel.duration = updatedDuration;
+    }
+    if (updatedStart != null) {
+      newLabel.start = updatedStart;
+    }
+    if (periodOn != null) {
+      if (periodOn) {
+        newLabel.period = 0;
+      } else {
+        newLabel.period = null;
+      }
+    }
+    if (updatedPeriod != null) {
+      newLabel.period = updatedPeriod;
+    }
+
+    state = state.copyWith(bufferedLabel: newLabel);
+  }
+
+  /// Checks to see if the buffered [Property] is valid.
+  bool validateBufferedLabel() => state.labels.validator(state.bufferedLabel);
+
+  /// Saves the buffered [Property] to the database.
+  void saveBufferedLabel() {
+    state = state.copyWith(labels: state.labels..setEntry(state.bufferedLabel));
+  }
+
+  /// Removes the buffered [Property] from the database.
+  void removeBufferedLabel() {
+    state =
+        state.copyWith(labels: state.labels..removeEntry(state.bufferedLabel));
   }
 }

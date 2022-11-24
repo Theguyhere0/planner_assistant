@@ -26,14 +26,14 @@ class ActivityUnitsCard extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
           child: ListCardTile(
-            dialog: (setState) => const Text('test'),
+            dialog: (name) => const Text('test'),
             instances: ref.watch(projectControllerProvider).activityUnits.when(
                   data: (data) => data,
                   error: ((error, stackTrace) => []),
                   loading: (() => []),
                 ),
             createNew: () {},
-            delete: () {},
+            delete: (name) {},
           ),
         ),
       ]),
