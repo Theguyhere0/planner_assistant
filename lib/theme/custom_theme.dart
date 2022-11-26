@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'palette.dart';
 import '../utils/constants.dart';
 
+/// The default themes for this app.
 class CustomTheme {
   static ThemeData theme() {
     return ThemeData.dark().copyWith(

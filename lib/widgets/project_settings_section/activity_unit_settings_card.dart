@@ -27,6 +27,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
       infoContent:
           'Set how activity units behave in this project. All settings are optional or have default values.',
       content: Column(children: <Widget>[
+        // Activity unit name
         TextFieldCardTile(
           'General Name',
           hintText: 'Activity Unit',
@@ -35,6 +36,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
               .read(projectControllerProvider.notifier)
               .updateActivityUnitName(newValue),
         ),
+        // Plural activity unit name
         TextFieldCardTile(
           'Plural Form',
           hintText: ref
@@ -45,6 +47,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
               .read(projectControllerProvider.notifier)
               .updateActivityUnitPluralName(newValue),
         ),
+        // Properties of activity units
         ListCardTile(
           title: 'Properties',
           dialog: (name) {

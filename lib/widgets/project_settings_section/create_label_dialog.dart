@@ -9,6 +9,7 @@ import '../common/card_tiles/number_field_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 
+/// A popup for creating a new [Label].
 class CreateLabelDialog extends ConsumerWidget {
   const CreateLabelDialog({
     Key? key,
@@ -25,10 +26,12 @@ class CreateLabelDialog extends ConsumerWidget {
       title: 'Label: ${label.name}',
       content: Column(
         children: <Widget>[
+          // Label name
           TextFieldCardTile(
             'Label Name',
             hintText: 'Enter a name',
             value: label.name,
+            autofocus: true,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
@@ -42,6 +45,7 @@ class CreateLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Label duration
           NumberFieldCardTile(
             'Duration',
             units:
@@ -61,6 +65,7 @@ class CreateLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Label start
           NumberFieldCardTile(
             'Start',
             units: ref.read(projectControllerProvider).displayTimeUnitName,
@@ -80,6 +85,7 @@ class CreateLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Whether label is periodic or not
           ToggleCardTile(
             'Periodic?',
             offOption: 'No',
@@ -89,6 +95,7 @@ class CreateLabelDialog extends ConsumerWidget {
                 .read(projectControllerProvider.notifier)
                 .updateBufferedLabel(periodOn: newValue),
           ),
+          // Label period
           Visibility(
             visible: label.period != null,
             child: NumberFieldCardTile(
@@ -105,6 +112,7 @@ class CreateLabelDialog extends ConsumerWidget {
               }),
             ),
           ),
+          // Save
           ButtonCardTile(
             'Save',
             icon: Icons.save_alt_rounded,

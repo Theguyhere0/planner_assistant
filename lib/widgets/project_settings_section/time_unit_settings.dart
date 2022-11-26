@@ -27,6 +27,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
       infoContent:
           'Set how time units behave in this project. Labels provide a descriptor for time units (ex. Monday, Spring 2022). All settings are optional or have default values.',
       content: Column(children: <Widget>[
+        // Time unit name
         TextFieldCardTile(
           'Name',
           hintText: 'Time Unit',
@@ -35,6 +36,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
               .read(projectControllerProvider.notifier)
               .updateTimeUnitName(newValue),
         ),
+        // Plural time unit name
         TextFieldCardTile(
           'Plural Form',
           hintText:
@@ -44,6 +46,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
               .read(projectControllerProvider.notifier)
               .updateTimeUnitPluralName(newValue),
         ),
+        // Labels for time units
         ListCardTile(
           title: 'Labels',
           dialog: (name) {

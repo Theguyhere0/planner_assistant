@@ -9,6 +9,7 @@ import '../common/card_tiles/dropdown_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 
+/// A popup for creating a new [Property].
 class CreatePropertyDialog extends ConsumerWidget {
   const CreatePropertyDialog({
     Key? key,
@@ -26,10 +27,12 @@ class CreatePropertyDialog extends ConsumerWidget {
       title: 'Property: ${property.name}',
       content: Column(
         children: <Widget>[
+          // Property name
           TextFieldCardTile(
             'Property Name',
             hintText: 'Enter a name',
             value: property.name,
+            autofocus: true,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
@@ -43,6 +46,7 @@ class CreatePropertyDialog extends ConsumerWidget {
               }
             },
           ),
+          // Property type
           DropdownCardTile(
             'Type',
             hintText: 'Select an option',
@@ -54,6 +58,7 @@ class CreatePropertyDialog extends ConsumerWidget {
                   .updateBufferedProperty(updatedType: newValue);
             }),
           ),
+          // Save
           ButtonCardTile(
             'Save',
             icon: Icons.save_alt_rounded,

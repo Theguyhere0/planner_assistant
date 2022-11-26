@@ -10,6 +10,7 @@ import '../common/card_tiles/text_field_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 import '../common/dialogs/delete_dialog.dart';
 
+/// A popup for modifying a [Property].
 class EditPropertyDialog extends ConsumerWidget {
   const EditPropertyDialog({
     Key? key,
@@ -31,6 +32,7 @@ class EditPropertyDialog extends ConsumerWidget {
       title: 'Property: ${property.name}',
       content: Column(
         children: <Widget>[
+          // Property name
           TextFieldCardTile(
             'Property Name',
             hintText: 'Enter a name',
@@ -48,6 +50,7 @@ class EditPropertyDialog extends ConsumerWidget {
               }
             },
           ),
+          // Property type
           DropdownCardTile(
             'Type',
             hintText: 'Select an option',
@@ -59,6 +62,7 @@ class EditPropertyDialog extends ConsumerWidget {
                   .updateBufferedProperty(updatedType: newValue);
             }),
           ),
+          // Save or delete
           DoubleButtonCardTile(
             firstLabel: 'Save',
             secondLabel: 'Delete',

@@ -10,6 +10,7 @@ import '../common/card_tiles/toggle_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 import '../common/dialogs/delete_dialog.dart';
 
+/// A popup for modifying a [Label].
 class EditLabelDialog extends ConsumerWidget {
   const EditLabelDialog({
     Key? key,
@@ -30,6 +31,7 @@ class EditLabelDialog extends ConsumerWidget {
       title: 'Label: ${label.name}',
       content: Column(
         children: <Widget>[
+          // Label name
           TextFieldCardTile(
             'Label Name',
             hintText: 'Enter a name',
@@ -47,6 +49,7 @@ class EditLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Label duration
           NumberFieldCardTile(
             'Duration',
             units:
@@ -66,6 +69,7 @@ class EditLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Label start
           NumberFieldCardTile(
             'Start',
             units: ref.read(projectControllerProvider).displayTimeUnitName,
@@ -85,6 +89,7 @@ class EditLabelDialog extends ConsumerWidget {
               }
             },
           ),
+          // Whether label is periodic or not
           ToggleCardTile(
             'Periodic?',
             offOption: 'No',
@@ -95,6 +100,7 @@ class EditLabelDialog extends ConsumerWidget {
                 .read(projectControllerProvider.notifier)
                 .updateBufferedLabel(periodOn: newValue),
           ),
+          // Label period
           Visibility(
             visible: label.period != null,
             child: NumberFieldCardTile(
@@ -111,6 +117,7 @@ class EditLabelDialog extends ConsumerWidget {
               }),
             ),
           ),
+          // Save or delete
           DoubleButtonCardTile(
             firstLabel: 'Save',
             secondLabel: 'Delete',

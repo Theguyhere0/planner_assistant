@@ -9,6 +9,7 @@ import 'isar_service.dart';
 import 'property.dart';
 import 'property_type.dart';
 
+/// The state provider for this app.
 final projectControllerProvider =
     StateNotifierProvider<ProjectController, ProjectState>((ref) {
   return ProjectController(
@@ -29,6 +30,7 @@ final projectControllerProvider =
   );
 });
 
+/// A class that controls how state is updated and managed for this app.
 class ProjectController extends StateNotifier<ProjectState> {
   ProjectController(
     ProjectState state,
@@ -38,23 +40,28 @@ class ProjectController extends StateNotifier<ProjectState> {
   /// The service layer for the Isar database.
   final IsarService isarService;
 
+  /// Change the activity unit name.
   void updateActivityUnitName(String? updatedActivityUnitName) {
     state = state.copyWith(activityUnitName: updatedActivityUnitName);
   }
 
+  /// Change the plural activity unit name.
   void updateActivityUnitPluralName(String? updatedActivityUnitPluralName) {
     state =
         state.copyWith(activityUnitPluralName: updatedActivityUnitPluralName);
   }
 
+  /// Change the time unit name.
   void updateTimeUnitName(String? updatedTimeUnitName) {
     state = state.copyWith(timeUnitName: updatedTimeUnitName);
   }
 
+  /// Change the plural time unit name.
   void updateTimeUnitPluralName(String? updatedTimeUnitPluralName) {
     state = state.copyWith(timeUnitPluralName: updatedTimeUnitPluralName);
   }
 
+  /// Clear out the buffers.
   void resetBuffers() {
     state = state.copyWith(
       bufferedProperty: Property.init(),

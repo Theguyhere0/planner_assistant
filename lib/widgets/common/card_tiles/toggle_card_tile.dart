@@ -45,12 +45,14 @@ class ToggleCardTile extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          // Off value
           Text(
             offOption,
             style: DefaultTextStyle.of(context)
                 .style
                 .copyWith(color: value ? Palette.suppressed : Palette.standard),
           ),
+          // Switch
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Switch(
@@ -58,6 +60,7 @@ class ToggleCardTile extends StatelessWidget {
               onChanged: onChanged,
             ),
           ),
+          // On value
           Text(
             onOption,
             style: DefaultTextStyle.of(context)

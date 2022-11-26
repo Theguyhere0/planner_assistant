@@ -46,6 +46,7 @@ class ListCardTile extends StatelessWidget {
                   maxHeight: 250,
                   child: Card(
                     elevation: 0,
+                    margin: const EdgeInsets.only(top: 3),
                     child: ListView.builder(
                       itemExtent: 35,
                       itemCount: instances.length,
@@ -71,7 +72,12 @@ class ListCardTile extends StatelessWidget {
         : ListTile(
             leading: Container(
               width: cardTileTitleWidth,
-              alignment: Alignment.topRight,
+              alignment: instances.isEmpty
+                  ? Alignment.centerRight
+                  : Alignment.topRight,
+              padding: instances.isEmpty
+                  ? const EdgeInsets.only(top: 2)
+                  : const EdgeInsets.all(0),
               child: Text(
                 title!,
                 textAlign: TextAlign.right,
@@ -86,6 +92,7 @@ class ListCardTile extends StatelessWidget {
                     maxHeight: 150,
                     child: Card(
                       elevation: 0,
+                      margin: const EdgeInsets.only(top: 3),
                       child: ListView.builder(
                         itemExtent: 35,
                         itemCount: instances.length,

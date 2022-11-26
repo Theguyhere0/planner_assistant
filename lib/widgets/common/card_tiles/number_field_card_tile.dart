@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../theme/palette.dart';
 import '../../../utils/constants.dart';
 
 /// A tile for custom cards with a field for numbers.
@@ -52,13 +53,21 @@ class NumberFieldCardTile extends StatelessWidget {
       ),
       title: Row(
         children: <Widget>[
+          // Units in prefix mode
           Visibility(
             visible: prefix,
             child: Padding(
               padding: const EdgeInsets.only(right: defaultPadding),
-              child: Text(units),
+              child: Text(
+                units,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Palette.suppressed),
+              ),
             ),
           ),
+          // Number input field
           SizedBox(
             width: 60,
             child: TextFormField(
@@ -76,11 +85,18 @@ class NumberFieldCardTile extends StatelessWidget {
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
           ),
+          // Units in suffix mode
           Visibility(
             visible: !prefix,
             child: Padding(
               padding: const EdgeInsets.only(left: defaultPadding),
-              child: Text(units),
+              child: Text(
+                units,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Palette.suppressed),
+              ),
             ),
           ),
         ],

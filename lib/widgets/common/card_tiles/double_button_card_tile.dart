@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/constants.dart';
 
-/// A tile for custom cards with a button.
+/// A tile for custom cards with two s.
 class DoubleButtonCardTile extends StatelessWidget {
-  /// Creates a card tile with a button.
+  /// Creates a card tile with two buttons.
   const DoubleButtonCardTile({
     required this.firstLabel,
     required this.secondLabel,
@@ -40,6 +40,7 @@ class DoubleButtonCardTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          // Button one
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: OutlinedButton.icon(
@@ -51,6 +52,7 @@ class DoubleButtonCardTile extends StatelessWidget {
               label: Text(firstLabel),
             ),
           ),
+          // Button two
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: OutlinedButton.icon(

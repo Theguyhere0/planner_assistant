@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+/// A class for clickable text.
 class Hypertext extends StatefulWidget {
   const Hypertext({
     Key? key,

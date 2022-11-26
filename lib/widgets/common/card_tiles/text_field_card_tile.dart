@@ -11,6 +11,7 @@ class TextFieldCardTile extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.validator,
+    this.autofocus = false,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +29,9 @@ class TextFieldCardTile extends StatelessWidget {
 
   /// Verifies the input is valid.
   final String? Function(String? value)? validator;
+
+  /// Whether or not this field should be focused on when first rendered.
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,7 @@ class TextFieldCardTile extends StatelessWidget {
         ),
         onChanged: onChanged,
         validator: validator,
+        autofocus: autofocus,
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );

@@ -15,14 +15,18 @@ class CreationListTile extends StatelessWidget {
     return ListTile(
       title: Container(
         alignment: Alignment.topLeft,
-        child: const Text(
+        child: Text(
           '+ New',
-          style: TextStyle(color: Palette.suppressed),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(color: Palette.suppressed),
         ),
       ),
       tileColor: Colors.transparent,
       hoverColor: Palette.focus,
       onTap: onClick,
+      dense: true,
     );
   }
 }

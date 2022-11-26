@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Specific colors designed for this app's UI.
 class Palette {
   static const background = Color(0xff0B0514);
   static const card = Color(0xff0e0e22);
