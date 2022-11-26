@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'palette.dart';
 import '../utils/constants.dart';
 
+/// The default themes for this app.
 class CustomTheme {
   static ThemeData theme() {
     return ThemeData.dark().copyWith(
@@ -15,12 +16,14 @@ class CustomTheme {
       disabledColor: Palette.suppressed,
       canvasColor: Palette.card,
       hintColor: Palette.suppressed,
+      errorColor: Palette.failure,
       dialogTheme: DialogTheme(
         backgroundColor: Palette.card,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(cardCornerRadius)),
       ),
       colorScheme: const ColorScheme.dark(primary: Palette.highlight),
+      toggleableActiveColor: Palette.standard,
       tooltipTheme: const TooltipThemeData(
         waitDuration: Duration(milliseconds: 350),
         decoration: BoxDecoration(
@@ -71,6 +74,10 @@ class CustomTheme {
           fontFamily: 'Noto Sans',
           color: Palette.standard,
         ),
+        bodySmall: TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.standard,
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -88,7 +95,7 @@ class CustomTheme {
             },
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
+            (states) {
               if (states.contains(MaterialState.hovered)) {
                 return Palette.highlight;
               }
@@ -99,29 +106,39 @@ class CustomTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (Set<MaterialState> states) => const TextStyle(
-              fontFamily: 'Noto Sans',
-              fontSize: 20,
+            textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+              (states) => const TextStyle(
+                fontFamily: 'Noto Sans',
+                fontSize: 20,
+              ),
             ),
-          ),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
+            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) {
+                if (states.contains(MaterialState.hovered)) {
+                  return Palette.focus;
+                }
+                return Colors.transparent;
+              },
+            ),
+            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) {
+                if (states.contains(MaterialState.hovered)) {
+                  return Palette.highlight;
+                } else if (states.contains(MaterialState.disabled)) {
+                  return Palette.suppressed;
+                }
+                return Palette.standard;
+              },
+            ),
+            mouseCursor:
+                MaterialStateProperty.resolveWith<MouseCursor?>((states) {
               if (states.contains(MaterialState.hovered)) {
-                return Palette.focus;
+                return SystemMouseCursors.click;
+              } else if (states.contains(MaterialState.disabled)) {
+                return SystemMouseCursors.forbidden;
               }
-              return Colors.transparent;
-            },
-          ),
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
-                return Palette.highlight;
-              }
-              return Palette.standard;
-            },
-          ),
-        ),
+              return null;
+            })),
       ),
     );
   }

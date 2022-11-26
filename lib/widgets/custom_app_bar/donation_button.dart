@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'custom_icon_button.dart';
 
@@ -13,7 +14,9 @@ class DonationButton extends StatelessWidget {
     return CustomIconButton(
       icon: Icons.favorite_rounded,
       tooltip: 'Support the developer!',
-      onPressed: () {}, // TODO: Open ko-fi page in new tab
+      onPressed: () {
+        launchUrl(Uri(scheme: 'https', host: 'ko-fi.com', path: 'theguyhere'));
+      },
     );
   }
 }

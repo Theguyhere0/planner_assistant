@@ -20,8 +20,8 @@ class InfoDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(title),
       content: SizedBox(
-        child: Text(content),
         width: 750,
+        child: Text(content),
       ),
     );
   }

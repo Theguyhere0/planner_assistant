@@ -10,7 +10,7 @@ class CustomIconButton extends StatefulWidget {
     Key? key,
     required this.icon,
     required this.tooltip,
-    required this.onPressed,
+    this.onPressed,
   }) : super(key: key);
 
   /// A pictorial representation of the button's function.
@@ -20,7 +20,7 @@ class CustomIconButton extends StatefulWidget {
   final String tooltip;
 
   /// What this button does when pressed.
-  final void Function() onPressed;
+  final void Function()? onPressed;
 
   @override
   State<CustomIconButton> createState() => _CustomIconButton();
@@ -36,7 +36,9 @@ class _CustomIconButton extends State<CustomIconButton> {
       child: MouseRegion(
         child: IconButton(
           onPressed: widget.onPressed,
-          mouseCursor: SystemMouseCursors.click,
+          mouseCursor: widget.onPressed == null
+              ? SystemMouseCursors.forbidden
+              : SystemMouseCursors.click,
           color: _hover ? Palette.highlight : Palette.suppressed,
           icon: Icon(widget.icon),
           iconSize: appBarButtonSize,

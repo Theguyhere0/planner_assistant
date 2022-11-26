@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/palette.dart';
-import '../../utils/constants.dart';
-import 'dialogs/delete_dialog.dart';
+import '../../../theme/palette.dart';
+import '../../../utils/constants.dart';
+import '../dialogs/delete_dialog.dart';
 
 /// A class to standardize deletion buttons across the app.
 class DeleteButton extends StatelessWidget {
@@ -10,18 +10,23 @@ class DeleteButton extends StatelessWidget {
   const DeleteButton({
     Key? key,
     required this.title,
+    required this.delete,
   }) : super(key: key);
 
   /// What is begin deleted.
   final String title;
 
+  /// The function to call to perform the delete.
+  final void Function() delete;
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => showDialog<String>(
+      onPressed: () => showDialog(
         context: context,
         builder: (BuildContext context) => DeleteDialog(
           title: title,
+          delete: delete,
         ),
       ),
       mouseCursor: SystemMouseCursors.click,

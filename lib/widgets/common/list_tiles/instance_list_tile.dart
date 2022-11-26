@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/palette.dart';
-import '../delete_button.dart';
+import '../buttons/delete_button.dart';
 
 /// A tile for custom lists for editing an element.
 class InstanceListTile extends StatelessWidget {
@@ -10,6 +10,8 @@ class InstanceListTile extends StatelessWidget {
     this.name, {
     Key? key,
     required this.type,
+    required this.dialog,
+    required this.delete,
   }) : super(key: key);
 
   /// The name of the element.
@@ -18,17 +20,26 @@ class InstanceListTile extends StatelessWidget {
   /// The type of element being displayed.
   final String type;
 
+  /// A callback for the dialog to display when clicked.
+  final void Function(String) dialog;
+
+  /// The function to call to delete this instance.
+  final void Function(String) delete;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
-        child: Text(name),
         alignment: Alignment.topLeft,
+        child: Text(name),
       ),
-      trailing: DeleteButton(title: 'Delete $type?'),
+      trailing: DeleteButton(
+        title: 'Delete $type: $name?',
+        delete: () => delete(name),
+      ),
       tileColor: Palette.card,
       hoverColor: Palette.focus,
-      onTap: () {},
+      onTap: () => dialog(name),
     );
   }
 }

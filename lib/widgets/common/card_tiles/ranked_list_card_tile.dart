@@ -14,36 +14,42 @@ class RankedListCardTile extends StatefulWidget {
 }
 
 class _RankedListCardTileState extends State<RankedListCardTile> {
-  final List<Widget> _items = const <Widget>[
+  final List<Widget> _items = <Widget>[
     RankedListTile(
       'test',
-      key: Key('1'),
+      key: const Key('1'),
       type: 'Property',
+      delete: () {},
     ),
     RankedListTile(
       'test',
-      key: Key('2'),
+      key: const Key('2'),
       type: 'Property',
+      delete: () {},
     ),
     RankedListTile(
       'test',
-      key: Key('3'),
+      key: const Key('3'),
       type: 'Property',
+      delete: () {},
     ),
     RankedListTile(
       'test',
-      key: Key('4'),
+      key: const Key('4'),
       type: 'Property',
+      delete: () {},
     ),
     RankedListTile(
       'test',
-      key: Key('5'),
+      key: const Key('5'),
       type: 'Property',
+      delete: () {},
     ),
     RankedListTile(
       'test',
-      key: Key('6'),
+      key: const Key('6'),
       type: 'Property',
+      delete: () {},
     ),
   ];
 
@@ -52,6 +58,7 @@ class _RankedListCardTileState extends State<RankedListCardTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
       child: SizedBox(
+        height: 290,
         child: Card(
           elevation: 0,
           child: ReorderableListView(
@@ -65,11 +72,13 @@ class _RankedListCardTileState extends State<RankedListCardTile> {
                 // _items.insert(newIndex, item);
               });
             },
+            footer: const CreationListTile(
+              key: Key('7'),
+              onClick: null,
+            ),
             children: _items,
-            footer: const CreationListTile(key: Key('7')),
           ),
         ),
-        height: 290,
       ),
     );
   }

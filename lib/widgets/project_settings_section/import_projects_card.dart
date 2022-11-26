@@ -18,14 +18,19 @@ class ImportProjectsCard extends StatelessWidget {
       infoContent:
           'Choose to import a project from a file or from default templates.',
       content: Column(children: const <Widget>[
+        // Import a local file
         ButtonCardTile(
           'From Disk',
           icon: Icons.download_rounded,
         ),
+        // Separator
         TextCardTile('OR'),
+        // Use a template
         DropdownCardTile(
           'From Template',
           label: false,
+          options: [],
+          value: null,
         ),
       ]),
     );

@@ -17,8 +17,16 @@ class PlanGeneratorCard extends StatelessWidget {
       infoContent:
           'Automatically generate some plans that might work well for your project.',
       content: Column(children: const <Widget>[
-        DropdownCardTile('Time Limit'),
-        DropdownCardTile('Plan Limit'),
+        DropdownCardTile(
+          'Time Limit',
+          options: [],
+          value: null,
+        ),
+        DropdownCardTile(
+          'Plan Limit',
+          options: [],
+          value: null,
+        ),
         ButtonCardTile('Generate Plans', icon: Icons.start_rounded)
       ]),
     );
