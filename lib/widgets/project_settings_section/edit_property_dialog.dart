@@ -63,17 +63,20 @@ class EditPropertyDialog extends ConsumerWidget {
                   .updateBufferedProperty(updatedType: newValue);
             }),
           ),
-          // Required toggle
-          ToggleCardTile(
-            'Required',
-            offOption: 'No',
-            onOption: 'Yes',
-            value: property.mandatory,
-            onChanged: (newValue) => setState(() {
-              ref
-                  .read(projectControllerProvider.notifier)
-                  .updateBufferedProperty(updatedMandatory: newValue);
-            }),
+          // Required toggle when applicable
+          Visibility(
+            visible: property.type == PropertyType.decimal ||
+                property.type == PropertyType.integer ||
+                property.type == PropertyType.string,
+            child: ToggleCardTile('Required',
+                offOption: 'No',
+                onOption: 'Yes',
+                value: property.mandatory,
+                onChanged: (newValue) => setState(() {
+                      ref
+                          .read(projectControllerProvider.notifier)
+                          .updateBufferedProperty(updatedMandatory: newValue);
+                    })),
           ),
           // Save or delete
           DoubleButtonCardTile(

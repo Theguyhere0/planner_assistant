@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/common/card_tiles/date_picker_card_tile.dart';
 import '../widgets/common/card_tiles/decimal_field_card_tile.dart';
 import '../widgets/common/card_tiles/integer_field_card_tile.dart';
 import '../widgets/common/card_tiles/text_field_card_tile.dart';
+import '../widgets/common/card_tiles/time_picker_card_tile.dart';
 import '../widgets/common/card_tiles/toggle_card_tile.dart';
 import 'activity_unit.dart';
 import 'data.dart';
@@ -62,7 +64,7 @@ class Property implements Data {
           property.name,
           offOption: 'No',
           onOption: 'Yes',
-          value: data.boolData ?? false,
+          value: data.boolData,
           onChanged: (newValue) {
             data.boolData = newValue;
             onChanged(data);
@@ -101,8 +103,27 @@ class Property implements Data {
           },
         );
       case PropertyType.date:
+        return DatePickerCardTile(
+          property.name,
+          value: data.dateData,
+          onChanged: (newValue) {
+            if (newValue != null) {
+              data.dateData = newValue;
+              onChanged(data);
+            }
+          },
+        );
       case PropertyType.time:
-        return const Text('Placeholder');
+        return TimePickerCardTile(
+          property.name,
+          value: data.timeData,
+          onChanged: (newValue) {
+            if (newValue != null) {
+              data.timeData = newValue;
+              onChanged(data);
+            }
+          },
+        );
     }
   }
 

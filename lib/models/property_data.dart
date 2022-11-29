@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'activity_unit.dart';
 import 'property.dart';
 import 'property_type.dart';
@@ -17,23 +19,30 @@ class PropertyData {
   String? stringData;
 
   /// The boolean data stored.
-  bool? boolData;
+  bool boolData;
 
   /// The double data stored.
   double? doubleData;
 
+  /// The date data stored.
+  late DateTime dateData;
+
   /// The time data stored.
-  DateTime? timeData;
+  late TimeOfDay timeData;
 
   PropertyData({
     required this.property,
     required this.parent,
     this.intData,
     this.stringData,
-    this.boolData,
+    this.boolData = false,
     this.doubleData,
-    this.timeData,
-  });
+    DateTime? dateData,
+    TimeOfDay? timeData,
+  }) {
+    this.dateData = dateData ?? DateTime.now();
+    this.timeData = timeData ?? TimeOfDay.now();
+  }
 
   /// Check if this [PropertyData] has a valid value. Deletes this from the parent [ActivityUnit] if the associated [Property] is no longer valid.
   bool get properlyFormed {
@@ -48,15 +57,12 @@ class PropertyData {
       case PropertyType.string:
         return !property.mandatory ||
             stringData != null && stringData!.isNotEmpty;
-      case PropertyType.boolean:
-        return !property.mandatory || boolData != null;
       case PropertyType.integer:
         return !property.mandatory || intData != null;
       case PropertyType.decimal:
         return !property.mandatory || doubleData != null;
-      case PropertyType.date:
-      case PropertyType.time:
-        return !property.mandatory || timeData != null;
+      default:
+        return true;
     }
   }
 }

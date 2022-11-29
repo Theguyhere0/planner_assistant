@@ -35,7 +35,7 @@ class DeleteDialog extends StatelessWidget {
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+              (states) {
                 if (states.contains(MaterialState.hovered)) {
                   return Palette.focus;
                 }
@@ -43,7 +43,7 @@ class DeleteDialog extends StatelessWidget {
               },
             ),
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+              (states) {
                 if (states.contains(MaterialState.hovered)) {
                   return Palette.highlight;
                 }
