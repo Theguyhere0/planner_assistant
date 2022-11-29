@@ -3,10 +3,8 @@ import 'package:isar/isar.dart';
 
 import 'activity_constraint.dart';
 import 'activity_instance.dart';
-import 'activity_unit.dart';
 import 'criteria.dart';
 import 'project_constraint.dart';
-import 'property_data.dart';
 
 final isarServiceProvider = Provider<IsarService>(((ref) => IsarService()));
 
@@ -18,10 +16,8 @@ class IsarService {
       schemas: [
         ActivityConstraintSchema,
         ActivityInstanceSchema,
-        ActivityUnitSchema,
         CriteriaSchema,
         ProjectConstraintSchema,
-        PropertyDataSchema,
       ],
       // inspector: true,
     );
@@ -56,17 +52,6 @@ class IsarService {
     return isar.activityInstances.where().findAll();
   }
 
-  Future<void> saveActivityUnit(ActivityUnit newActivityUnit) async {
-    final isar = await db;
-    isar.writeTxn(
-        (isar) async => await isar.activityUnits.put(newActivityUnit));
-  }
-
-  Future<List<ActivityUnit>> getAllActivityUnits() async {
-    final isar = await db;
-    return isar.activityUnits.where().findAll();
-  }
-
   Future<void> saveCriteria(Criteria newCriteria) async {
     final isar = await db;
     isar.writeTxn((isar) async => await isar.criterias.put(newCriteria));
@@ -87,17 +72,6 @@ class IsarService {
   Future<List<ProjectConstraint>> getAllProjectConstraints() async {
     final isar = await db;
     return isar.projectConstraints.where().findAll();
-  }
-
-  Future<void> savePropertyData(PropertyData newPropertyData) async {
-    final isar = await db;
-    isar.writeTxn(
-        (isar) async => await isar.propertyDatas.put(newPropertyData));
-  }
-
-  Future<List<PropertyData>> getAllPropertyData() async {
-    final isar = await db;
-    return isar.propertyDatas.where().findAll();
   }
 
   Future<void> clean() async {

@@ -11,6 +11,7 @@ class ActivityInstance {
   int id = Isar.autoIncrement;
 
   /// The [ActivityUnit] that was instantiated.
+  @Ignore()
   final parent = IsarLink<ActivityUnit>();
 
   /// The time units that this [ActivityInstance] starts on.

@@ -30,7 +30,7 @@ class CreatePropertyDialog extends ConsumerWidget {
           // Property name
           TextFieldCardTile(
             'Property Name',
-            hintText: 'Enter a name',
+            hintText: 'Enter the name',
             value: property.name,
             autofocus: true,
             onChanged: (newValue) => setState(() {

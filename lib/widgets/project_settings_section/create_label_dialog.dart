@@ -5,7 +5,7 @@ import 'package:planner_assistant/widgets/common/card_tiles/toggle_card_tile.dar
 import '../../models/label.dart';
 import '../../models/project_controller.dart';
 import '../common/card_tiles/button_card_tile.dart';
-import '../common/card_tiles/number_field_card_tile.dart';
+import '../common/card_tiles/integer_field_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 
@@ -29,7 +29,7 @@ class CreateLabelDialog extends ConsumerWidget {
           // Label name
           TextFieldCardTile(
             'Label Name',
-            hintText: 'Enter a name',
+            hintText: 'Enter the name',
             value: label.name,
             autofocus: true,
             onChanged: (newValue) => setState(() {
@@ -46,11 +46,11 @@ class CreateLabelDialog extends ConsumerWidget {
             },
           ),
           // Label duration
-          NumberFieldCardTile(
+          IntegerFieldCardTile(
             'Duration',
             units:
                 ref.read(projectControllerProvider).displayTimeUnitPluralName,
-            value: label.duration.toString(),
+            value: label.duration,
             onChanged: (newValue) => setState(() {
               ref.read(projectControllerProvider.notifier).updateBufferedLabel(
                   updatedDuration: int.tryParse(newValue) ?? 0);
@@ -58,6 +58,8 @@ class CreateLabelDialog extends ConsumerWidget {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Required';
+              } else if (value.startsWith('-')) {
+                return 'Positive';
               } else if (int.parse(value) < 1) {
                 return 'Nonzero';
               } else {
@@ -66,11 +68,11 @@ class CreateLabelDialog extends ConsumerWidget {
             },
           ),
           // Label start
-          NumberFieldCardTile(
+          IntegerFieldCardTile(
             'Start',
             units: ref.read(projectControllerProvider).displayTimeUnitName,
             prefix: true,
-            value: label.start.toString(),
+            value: label.start,
             onChanged: (newValue) => setState(() {
               ref.read(projectControllerProvider.notifier).updateBufferedLabel(
                   updatedStart: int.tryParse(newValue) ?? 0);
@@ -78,6 +80,8 @@ class CreateLabelDialog extends ConsumerWidget {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Required';
+              } else if (value.startsWith('-')) {
+                return 'Positive';
               } else if (int.parse(value) < 1) {
                 return 'Nonzero';
               } else {
@@ -87,7 +91,7 @@ class CreateLabelDialog extends ConsumerWidget {
           ),
           // Whether label is periodic or not
           ToggleCardTile(
-            'Periodic?',
+            'Periodic',
             offOption: 'No',
             onOption: 'Yes',
             value: label.period != null,
@@ -98,18 +102,29 @@ class CreateLabelDialog extends ConsumerWidget {
           // Label period
           Visibility(
             visible: label.period != null,
-            child: NumberFieldCardTile(
+            child: IntegerFieldCardTile(
               'Period',
               hintText: '0',
               units:
                   ref.read(projectControllerProvider).displayTimeUnitPluralName,
-              value: label.period.toString(),
+              value: label.period,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
                     .updateBufferedLabel(
                         updatedPeriod: int.tryParse(newValue) ?? 0);
               }),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Required';
+                } else if (value.startsWith('-')) {
+                  return 'Positive';
+                } else if (int.parse(value) < 1) {
+                  return 'Nonzero';
+                } else {
+                  return null;
+                }
+              },
             ),
           ),
           // Save

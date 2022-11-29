@@ -50,13 +50,14 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
         // Properties of activity units
         ListCardTile(
           title: 'Properties',
+          type: 'Property',
           dialog: (name) {
             ref
                 .read(projectControllerProvider.notifier)
                 .loadBufferedProperty(name);
             showDialog(
               context: context,
-              builder: (BuildContext context) => StatefulBuilder(
+              builder: (context) => StatefulBuilder(
                 builder: (context, setState) => EditPropertyDialog(
                   setState: setState,
                   delete: delete,

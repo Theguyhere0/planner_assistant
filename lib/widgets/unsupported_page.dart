@@ -22,7 +22,7 @@ class UnsupportedPage extends StatelessWidget {
       // Error text
       child: Center(
         child: Text(
-          'This window size is currently unsupported.',
+          'This window size is currently unsupported. Please open on desktop.',
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 color: Palette.failure,
               ),

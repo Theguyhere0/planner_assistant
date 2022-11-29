@@ -17,15 +17,7 @@ class Label implements Data {
   /// The time units after the previous instance of this [Label] ends before it repeats, if it does.
   int? period;
 
-  Label({required this.name, this.duration = 1, this.start = 1, this.period});
-
-  Label.init()
-      : name = '',
-        duration = 1,
-        start = 1;
-
-  @override
-  String get dataType => 'Label';
+  Label({this.name = '', this.duration = 1, this.start = 1, this.period});
 
   @override
   String get dataName => name;

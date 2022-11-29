@@ -21,6 +21,7 @@ class ProjectConstraintsCard extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
           child: ListCardTile(
+            type: 'Project Constraint',
             dialog: (name) => const Text('test'),
             instances:
                 ref.watch(projectControllerProvider).projectConstraints.when(

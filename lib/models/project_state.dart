@@ -40,8 +40,8 @@ class ProjectState {
   /// The [Database] for all [Label]s for the project
   final Database<Label> labels;
 
-  /// Resolved [ActivityUnit]s for the project
-  final AsyncValue<List<ActivityUnit>> activityUnits;
+  /// The [Database] for all [ActivityUnit]s for the project
+  final Database<ActivityUnit> activityUnits;
 
   /// Resolved [ProjectConstraint]s for the project
   final AsyncValue<List<ProjectConstraint>> projectConstraints;
@@ -72,7 +72,7 @@ class ProjectState {
     ProjectConstraint? bufferedProjectConstraint,
     Database<Property>? properties,
     Database<Label>? labels,
-    AsyncValue<List<ActivityUnit>>? activityUnits,
+    Database<ActivityUnit>? activityUnits,
     AsyncValue<List<ProjectConstraint>>? projectConstraints,
   }) {
     return ProjectState(

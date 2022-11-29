@@ -7,6 +7,7 @@ import 'project_constraint.dart';
 import 'project_state.dart';
 import 'isar_service.dart';
 import 'property.dart';
+import 'property_data.dart';
 import 'property_type.dart';
 
 /// The state provider for this app.
@@ -14,8 +15,8 @@ final projectControllerProvider =
     StateNotifierProvider<ProjectController, ProjectState>((ref) {
   return ProjectController(
     ProjectState(
-      bufferedProperty: Property.init(),
-      bufferedLabel: Label.init(),
+      bufferedProperty: Property(),
+      bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
       properties: Database<Property>(
@@ -23,7 +24,8 @@ final projectControllerProvider =
       labels: Database<Label>(
           validator: (e) =>
               e.name.trim().isNotEmpty && e.duration > 0 && e.start > 0),
-      activityUnits: const AsyncData([]),
+      activityUnits: Database<ActivityUnit>(
+          validator: (e) => e.name.trim().isNotEmpty && e.duration > 0),
       projectConstraints: const AsyncData([]),
     ),
     ref.watch(isarServiceProvider),
@@ -64,8 +66,8 @@ class ProjectController extends StateNotifier<ProjectState> {
   /// Clear out the buffers.
   void resetBuffers() {
     state = state.copyWith(
-      bufferedProperty: Property.init(),
-      bufferedLabel: Label.init(),
+      bufferedProperty: Property(),
+      bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedProjectConstraint: ProjectConstraint(),
     );
@@ -76,7 +78,7 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(
         bufferedProperty:
             state.properties.searchEntry((e) => e.name == name)?.copy ??
-                Property.init());
+                Property());
   }
 
   /// Make some changes to the buffered [Property].
@@ -113,8 +115,8 @@ class ProjectController extends StateNotifier<ProjectState> {
   /// Attempt to load a specific [Label] to the buffer.
   void loadBufferedLabel(String name) {
     state = state.copyWith(
-        bufferedLabel: state.labels.searchEntry((e) => e.name == name)?.copy ??
-            Label.init());
+        bufferedLabel:
+            state.labels.searchEntry((e) => e.name == name)?.copy ?? Label());
   }
 
   /// Make some changes to the buffered [Label].
@@ -150,17 +152,68 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(bufferedLabel: newLabel);
   }
 
-  /// Checks to see if the buffered [Property] is valid.
+  /// Checks to see if the buffered [Label] is valid.
   bool validateBufferedLabel() => state.labels.validator(state.bufferedLabel);
 
-  /// Saves the buffered [Property] to the database.
+  /// Saves the buffered [Label] to the database.
   void saveBufferedLabel() {
     state = state.copyWith(labels: state.labels..setEntry(state.bufferedLabel));
   }
 
-  /// Removes the buffered [Property] from the database.
+  /// Removes the buffered [Label] from the database.
   void removeBufferedLabel() {
     state =
         state.copyWith(labels: state.labels..removeEntry(state.bufferedLabel));
+  }
+
+  /// Attempt to load a specific [ActivityUnit] to the buffer.
+  void loadBufferedActivityUnit(String name) {
+    state = state.copyWith(
+        bufferedActivityUnit:
+            state.activityUnits.searchEntry((e) => e.name == name)?.copy ??
+                ActivityUnit());
+  }
+
+  /// Make some changes to the buffered [ActivityUnit].
+  void updateBufferedActivityUnit({
+    String? updatedName,
+    bool? updatedUnique,
+    int? updatedDuration,
+    PropertyData? updatedPropertyData,
+  }) {
+    ActivityUnit newActivityUnit = state.bufferedActivityUnit.copy;
+
+    if (updatedName != null) {
+      newActivityUnit.name = updatedName;
+    }
+    if (updatedUnique != null) {
+      newActivityUnit.unique = updatedUnique;
+    }
+    if (updatedDuration != null) {
+      newActivityUnit.duration = updatedDuration;
+    }
+    if (updatedPropertyData != null) {
+      newActivityUnit.data[updatedPropertyData.property] = updatedPropertyData;
+    }
+
+    state = state.copyWith(bufferedActivityUnit: newActivityUnit);
+  }
+
+  /// Checks to see if the buffered [ActivityUnit] is valid.
+  bool validateBufferedActivityUnit() =>
+      state.activityUnits.validator(state.bufferedActivityUnit);
+
+  /// Saves the buffered [ActivityUnit] to the database.
+  void saveBufferedActivityUnit() {
+    state = state.copyWith(
+        activityUnits: state.activityUnits
+          ..setEntry(state.bufferedActivityUnit));
+  }
+
+  /// Removes the buffered [ActivityUnit] from the database.
+  void removeBufferedActivityUnit() {
+    state = state.copyWith(
+        activityUnits: state.activityUnits
+          ..removeEntry(state.bufferedActivityUnit));
   }
 }

@@ -1,19 +1,13 @@
-import 'package:isar/isar.dart';
-
 import 'activity_unit.dart';
 import 'property.dart';
 
-part 'property_data.g.dart';
-
 /// The data associated with a property that an [ActivityUnit] has.
-@Collection()
 class PropertyData {
-  @Id()
-  int id = Isar.autoIncrement;
-
   /// What [Property] this data fulfills.
-  @Ignore()
-  final property = IsarLink<Property>();
+  final Property property;
+
+  /// What [ActivityUnit] this property data describes.
+  final ActivityUnit parent;
 
   /// The integer data stored.
   int? intData;
@@ -30,6 +24,13 @@ class PropertyData {
   /// The time data stored.
   DateTime? timeData;
 
-  /// What [ActivityUnit] this property data describes.
-  final parent = IsarLink<ActivityUnit>();
+  PropertyData({
+    required this.property,
+    required this.parent,
+    this.intData,
+    this.stringData,
+    this.boolData,
+    this.doubleData,
+    this.timeData,
+  });
 }

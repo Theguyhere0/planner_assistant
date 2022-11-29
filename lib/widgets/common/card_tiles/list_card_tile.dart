@@ -11,6 +11,7 @@ class ListCardTile extends StatelessWidget {
   const ListCardTile({
     Key? key,
     this.title,
+    required this.type,
     required this.dialog,
     required this.instances,
     required this.createNew,
@@ -21,6 +22,9 @@ class ListCardTile extends StatelessWidget {
   ///
   /// A null title will result in an expanded variant that is meant to take up an entire [SmallCard].
   final String? title;
+
+  /// The type of data that is being listed.
+  final String type;
 
   /// A callback for the dialog to display when an instance tile is clicked.
   final void Function(String) dialog;
@@ -36,6 +40,8 @@ class ListCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _scrollController = ScrollController();
+
     return title == null
         // Expanded variant
         ? Padding(
@@ -47,23 +53,28 @@ class ListCardTile extends StatelessWidget {
                   child: Card(
                     elevation: 0,
                     margin: const EdgeInsets.only(top: 3),
-                    child: ListView.builder(
-                      itemExtent: 35,
-                      itemCount: instances.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return InstanceListTile(
-                          instances[index].dataName,
-                          type: instances[index].dataType,
-                          dialog: dialog,
-                          delete: delete,
-                        );
-                      },
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      controller: _scrollController,
+                      child: ListView.builder(
+                        itemExtent: 35,
+                        itemCount: instances.length,
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemBuilder: (context, index) {
+                          return InstanceListTile(
+                            instances[index].dataName,
+                            type: type,
+                            dialog: dialog,
+                            delete: delete,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-                const CreationListTile(
-                  onClick: null,
+                CreationListTile(
+                  onClick: createNew,
                 ),
               ],
             ),
@@ -93,18 +104,23 @@ class ListCardTile extends StatelessWidget {
                     child: Card(
                       elevation: 0,
                       margin: const EdgeInsets.only(top: 3),
-                      child: ListView.builder(
-                        itemExtent: 35,
-                        itemCount: instances.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return InstanceListTile(
-                            instances[index].dataName,
-                            type: instances[index].dataType,
-                            dialog: dialog,
-                            delete: delete,
-                          );
-                        },
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        controller: _scrollController,
+                        child: ListView.builder(
+                          itemExtent: 35,
+                          itemCount: instances.length,
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          itemBuilder: (context, index) {
+                            return InstanceListTile(
+                              instances[index].dataName,
+                              type: type,
+                              dialog: dialog,
+                              delete: delete,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

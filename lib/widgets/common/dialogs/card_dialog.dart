@@ -19,10 +19,13 @@ class CardDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Center(child: Text(title)),
-      scrollable: true,
+      contentPadding:
+          const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 30),
       content: SizedBox(
         width: 750,
-        child: content,
+        child: SingleChildScrollView(
+          child: content,
+        ),
       ),
     );
   }

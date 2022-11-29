@@ -35,7 +35,7 @@ class EditPropertyDialog extends ConsumerWidget {
           // Property name
           TextFieldCardTile(
             'Property Name',
-            hintText: 'Enter a name',
+            hintText: 'Enter the name',
             value: property.name,
             onChanged: (newValue) => setState(() {
               ref
@@ -83,7 +83,7 @@ class EditPropertyDialog extends ConsumerWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => DeleteDialog(
-                  title: 'Delete ${property.dataType}: ${property.name}?',
+                  title: 'Delete Property: ${property.name}?',
                   delete: () => delete(property.name),
                 ),
               );

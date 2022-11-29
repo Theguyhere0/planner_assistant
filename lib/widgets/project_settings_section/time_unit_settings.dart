@@ -49,6 +49,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
         // Labels for time units
         ListCardTile(
           title: 'Labels',
+          type: 'Label',
           dialog: (name) {
             ref
                 .read(projectControllerProvider.notifier)

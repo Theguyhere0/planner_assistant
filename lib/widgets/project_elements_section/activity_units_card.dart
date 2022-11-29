@@ -6,6 +6,8 @@ import '../common/cards/small_card.dart';
 import '../common/card_tiles/list_card_tile.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions.dart';
+import 'create_activity_unit_dialog.dart';
+import 'edit_activity_unit_dialog.dart';
 
 /// A card for managing the activity units of the project.
 class ActivityUnitsCard extends ConsumerWidget {
@@ -15,6 +17,12 @@ class ActivityUnitsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void delete(name) {
+      ref.read(projectControllerProvider.notifier)
+        ..loadBufferedActivityUnit(name)
+        ..removeBufferedActivityUnit();
+    }
+
     return SmallCard(
       ref
           .watch(projectControllerProvider)
@@ -22,21 +30,40 @@ class ActivityUnitsCard extends ConsumerWidget {
           .toTitleCase(),
       infoContent:
           'Input the activity units that this project needs to work with.',
-      content: Column(children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-          child: ListCardTile(
-            dialog: (name) => const Text('test'),
-            instances: ref.watch(projectControllerProvider).activityUnits.when(
-                  data: (data) => data,
-                  error: ((error, stackTrace) => []),
-                  loading: (() => []),
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+        child: ListCardTile(
+          type: ref.watch(projectControllerProvider).displayActivityUnitName,
+          dialog: (name) {
+            ref
+                .read(projectControllerProvider.notifier)
+                .loadBufferedActivityUnit(name);
+            showDialog(
+              context: context,
+              builder: (context) => StatefulBuilder(
+                builder: (context, setState) => EditActivityUnitDialog(
+                  setState: setState,
+                  delete: delete,
                 ),
-            createNew: () {},
-            delete: (name) {},
-          ),
+              ),
+            );
+          },
+          instances:
+              ref.watch(projectControllerProvider).activityUnits.getAll(),
+          createNew: () {
+            ref.read(projectControllerProvider.notifier).resetBuffers();
+            showDialog(
+              context: context,
+              builder: (context) => StatefulBuilder(
+                builder: (context, setState) => CreateActivityUnitDialog(
+                  setState: setState,
+                ),
+              ),
+            );
+          },
+          delete: delete,
         ),
-      ]),
+      ),
     );
   }
 }

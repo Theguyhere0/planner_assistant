@@ -1,15 +1,16 @@
 import 'package:isar/isar.dart';
 
 import 'activity_unit.dart';
+import 'data.dart';
 import 'property.dart';
 
 part 'activity_constraint.g.dart';
 
 /// Constraints that apply to individual [ActivityUnit]s.
 @Collection()
-class ActivityConstraint {
-  @Id()
-  int id = isarAutoIncrementId;
+class ActivityConstraint implements Data {
+  @override
+  int? id;
 
   /// A possible [Property] that is being constrained.
   ///
@@ -18,6 +19,7 @@ class ActivityConstraint {
   final property = IsarLink<Property>();
 
   /// What [ActivityUnit] this constraint applies to.
+  @Ignore()
   final parent = IsarLink<ActivityUnit>();
 
   /// The integer threshold to check against.
@@ -39,5 +41,14 @@ class ActivityConstraint {
   bool? greaterThan;
 
   /// A possible relationship to another [ActivityUnit].
+  @Ignore()
   final relation = IsarLink<ActivityUnit>();
+
+  @override
+  // TODO: implement copy
+  Data get copy => throw UnimplementedError();
+
+  @override
+  // TODO: implement dataName
+  String get dataName => throw UnimplementedError();
 }
