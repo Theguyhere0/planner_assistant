@@ -42,6 +42,7 @@ class DecimalFieldCardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: titleGap,
       leading: Container(
         width: cardTileTitleWidth,
         alignment: Alignment.centerRight,
@@ -81,7 +82,7 @@ class DecimalFieldCardTile extends StatelessWidget {
                 decimal: true,
               ),
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('^-?[0-9]*.[0-9]*'))
+                FilteringTextInputFormatter.allow(RegExp('^-?[0-9]*\\.?[0-9]*'))
               ],
               onChanged: onChanged,
               validator: validator,

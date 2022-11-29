@@ -7,6 +7,7 @@ import '../../models/property_type.dart';
 import '../common/card_tiles/button_card_tile.dart';
 import '../common/card_tiles/dropdown_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
+import '../common/card_tiles/toggle_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 
 /// A popup for creating a new [Property].
@@ -58,6 +59,16 @@ class CreatePropertyDialog extends ConsumerWidget {
                   .updateBufferedProperty(updatedType: newValue);
             }),
           ),
+          // Required toggle
+          ToggleCardTile('Required',
+              offOption: 'No',
+              onOption: 'Yes',
+              value: property.mandatory,
+              onChanged: (newValue) => setState(() {
+                    ref
+                        .read(projectControllerProvider.notifier)
+                        .updateBufferedProperty(updatedMandatory: newValue);
+                  })),
           // Save
           ButtonCardTile(
             'Save',

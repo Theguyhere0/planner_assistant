@@ -20,7 +20,14 @@ class Property implements Data {
   /// The type of data this [Property] uses.
   PropertyType? type;
 
-  Property({this.name = '', this.type});
+  /// Whether this property is required for [ActivityUnit]s.
+  bool mandatory;
+
+  Property({
+    this.name = '',
+    this.type,
+    this.mandatory = false,
+  });
 
   /// Creates a card tile from the property for the activity unit.
   static Widget toWidget(
@@ -43,7 +50,7 @@ class Property implements Data {
             onChanged(data);
           },
           validator: (value) {
-            if (value!.trim().isNotEmpty) {
+            if (!property.mandatory || value!.trim().isNotEmpty) {
               return null;
             } else {
               return '${property.name} cannot be blank';
@@ -70,7 +77,7 @@ class Property implements Data {
             onChanged(data);
           },
           validator: (value) {
-            if (value!.isEmpty) {
+            if (property.mandatory && value!.isEmpty) {
               return 'Required';
             } else {
               return null;
@@ -86,7 +93,7 @@ class Property implements Data {
             onChanged(data);
           },
           validator: (value) {
-            if (value!.isEmpty) {
+            if (property.mandatory && value!.isEmpty) {
               return 'Required';
             } else {
               return null;
@@ -103,5 +110,9 @@ class Property implements Data {
   String get dataName => name;
 
   @override
-  Property get copy => Property(name: name, type: type)..id = id;
+  Property get copy => Property(
+        name: name,
+        type: type,
+        mandatory: mandatory,
+      )..id = id;
 }

@@ -40,7 +40,7 @@ class ListCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
+    final scrollController = ScrollController();
 
     return title == null
         // Expanded variant
@@ -55,12 +55,12 @@ class ListCardTile extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 3),
                     child: Scrollbar(
                       thumbVisibility: true,
-                      controller: _scrollController,
+                      controller: scrollController,
                       child: ListView.builder(
                         itemExtent: 35,
                         itemCount: instances.length,
                         shrinkWrap: true,
-                        controller: _scrollController,
+                        controller: scrollController,
                         itemBuilder: (context, index) {
                           return InstanceListTile(
                             instances[index].dataName,
@@ -81,6 +81,7 @@ class ListCardTile extends StatelessWidget {
           )
         // Embedded variant
         : ListTile(
+            horizontalTitleGap: titleGap,
             leading: Container(
               width: cardTileTitleWidth,
               alignment: instances.isEmpty
@@ -106,12 +107,12 @@ class ListCardTile extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 3),
                       child: Scrollbar(
                         thumbVisibility: true,
-                        controller: _scrollController,
+                        controller: scrollController,
                         child: ListView.builder(
                           itemExtent: 35,
                           itemCount: instances.length,
                           shrinkWrap: true,
-                          controller: _scrollController,
+                          controller: scrollController,
                           itemBuilder: (context, index) {
                             return InstanceListTile(
                               instances[index].dataName,

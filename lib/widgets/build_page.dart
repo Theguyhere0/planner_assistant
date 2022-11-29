@@ -14,28 +14,35 @@ class BuildPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     // Make sure the page is scrollable
-    return SingleChildScrollView(
-      child: SafeArea(
-        // Bottom side shouldn't matter if it gets cut off
-        bottom: false,
-        // Provide page margin on all sides that matter
-        minimum: const EdgeInsets.only(
-          left: pageSidePadding - defaultPadding * 2,
-          right: pageSidePadding - defaultPadding * 2,
-          top: pageTopPadding,
-        ),
-        // Break up the page into rows
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            CustomAppBar(),
-            ProjectSettingsSection(),
-            ProjectElementsSection(),
-            PlanningSection(),
-            ExportSection(),
-          ],
+    return Scrollbar(
+      thumbVisibility: true,
+      controller: scrollController,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        child: SafeArea(
+          // Bottom side shouldn't matter if it gets cut off
+          bottom: false,
+          // Provide page margin on all sides that matter
+          minimum: const EdgeInsets.only(
+            left: pageSidePadding - defaultPadding * 2,
+            right: pageSidePadding - defaultPadding * 2,
+            top: pageTopPadding,
+          ),
+          // Break up the page into rows
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const <Widget>[
+              CustomAppBar(),
+              ProjectSettingsSection(),
+              ProjectElementsSection(),
+              PlanningSection(),
+              ExportSection(),
+            ],
+          ),
         ),
       ),
     );

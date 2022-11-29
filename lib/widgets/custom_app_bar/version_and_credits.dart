@@ -24,7 +24,7 @@ class VersionAndCredits extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Hypertext(
-                hypertext: 'v0.2.0',
+                hypertext: 'v0.3.0',
                 normalStyle: Theme.of(context).textTheme.headlineLarge!,
                 hypertextStyle: Theme.of(context)
                     .textTheme
@@ -35,7 +35,7 @@ class VersionAndCredits extends StatelessWidget {
                     Uri(
                       scheme: 'https',
                       host: 'github.com',
-                      path: 'Theguyhere0/planner_assistant/releases/tag/v0.2.0',
+                      path: 'Theguyhere0/planner_assistant/releases/tag/v0.3.0',
                     ),
                   );
                 },

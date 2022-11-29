@@ -42,6 +42,7 @@ class IntegerFieldCardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: titleGap,
       leading: Container(
         width: cardTileTitleWidth,
         alignment: Alignment.centerRight,

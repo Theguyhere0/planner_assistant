@@ -25,7 +25,10 @@ final projectControllerProvider =
           validator: (e) =>
               e.name.trim().isNotEmpty && e.duration > 0 && e.start > 0),
       activityUnits: Database<ActivityUnit>(
-          validator: (e) => e.name.trim().isNotEmpty && e.duration > 0),
+          validator: (e) =>
+              e.name.trim().isNotEmpty &&
+              e.duration > 0 &&
+              e.data.values.every((element) => element.properlyFormed)),
       projectConstraints: const AsyncData([]),
     ),
     ref.watch(isarServiceProvider),
@@ -82,7 +85,8 @@ class ProjectController extends StateNotifier<ProjectState> {
   }
 
   /// Make some changes to the buffered [Property].
-  void updateBufferedProperty({String? updatedName, String? updatedType}) {
+  void updateBufferedProperty(
+      {String? updatedName, String? updatedType, bool? updatedMandatory}) {
     Property newProperty = state.bufferedProperty.copy;
 
     if (updatedName != null) {
@@ -91,6 +95,9 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedType != null) {
       newProperty.type = PropertyType.values
           .firstWhere((element) => element.value == updatedType);
+    }
+    if (updatedMandatory != null) {
+      newProperty.mandatory = updatedMandatory;
     }
 
     state = state.copyWith(bufferedProperty: newProperty);
@@ -102,8 +109,15 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   /// Saves the buffered [Property] to the database.
   void saveBufferedProperty() {
-    state = state.copyWith(
-        properties: state.properties..setEntry(state.bufferedProperty));
+    // If the property is new, make sure all activity units get a dummy property data
+    if (state.properties.setEntry(state.bufferedProperty)) {
+      state.activityUnits.modifyEntries((e) {
+        e.data[state.bufferedProperty] =
+            PropertyData(property: state.bufferedProperty, parent: e);
+      });
+    }
+
+    state = state.copyWith(properties: state.properties);
   }
 
   /// Removes the buffered [Property] from the database.
@@ -201,7 +215,9 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   /// Checks to see if the buffered [ActivityUnit] is valid.
   bool validateBufferedActivityUnit() =>
-      state.activityUnits.validator(state.bufferedActivityUnit);
+      state.activityUnits.validator(state.bufferedActivityUnit) &&
+      state.properties.getAll().where((element) => element.mandatory).every(
+          (element) => state.bufferedActivityUnit.data.containsKey(element));
 
   /// Saves the buffered [ActivityUnit] to the database.
   void saveBufferedActivityUnit() {

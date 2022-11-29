@@ -7,6 +7,7 @@ import '../../models/property_type.dart';
 import '../common/card_tiles/double_button_card_tile.dart';
 import '../common/card_tiles/dropdown_card_tile.dart';
 import '../common/card_tiles/text_field_card_tile.dart';
+import '../common/card_tiles/toggle_card_tile.dart';
 import '../common/dialogs/card_dialog.dart';
 import '../common/dialogs/delete_dialog.dart';
 
@@ -60,6 +61,18 @@ class EditPropertyDialog extends ConsumerWidget {
               ref
                   .read(projectControllerProvider.notifier)
                   .updateBufferedProperty(updatedType: newValue);
+            }),
+          ),
+          // Required toggle
+          ToggleCardTile(
+            'Required',
+            offOption: 'No',
+            onOption: 'Yes',
+            value: property.mandatory,
+            onChanged: (newValue) => setState(() {
+              ref
+                  .read(projectControllerProvider.notifier)
+                  .updateBufferedProperty(updatedMandatory: newValue);
             }),
           ),
           // Save or delete

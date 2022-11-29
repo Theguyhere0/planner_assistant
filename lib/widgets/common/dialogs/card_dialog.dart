@@ -17,14 +17,21 @@ class CardDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     return AlertDialog(
       title: Center(child: Text(title)),
       contentPadding:
           const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 30),
       content: SizedBox(
         width: 750,
-        child: SingleChildScrollView(
-          child: content,
+        child: Scrollbar(
+          thumbVisibility: true,
+          controller: scrollController,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: content,
+          ),
         ),
       ),
     );

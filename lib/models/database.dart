@@ -10,8 +10,10 @@ class Database<T extends Data> {
   /// Returns true if the data entry is valid, otherwise returns false.
   final bool Function(T entry) validator;
 
-  /// Either insert a new entry or update an existing one. Returns false if the entry is not valid.
+  /// Either insert a new entry or update an existing one. Returns true if the entry is new.
   bool setEntry(T entry) {
+    bool result = entry.id == null;
+
     // Validate before accepting for further processing
     if (!validator(entry)) {
       return false;
@@ -22,7 +24,7 @@ class Database<T extends Data> {
 
     // Place into database
     _entries[entry.id!] = entry;
-    return true;
+    return result;
   }
 
   /// Get a list of all entries in this [Database].
@@ -35,8 +37,15 @@ class Database<T extends Data> {
   T? searchEntry(bool Function(T) search) =>
       _entries.values.any(search) ? _entries.values.firstWhere(search) : null;
 
+  /// Make some changes to all entries of this [Database].
+  void modifyEntries(void Function(T) modification) =>
+      _entries.forEach((key, value) => modification(value));
+
   /// Removes a data entry from the [Database].
-  void removeEntry(T entry) => _entries.remove(entry.id);
+  void removeEntry(T entry) {
+    _entries.remove(entry.id);
+    entry.id = -1;
+  }
 
   Database({bool Function(T)? validator})
       : validator = validator ?? ((entry) => true);
