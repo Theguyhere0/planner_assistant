@@ -4,7 +4,6 @@ import 'package:isar/isar.dart';
 import 'activity_constraint.dart';
 import 'activity_instance.dart';
 import 'criteria.dart';
-import 'project_constraint.dart';
 
 final isarServiceProvider = Provider<IsarService>(((ref) => IsarService()));
 
@@ -17,7 +16,6 @@ class IsarService {
         ActivityConstraintSchema,
         ActivityInstanceSchema,
         CriteriaSchema,
-        ProjectConstraintSchema,
       ],
       // inspector: true,
     );
@@ -60,18 +58,6 @@ class IsarService {
   Future<List<Criteria>> getAllCriteria() async {
     final isar = await db;
     return isar.criterias.where().findAll();
-  }
-
-  Future<void> saveProjectConstraint(
-      ProjectConstraint newProjectConstraint) async {
-    final isar = await db;
-    isar.writeTxn((isar) async =>
-        await isar.projectConstraints.put(newProjectConstraint));
-  }
-
-  Future<List<ProjectConstraint>> getAllProjectConstraints() async {
-    final isar = await db;
-    return isar.projectConstraints.where().findAll();
   }
 
   Future<void> clean() async {

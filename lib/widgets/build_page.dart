@@ -5,7 +5,7 @@ import 'custom_app_bar/custom_app_bar.dart';
 import 'export_section/export_section.dart';
 import 'planning_section/planning_section.dart';
 import 'project_elements_section/project_elements_section.dart';
-import 'project_settings_section/project_settings_section_card.dart';
+import 'project_settings_section/project_settings_section.dart';
 
 /// This is the primary page for the app.
 class BuildPage extends StatelessWidget {

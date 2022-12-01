@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:planner_assistant/widgets/common/card_tiles/dropdown_card_tile.dart';
 
-import '../common/cards/small_card.dart';
-import '../common/card_tiles/button_card_tile.dart';
-import '../common/card_tiles/text_card_tile.dart';
+import '../../common/cards/small_card.dart';
+import '../../common/card_tiles/button_card_tile.dart';
+import '../../common/card_tiles/text_card_tile.dart';
 
 /// A card for importing projects to work on.
 class ImportProjectsCard extends StatelessWidget {

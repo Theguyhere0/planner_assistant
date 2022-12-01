@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/project_controller.dart';
-import '../common/cards/small_card.dart';
-import '../common/card_tiles/text_field_card_tile.dart';
-import '../common/card_tiles/list_card_tile.dart';
-import 'create_label_dialog.dart';
-import 'edit_label_dialog.dart';
+import '../../../models/project_controller.dart';
+import '../../common/cards/small_card.dart';
+import '../../common/card_tiles/text_field_card_tile.dart';
+import '../../common/card_tiles/list_card_tile.dart';
+import '../dialogs/label_dialog.dart';
 
 /// A card for managing the settings for time units of the project.
 class TimeUnitSettingsCard extends ConsumerWidget {
@@ -57,7 +56,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) => StatefulBuilder(
-                builder: (context, setState) => EditLabelDialog(
+                builder: (context, setState) => LabelDialog(
                   setState: setState,
                   delete: delete,
                 ),
@@ -70,8 +69,7 @@ class TimeUnitSettingsCard extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) =>
-                    CreateLabelDialog(setState: setState),
+                builder: (context, setState) => LabelDialog(setState: setState),
               ),
             );
           },

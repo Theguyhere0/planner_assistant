@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../common/page_section.dart';
-import 'dashboard_card.dart';
-import 'plan_generator_card.dart';
-import 'plan_editor_card.dart';
+import 'cards/dashboard_card.dart';
+import 'cards/plan_generator_card.dart';
+import 'cards/plan_editor_card.dart';
 
 /// The section for creating plans of a project.
 class PlanningSection extends StatelessWidget {

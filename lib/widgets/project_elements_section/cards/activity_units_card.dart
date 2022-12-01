@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/project_controller.dart';
-import '../common/cards/small_card.dart';
-import '../common/card_tiles/list_card_tile.dart';
-import '../../utils/constants.dart';
-import '../../utils/extensions.dart';
-import 'create_activity_unit_dialog.dart';
-import 'edit_activity_unit_dialog.dart';
+import '../../../models/project_controller.dart';
+import '../../common/cards/small_card.dart';
+import '../../common/card_tiles/list_card_tile.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions.dart';
+import '../dialogs/activity_unit_dialog.dart';
 
 /// A card for managing the activity units of the project.
 class ActivityUnitsCard extends ConsumerWidget {
@@ -41,7 +40,7 @@ class ActivityUnitsCard extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) => EditActivityUnitDialog(
+                builder: (context, setState) => ActivityUnitDialog(
                   setState: setState,
                   delete: delete,
                 ),
@@ -55,9 +54,8 @@ class ActivityUnitsCard extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) => CreateActivityUnitDialog(
-                  setState: setState,
-                ),
+                builder: (context, setState) =>
+                    ActivityUnitDialog(setState: setState),
               ),
             );
           },

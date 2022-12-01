@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'activity_unit.dart';
 import 'property.dart';
 import 'property_type.dart';
 
-/// The data associated with a property that an [ActivityUnit] has.
+/// The data associated with a [Property] that a [PropertyDataHolder] has.
 class PropertyData {
   /// What [Property] this data fulfills.
   final Property property;
 
-  /// What [ActivityUnit] this property data describes.
-  final ActivityUnit parent;
+  /// The class that holds [PropertyData] values.
+  final PropertyDataHolder parent;
 
   /// The integer data stored.
   int? intData;
@@ -18,16 +17,16 @@ class PropertyData {
   /// The string data stored.
   String? stringData;
 
-  /// The boolean data stored.
+  /// The boolean data stored. Defaults to false.
   bool boolData;
 
   /// The double data stored.
   double? doubleData;
 
-  /// The date data stored.
+  /// The date data stored. Defaults to the date initialized.
   late DateTime dateData;
 
-  /// The time data stored.
+  /// The time data stored. Defaults to the time initialized.
   late TimeOfDay timeData;
 
   PropertyData({
@@ -44,11 +43,11 @@ class PropertyData {
     this.timeData = timeData ?? TimeOfDay.now();
   }
 
-  /// Check if this [PropertyData] has a valid value. Deletes this from the parent [ActivityUnit] if the associated [Property] is no longer valid.
+  /// Check if this [PropertyData] has a valid value. Deletes this from the parent if the associated [Property] is no longer valid.
   bool get properlyFormed {
     // Delete if no longer valid and return true
     if (property.id! < 0) {
-      parent.data.remove(this);
+      parent.removePropertyData(this);
       return true;
     }
 
@@ -65,4 +64,10 @@ class PropertyData {
         return true;
     }
   }
+}
+
+/// A class that specifies how classes that hold [PropertyData] should behave.
+abstract class PropertyDataHolder {
+  /// Removes this property data from the class.
+  void removePropertyData(PropertyData propertyData);
 }

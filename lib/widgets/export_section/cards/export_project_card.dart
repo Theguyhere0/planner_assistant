@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/cards/small_card.dart';
+import '../../common/cards/small_card.dart';
 
 /// A card for exporting the project for import later.
 class ExportProjectCard extends StatelessWidget {

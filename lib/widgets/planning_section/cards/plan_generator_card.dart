@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../common/cards/small_card.dart';
-import '../common/card_tiles/dropdown_card_tile.dart';
-import '../common/card_tiles/button_card_tile.dart';
+import '../../common/cards/small_card.dart';
+import '../../common/card_tiles/dropdown_card_tile.dart';
+import '../../common/card_tiles/button_card_tile.dart';
 
 /// A card automatically generating valid plans for the project.
 class PlanGeneratorCard extends StatelessWidget {

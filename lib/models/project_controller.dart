@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'activity_unit.dart';
+import 'constraint_type.dart';
 import 'database.dart';
 import 'label.dart';
 import 'project_constraint.dart';
@@ -29,7 +30,14 @@ final projectControllerProvider =
               e.name.trim().isNotEmpty &&
               e.duration > 0 &&
               e.data.values.every((element) => element.properlyFormed)),
-      projectConstraints: const AsyncData([]),
+      projectConstraints: Database<ProjectConstraint>(
+          validator: (e) =>
+              (e.threshold?.properlyFormed ?? true) &&
+              !(e.threshold != null &&
+                  (e.threshold!.property.type! == PropertyType.boolean ||
+                      e.threshold!.property.type! == PropertyType.string) &&
+                  e.type != ConstraintType.equal &&
+                  e.type != ConstraintType.notEqual)),
     ),
     ref.watch(isarServiceProvider),
   );
@@ -85,8 +93,11 @@ class ProjectController extends StateNotifier<ProjectState> {
   }
 
   /// Make some changes to the buffered [Property].
-  void updateBufferedProperty(
-      {String? updatedName, String? updatedType, bool? updatedMandatory}) {
+  void updateBufferedProperty({
+    String? updatedName,
+    String? updatedType,
+    bool? updatedMandatory,
+  }) {
     Property newProperty = state.bufferedProperty.copy;
 
     if (updatedName != null) {
@@ -105,7 +116,7 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   /// Checks to see if the buffered [Property] is valid.
   bool validateBufferedProperty() =>
-      state.properties.validator(state.bufferedProperty);
+      state.properties.validateEntry(state.bufferedProperty);
 
   /// Saves the buffered [Property] to the database.
   void saveBufferedProperty() {
@@ -167,7 +178,8 @@ class ProjectController extends StateNotifier<ProjectState> {
   }
 
   /// Checks to see if the buffered [Label] is valid.
-  bool validateBufferedLabel() => state.labels.validator(state.bufferedLabel);
+  bool validateBufferedLabel() =>
+      state.labels.validateEntry(state.bufferedLabel);
 
   /// Saves the buffered [Label] to the database.
   void saveBufferedLabel() {
@@ -215,7 +227,7 @@ class ProjectController extends StateNotifier<ProjectState> {
 
   /// Checks to see if the buffered [ActivityUnit] is valid.
   bool validateBufferedActivityUnit() =>
-      state.activityUnits.validator(state.bufferedActivityUnit) &&
+      state.activityUnits.validateEntry(state.bufferedActivityUnit) &&
       state.properties.getAll().where((element) => element.mandatory).every(
           (element) => state.bufferedActivityUnit.data.containsKey(element));
 
@@ -231,5 +243,68 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(
         activityUnits: state.activityUnits
           ..removeEntry(state.bufferedActivityUnit));
+  }
+
+  /// Attempt to load a specific [ProjectConstraint] to the buffer.
+  void loadBufferedProjectConstraint(String name) {
+    state = state.copyWith(
+        bufferedProjectConstraint: state.projectConstraints
+                .searchEntry((e) => e.dataName == name)
+                ?.copy ??
+            ProjectConstraint());
+  }
+
+  /// Make some changes to the buffered [ProjectConstraint].
+  void updateBufferedProjectConstraint({
+    String? updatedName,
+    PropertyData? updatedThreshold,
+    int? updatedBackupThreshold,
+    String? updatedType,
+    bool? updatedGlobal,
+    Label? updatedLabel,
+  }) {
+    ProjectConstraint newProjectConstraint =
+        state.bufferedProjectConstraint.copy;
+
+    if (updatedName != null) {
+      newProjectConstraint.name = updatedName;
+    }
+    if (updatedThreshold != null) {
+      newProjectConstraint.threshold = updatedThreshold;
+    }
+    if (updatedBackupThreshold != null) {
+      newProjectConstraint.threshold = null;
+      newProjectConstraint.backupThreshold = updatedBackupThreshold;
+    }
+    if (updatedType != null) {
+      newProjectConstraint.type = ConstraintType.values
+          .firstWhere((element) => element.value == updatedType);
+    }
+    if (updatedGlobal != null) {
+      newProjectConstraint.global = updatedGlobal;
+    }
+    if (updatedLabel != null) {
+      newProjectConstraint.label = updatedLabel;
+    }
+
+    state = state.copyWith(bufferedProjectConstraint: newProjectConstraint);
+  }
+
+  /// Checks to see if the buffered [ProjectConstraint] is valid.
+  bool validateBufferedProjectConstraint() =>
+      state.projectConstraints.validateEntry(state.bufferedProjectConstraint);
+
+  /// Saves the buffered [ProjectConstraint] to the database.
+  void saveBufferedProjectConstraint() {
+    state = state.copyWith(
+        projectConstraints: state.projectConstraints
+          ..setEntry(state.bufferedProjectConstraint));
+  }
+
+  /// Removes the buffered [ProjectConstraint] from the database.
+  void removeBufferedProjectConstraint() {
+    state = state.copyWith(
+        projectConstraints: state.projectConstraints
+          ..removeEntry(state.bufferedProjectConstraint));
   }
 }

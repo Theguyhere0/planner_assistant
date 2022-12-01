@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/label.dart';
-import '../../models/project_controller.dart';
-import '../common/card_tiles/double_button_card_tile.dart';
-import '../common/card_tiles/integer_field_card_tile.dart';
-import '../common/card_tiles/text_field_card_tile.dart';
-import '../common/card_tiles/toggle_card_tile.dart';
-import '../common/dialogs/card_dialog.dart';
-import '../common/dialogs/delete_dialog.dart';
+import '../../../models/label.dart';
+import '../../../models/project_controller.dart';
+import '../../../theme/palette.dart';
+import '../../common/card_tiles/button_card_tile.dart';
+import '../../common/card_tiles/double_button_card_tile.dart';
+import '../../common/card_tiles/integer_field_card_tile.dart';
+import '../../common/card_tiles/text_field_card_tile.dart';
+import '../../common/card_tiles/toggle_card_tile.dart';
+import '../../common/dialogs/card_dialog.dart';
+import '../../common/dialogs/delete_dialog.dart';
 
 /// A popup for modifying a [Label].
-class EditLabelDialog extends ConsumerWidget {
-  const EditLabelDialog({
+class LabelDialog extends ConsumerWidget {
+  const LabelDialog({
     Key? key,
     required this.setState,
-    required this.delete,
+    this.delete,
   }) : super(key: key);
 
   /// The state setter to pass in order to update this dialog properly.
   final void Function(void Function()) setState;
 
-  /// The function to call to perform the delete.
-  final void Function(String) delete;
+  /// The function to call to perform the delete. If null, indicates initialization.
+  final void Function(String)? delete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,16 +38,22 @@ class EditLabelDialog extends ConsumerWidget {
             'Label Name',
             hintText: 'Enter the name',
             value: label.name,
+            autofocus: delete == null,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
                   .updateBufferedLabel(updatedName: newValue);
             }),
             validator: (value) {
-              if (value!.trim().isNotEmpty) {
-                return null;
-              } else {
+              if (value == null || value.trim().isEmpty) {
                 return 'Label name cannot be blank';
+              } else if (!ref
+                  .watch(projectControllerProvider)
+                  .labels
+                  .validateUniqueness(Label(name: value))) {
+                return 'Label name must be unique';
+              } else {
+                return null;
               }
             },
           ),
@@ -98,8 +106,7 @@ class EditLabelDialog extends ConsumerWidget {
             'Periodic',
             offOption: 'No',
             onOption: 'Yes',
-            value: ref.watch(projectControllerProvider).bufferedLabel.period !=
-                null,
+            value: label.period != null,
             onChanged: (newValue) => ref
                 .read(projectControllerProvider.notifier)
                 .updateBufferedLabel(periodOn: newValue),
@@ -132,33 +139,59 @@ class EditLabelDialog extends ConsumerWidget {
               },
             ),
           ),
-          // Save or delete
-          DoubleButtonCardTile(
-            firstLabel: 'Save',
-            secondLabel: 'Delete',
-            firstIcon: Icons.save_alt_rounded,
-            secondIcon: Icons.delete_outline_rounded,
-            firstOnPressed: ref
-                    .read(projectControllerProvider.notifier)
-                    .validateBufferedLabel()
-                ? () {
-                    ref
-                        .read(projectControllerProvider.notifier)
-                        .saveBufferedLabel();
+          delete == null
+              ?
+              // Save
+              ButtonCardTile(
+                  'Save',
+                  icon: Icons.save_alt_rounded,
+                  onPressed: ref
+                          .read(projectControllerProvider.notifier)
+                          .validateBufferedLabel()
+                      ? () {
+                          ref
+                              .read(projectControllerProvider.notifier)
+                              .saveBufferedLabel();
+                          Navigator.pop(context);
+                        }
+                      : null,
+                )
+              :
+              // Save or delete
+              DoubleButtonCardTile(
+                  firstLabel: 'Save',
+                  secondLabel: 'Delete',
+                  firstIcon: Icons.save_alt_rounded,
+                  secondIcon: Icons.delete_outline_rounded,
+                  secondColor: MaterialStateProperty.resolveWith<Color?>(
+                    (states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return Palette.highlight;
+                      }
+                      return Palette.failure;
+                    },
+                  ),
+                  firstOnPressed: ref
+                          .read(projectControllerProvider.notifier)
+                          .validateBufferedLabel()
+                      ? () {
+                          ref
+                              .read(projectControllerProvider.notifier)
+                              .saveBufferedLabel();
+                          Navigator.pop(context);
+                        }
+                      : null,
+                  secondOnPressed: () {
                     Navigator.pop(context);
-                  }
-                : null,
-            secondOnPressed: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => DeleteDialog(
-                  title: 'Delete Label: ${label.name}?',
-                  delete: () => delete(label.name),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => DeleteDialog(
+                        title: 'Delete Label: ${label.name}?',
+                        delete: () => delete!(label.name),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          )
         ],
       ),
     );

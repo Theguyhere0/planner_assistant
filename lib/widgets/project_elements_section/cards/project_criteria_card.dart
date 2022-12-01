@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planner_assistant/widgets/common/card_tiles/ranked_list_card_tile.dart';
 
-import '../common/cards/small_card.dart';
-import '../../utils/constants.dart';
+import '../../common/cards/small_card.dart';
+import '../../../utils/constants.dart';
 
 /// A card for managing the criteria of the project.
 class ProjectCriteriaCard extends StatelessWidget {

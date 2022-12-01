@@ -1,21 +1,27 @@
-import 'data.dart';
-
 /// A custom class that acts like a database to better manage collections of [Data].
 class Database<T extends Data> {
   final Map<int, T> _entries = {};
   int _nextAvailableId = 0;
 
-  /// The function to validate each data entry before being added to the database.
+  final bool Function(T entry) _validator;
+
+  /// The function to validate the uniqueness of an entry.
+  ///
+  /// Returns true if the data entry is unique, otherwise returns false.
+  bool validateUniqueness(T entry) => _entries.values
+      .every((element) => element.uniquenessHash != entry.uniquenessHash);
+
+  /// The function to validate each data entry before being added to the database. Includes checking for the uniqueness hash along with the custom validator.
   ///
   /// Returns true if the data entry is valid, otherwise returns false.
-  final bool Function(T entry) validator;
+  bool validateEntry(T entry) => _validator(entry) && validateUniqueness(entry);
 
   /// Either insert a new entry or update an existing one. Returns true if the entry is new.
   bool setEntry(T entry) {
     bool result = entry.id == null;
 
     // Validate before accepting for further processing
-    if (!validator(entry)) {
+    if (!validateEntry(entry)) {
       return false;
     }
 
@@ -48,5 +54,20 @@ class Database<T extends Data> {
   }
 
   Database({bool Function(T)? validator})
-      : validator = validator ?? ((entry) => true);
+      : _validator = validator ?? ((entry) => true);
+}
+
+/// A class that specifies how all "data" like classes behave.
+abstract class Data {
+  /// The unique identifier for this piece of data.
+  int? id;
+
+  /// The name for this piece of data.
+  String get dataName;
+
+  /// A hash to easily check for fields that should be unique for all pieces of data of this class.
+  int get uniquenessHash;
+
+  /// A copy of this piece of data.
+  Data get copy;
 }

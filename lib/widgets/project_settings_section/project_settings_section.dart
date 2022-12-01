@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../common/page_section.dart';
-import 'activity_unit_settings_card.dart';
-import 'import_projects_card.dart';
-import 'time_unit_settings.dart';
+import 'cards/activity_unit_settings_card.dart';
+import 'cards/import_projects_card.dart';
+import 'cards/time_unit_settings.dart';
 
 /// The section for managing project settings.
 class ProjectSettingsSection extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/cards/medium_card.dart';
+import '../../common/cards/medium_card.dart';
 
 /// A card for displaying important metrics about a plan of the project.
 class DashboardCard extends StatelessWidget {

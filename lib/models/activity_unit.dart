@@ -1,11 +1,12 @@
-import 'data.dart';
+import '../utils/conversions.dart';
+import 'database.dart';
 import 'property.dart';
 import 'property_data.dart';
 import 'activity_instance.dart';
 import 'activity_constraint.dart';
 
 /// The basic units of activity that a project needs to have planned.
-class ActivityUnit implements Data {
+class ActivityUnit implements Data, PropertyDataHolder {
   @override
   int? id;
 
@@ -33,10 +34,21 @@ class ActivityUnit implements Data {
   String get dataName => name;
 
   @override
-  ActivityUnit get copy =>
-      ActivityUnit(name: name, unique: unique, duration: duration)
+  int get uniquenessHash => Conversions.fastHash(dataName);
+
+  @override
+  ActivityUnit get copy => ActivityUnit(
+        name: name,
+        unique: unique,
+        duration: duration,
+      )
         ..data.addAll(data)
         ..instances.addAll(instances)
         ..constraints.addAll(constraints)
         ..id = id;
+
+  @override
+  void removePropertyData(PropertyData propertyData) {
+    data.remove(propertyData.property);
+  }
 }

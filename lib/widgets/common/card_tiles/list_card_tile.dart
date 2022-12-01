@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/data.dart';
+import '../../../models/database.dart';
 import '../../../utils/constants.dart';
 import '../list_tiles/creation_list_tile.dart';
 import '../list_tiles/instance_list_tile.dart';

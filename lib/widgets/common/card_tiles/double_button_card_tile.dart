@@ -12,6 +12,8 @@ class DoubleButtonCardTile extends StatelessWidget {
     required this.secondIcon,
     this.firstOnPressed,
     this.secondOnPressed,
+    this.firstColor,
+    this.secondColor,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +26,9 @@ class DoubleButtonCardTile extends StatelessWidget {
   /// What the first button does when pressed.
   final void Function()? firstOnPressed;
 
+  /// What the first button color should be.
+  final MaterialStateProperty<Color?>? firstColor;
+
   /// Second button text.
   final String secondLabel;
 
@@ -32,6 +37,9 @@ class DoubleButtonCardTile extends StatelessWidget {
 
   /// What the second button does when pressed.
   final void Function()? secondOnPressed;
+
+  /// What the second button color should be.
+  final MaterialStateProperty<Color?>? secondColor;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +58,10 @@ class DoubleButtonCardTile extends StatelessWidget {
                 size: 24,
               ),
               label: Text(firstLabel),
+              style: Theme.of(context)
+                  .outlinedButtonTheme
+                  .style
+                  ?.copyWith(foregroundColor: firstColor),
             ),
           ),
           // Button two
@@ -62,6 +74,10 @@ class DoubleButtonCardTile extends StatelessWidget {
                 size: 24,
               ),
               label: Text(secondLabel),
+              style: Theme.of(context)
+                  .outlinedButtonTheme
+                  .style
+                  ?.copyWith(foregroundColor: secondColor),
             ),
           ),
         ],

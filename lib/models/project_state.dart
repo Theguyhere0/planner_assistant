@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'activity_unit.dart';
 import 'database.dart';
@@ -44,7 +43,7 @@ class ProjectState {
   final Database<ActivityUnit> activityUnits;
 
   /// Resolved [ProjectConstraint]s for the project
-  final AsyncValue<List<ProjectConstraint>> projectConstraints;
+  final Database<ProjectConstraint> projectConstraints;
 
   const ProjectState({
     this.activityUnitName = '',
@@ -73,7 +72,7 @@ class ProjectState {
     Database<Property>? properties,
     Database<Label>? labels,
     Database<ActivityUnit>? activityUnits,
-    AsyncValue<List<ProjectConstraint>>? projectConstraints,
+    Database<ProjectConstraint>? projectConstraints,
   }) {
     return ProjectState(
       activityUnitName: activityUnitName ?? this.activityUnitName,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../common/page_section.dart';
-import 'export_plan_card.dart';
-import 'export_project_card.dart';
+import 'cards/export_plan_card.dart';
+import 'cards/export_project_card.dart';
 
 /// The section for exporting plans or the project.
 class ExportSection extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import 'activity_unit.dart';
-import 'data.dart';
+import 'database.dart';
 import 'property.dart';
 
 part 'activity_constraint.g.dart';
@@ -51,4 +51,8 @@ class ActivityConstraint implements Data {
   @override
   // TODO: implement dataName
   String get dataName => throw UnimplementedError();
+
+  @override
+  // TODO: implement uniquenessHash
+  int get uniquenessHash => throw UnimplementedError();
 }
