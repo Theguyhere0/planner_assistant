@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:planner_assistant/models/activity_constraint.dart';
 
 import '../../../models/constraint_type.dart';
 import '../../../models/project_constraint.dart';
@@ -19,8 +20,8 @@ import '../../common/dialogs/card_dialog.dart';
 import '../../common/dialogs/delete_dialog.dart';
 
 /// A popup for modifying a [ProjectConstraint].
-class ProjectConstraintDialog extends ConsumerWidget {
-  const ProjectConstraintDialog({
+class ActivityConstraintDialog extends ConsumerWidget {
+  const ActivityConstraintDialog({
     Key? key,
     required this.setState,
     this.delete,
@@ -34,75 +35,67 @@ class ProjectConstraintDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projectConstraint =
-        ref.watch(projectControllerProvider).bufferedProjectConstraint;
-    final modifiedName = projectConstraint.dataName.replaceFirst(
-        'Activity Units',
-        ref.watch(projectControllerProvider).displayActivityUnitPluralName);
-    final property = projectConstraint.threshold?.property;
+    final activityConstraint =
+        ref.watch(projectControllerProvider).bufferedActivityConstraint;
+    final modifiedName = activityConstraint.dataName.replaceFirst('Time Units',
+        ref.watch(projectControllerProvider).displayTimeUnitPluralName);
+    final property = activityConstraint.threshold?.property;
     final propertyOptions = ref
         .watch(projectControllerProvider)
         .properties
         .getAll()
+        .where((e) =>
+            e.type == PropertyType.integer || e.type == PropertyType.decimal)
         .map((e) => e.name)
         .toList();
-    propertyOptions.add(
-        ref.watch(projectControllerProvider).displayActivityUnitPluralName);
-    final allowedTypes = ConstraintType.values.map((e) => e.value).toList();
-    if (projectConstraint.threshold != null &&
-        (projectConstraint.threshold!.property.type! == PropertyType.boolean ||
-            projectConstraint.threshold!.property.type! ==
-                PropertyType.string)) {
-      allowedTypes.clear();
-      allowedTypes.add(ConstraintType.equal.value);
-      allowedTypes.add(ConstraintType.notEqual.value);
-    }
+    propertyOptions
+        .add(ref.watch(projectControllerProvider).displayTimeUnitPluralName);
 
     return CardDialog(
-      title: 'Project Constraint: $modifiedName',
+      title: 'Activity Constraint: $modifiedName',
       content: Column(
         children: <Widget>[
-          // Project constraint name
+          // Activity constraint name
           TextFieldCardTile(
             'Name',
             hintText: modifiedName,
-            value: projectConstraint.name,
+            value: activityConstraint.name,
             autofocus: delete == null,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedProjectConstraint(updatedName: newValue);
+                  .updateBufferedActivityConstraint(updatedName: newValue);
             }),
             validator: (value) {
               if (value != null &&
                   !ref
                       .watch(projectControllerProvider)
-                      .projectConstraints
-                      .validateUniqueness(ProjectConstraint(name: value))) {
-                return 'Project constraint name must be unique';
+                      .bufferedActivityUnit
+                      .constraints
+                      .validateUniqueness(ActivityConstraint(name: value))) {
+                return 'Activity constraint name must be unique';
               } else {
                 return null;
               }
             },
           ),
-          // Project constraint property
+          // Activity constraint property
           DropdownCardTile(
             'Property',
             hintText: 'Select an option',
             options: propertyOptions,
             value: property?.name ??
-                ref
-                    .watch(projectControllerProvider)
-                    .displayActivityUnitPluralName,
+                ref.watch(projectControllerProvider).displayTimeUnitPluralName,
             onChanged: (newValue) => setState(() {
               // Check for an actual difference
               if ((property?.name ??
                       ref
                           .watch(projectControllerProvider)
-                          .displayActivityUnitPluralName) ==
+                          .displayTimeUnitPluralName) ==
                   newValue) {
                 return;
               }
+
               Property? baseProperty = ref
                   .watch(projectControllerProvider)
                   .properties
@@ -110,27 +103,29 @@ class ProjectConstraintDialog extends ConsumerWidget {
               if (baseProperty == null) {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(updatedBackupThreshold: 0);
+                    .updateBufferedActivityConstraint(
+                        updatedBackupThreshold: 0);
               } else {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(
+                    .updateBufferedActivityConstraint(
                         updatedThreshold: PropertyData(
-                            property: baseProperty, parent: projectConstraint));
+                            property: baseProperty,
+                            parent: activityConstraint));
               }
             }),
           ),
-          // Project constraint threshold value
+          // Activity constraint threshold value
           property == null
               ? IntegerFieldCardTile(
                   ref
                       .watch(projectControllerProvider)
-                      .displayActivityUnitPluralName,
-                  value: projectConstraint.backupThreshold,
+                      .displayTimeUnitPluralName,
+                  value: activityConstraint.backupThreshold,
                   onChanged: (newValue) => setState(() {
                     ref
                         .read(projectControllerProvider.notifier)
-                        .updateBufferedProjectConstraint(
+                        .updateBufferedActivityConstraint(
                             updatedBackupThreshold:
                                 int.tryParse(newValue) ?? 0);
                   }),
@@ -144,39 +139,39 @@ class ProjectConstraintDialog extends ConsumerWidget {
                 )
               : PropertyCardTile(
                   property: property,
-                  data: projectConstraint.threshold!,
+                  data: activityConstraint.threshold!,
                   onChanged: (newValue) => setState(() {
                     ref
                         .read(projectControllerProvider.notifier)
-                        .updateBufferedProjectConstraint(
+                        .updateBufferedActivityConstraint(
                             updatedThreshold: newValue);
                   }),
                 ),
-          // Project constraint type
+          // Activity constraint type
           DropdownCardTile(
             'Type',
             hintText: 'Select an option',
-            options: allowedTypes,
-            value: projectConstraint.type.value,
+            options: ConstraintType.values.map((e) => e.value).toList(),
+            value: activityConstraint.type.value,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedProjectConstraint(updatedType: newValue);
+                  .updateBufferedActivityConstraint(updatedType: newValue);
             }),
           ),
-          // Whether the project constraint is global or not
+          // Whether the activity constraint is global or not
           ToggleCardTile(
             'Scope',
             offOption: 'Restricted',
             onOption: 'Global',
-            value: projectConstraint.global,
+            value: activityConstraint.global,
             onChanged: (newValue) => ref
                 .read(projectControllerProvider.notifier)
-                .updateBufferedProjectConstraint(updatedGlobal: newValue),
+                .updateBufferedActivityConstraint(updatedGlobal: newValue),
           ),
-          // Project constraint label, only visible if not global
+          // Activity constraint label, only visible if not global
           Visibility(
-            visible: !projectConstraint.global,
+            visible: !activityConstraint.global,
             child: DropdownCardTile(
               'Constraint Period',
               hintText: 'Select an option',
@@ -186,7 +181,7 @@ class ProjectConstraintDialog extends ConsumerWidget {
                   .getAll()
                   .map((e) => e.name)
                   .toList(),
-              value: projectConstraint.label?.name,
+              value: activityConstraint.label?.name,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
@@ -202,11 +197,11 @@ class ProjectConstraintDialog extends ConsumerWidget {
                   icon: Icons.save_alt_rounded,
                   onPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedProjectConstraint()
+                          .validateBufferedActivityConstraint()
                       ? () {
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedProjectConstraint();
+                              .saveBufferedActivityConstraint();
                           Navigator.pop(context);
                         }
                       : null,
@@ -228,11 +223,11 @@ class ProjectConstraintDialog extends ConsumerWidget {
                   ),
                   firstOnPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedProjectConstraint()
+                          .validateBufferedActivityConstraint()
                       ? () {
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedProjectConstraint();
+                              .saveBufferedActivityConstraint();
                           Navigator.pop(context);
                         }
                       : null,
@@ -242,8 +237,8 @@ class ProjectConstraintDialog extends ConsumerWidget {
                       context: context,
                       builder: (BuildContext context) => DeleteDialog(
                         title:
-                            'Delete Project Constraint: ${projectConstraint.dataName}?',
-                        delete: () => delete!(projectConstraint.dataName),
+                            'Delete Activity Constraint: ${activityConstraint.dataName}?',
+                        delete: () => delete!(activityConstraint.dataName),
                       ),
                     );
                   },

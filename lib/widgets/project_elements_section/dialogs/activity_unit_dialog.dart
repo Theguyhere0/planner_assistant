@@ -14,6 +14,7 @@ import '../../common/card_tiles/text_field_card_tile.dart';
 import '../../common/card_tiles/toggle_card_tile.dart';
 import '../../common/dialogs/card_dialog.dart';
 import '../../common/dialogs/delete_dialog.dart';
+import 'activity_constraint_dialog.dart';
 
 /// A popup for modifying an [ActivityUnit].
 class ActivityUnitDialog extends ConsumerWidget {
@@ -33,6 +34,12 @@ class ActivityUnitDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ActivityUnit activityUnit =
         ref.watch(projectControllerProvider).bufferedActivityUnit;
+    void deleteActivityConstraint(name) {
+      ref.read(projectControllerProvider.notifier)
+        ..loadBufferedActivityConstraint(name)
+        ..removeBufferedActivityConstraint();
+    }
+
     List<Widget> children = [
       // Activity unit name
       TextFieldCardTile(
@@ -113,11 +120,34 @@ class ActivityUnitDialog extends ConsumerWidget {
     children.add(ListCardTile(
       title: 'Activity Constraints',
       type: 'Activity Constraint',
-      dialog: (name) => const Text('Placeholder'),
-      instances:
-          ref.watch(projectControllerProvider).bufferedActivityUnit.constraints,
-      createNew: () {},
-      delete: (name) {},
+      dialog: (name) {
+        ref
+            .read(projectControllerProvider.notifier)
+            .loadBufferedActivityConstraint(name);
+        showDialog(
+          context: context,
+          builder: (context) => StatefulBuilder(
+            builder: (context, setState) => ActivityConstraintDialog(
+              setState: setState,
+              delete: deleteActivityConstraint,
+            ),
+          ),
+        );
+      },
+      instances: activityUnit.constraints.getAll(),
+      createNew: () {
+        ref
+            .read(projectControllerProvider.notifier)
+            .resetActivityConstraintBuffer();
+        showDialog(
+          context: context,
+          builder: (context) => StatefulBuilder(
+            builder: (context, setState) =>
+                ActivityConstraintDialog(setState: setState),
+          ),
+        );
+      },
+      delete: deleteActivityConstraint,
     ));
 
     // Save

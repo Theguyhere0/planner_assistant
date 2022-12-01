@@ -1,58 +1,98 @@
-import 'package:isar/isar.dart';
-
 import 'activity_unit.dart';
+import 'constraint_type.dart';
 import 'database.dart';
-import 'property.dart';
-
-part 'activity_constraint.g.dart';
+import 'label.dart';
+import 'property_data.dart';
+import 'property_type.dart';
 
 /// Constraints that apply to individual [ActivityUnit]s.
-@Collection()
-class ActivityConstraint implements Data {
+class ActivityConstraint implements Data, PropertyDataHolder {
   @override
   int? id;
 
-  /// A possible [Property] that is being constrained.
-  ///
-  /// If the link is empty, the threshold will represent number of time units.
-  @Ignore()
-  final property = IsarLink<Property>();
+  /// An optional name for this [ActivityConstraint].
+  String? name;
 
   /// What [ActivityUnit] this constraint applies to.
-  @Ignore()
-  final parent = IsarLink<ActivityUnit>();
+  ActivityUnit? parent;
 
-  /// The integer threshold to check against.
-  int? intThreshold;
+  /// The threshold value to check against.
+  PropertyData? threshold;
 
-  /// The string threshold to check against.
-  String? stringThreshold;
-
-  /// The boolean threshold to check against.
-  bool? boolThreshold;
-
-  /// The double threshold to check against.
-  double? doubleThreshold;
-
-  /// The time threshold to check against.
-  DateTime? timeThreshold;
-
-  /// Whether the actual value should be greater than the threshold value. If null, it should match.
-  bool? greaterThan;
+  /// The backup integer threshold to check against, which represents time unit count.
+  int backupThreshold;
 
   /// A possible relationship to another [ActivityUnit].
-  @Ignore()
-  final relation = IsarLink<ActivityUnit>();
+  ActivityUnit? relation;
+
+  /// What constraint should be applied comparing the actual value to the threshold value.
+  ConstraintType type;
+
+  /// Whether this constraint applies to an entire project or a specific time frame.
+  bool global;
+
+  /// A potential time [Label] to apply the constraint to.
+  Label? label;
+
+  ActivityConstraint({
+    this.name,
+    this.parent,
+    this.threshold,
+    this.backupThreshold = 0,
+    this.relation,
+    this.type = ConstraintType.equal,
+    this.global = true,
+    this.label,
+  });
 
   @override
-  // TODO: implement copy
-  Data get copy => throw UnimplementedError();
+  String get dataName {
+    // Return name if the name is not null
+    if (name != null && name!.isNotEmpty) {
+      return name!;
+    }
+
+    // Create the default name with the constraint parameters
+    dynamic value;
+    String units;
+
+    if (threshold == null) {
+      value = backupThreshold;
+      units = 'Time Units';
+    } else {
+      units = threshold!.property.name;
+      switch (threshold!.property.type!) {
+        case PropertyType.integer:
+          value = threshold!.intData;
+          break;
+        case PropertyType.decimal:
+          value = threshold!.doubleData;
+          break;
+        default:
+          value = 'INVALID';
+      }
+    }
+
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Project' : label!.name}';
+  }
 
   @override
-  // TODO: implement dataName
-  String get dataName => throw UnimplementedError();
+  int get uniquenessHash => dataName.hashCode;
 
   @override
-  // TODO: implement uniquenessHash
-  int get uniquenessHash => throw UnimplementedError();
+  ActivityConstraint get copy => ActivityConstraint(
+        name: name,
+        parent: parent,
+        threshold: threshold,
+        backupThreshold: backupThreshold,
+        relation: relation,
+        type: type,
+        global: global,
+        label: label,
+      )..id = id;
+
+  @override
+  void removePropertyData(PropertyData propertyData) {
+    threshold = null;
+  }
 }

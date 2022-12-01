@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'activity_constraint.dart';
 import 'activity_unit.dart';
 import 'constraint_type.dart';
 import 'database.dart';
 import 'label.dart';
 import 'project_constraint.dart';
 import 'project_state.dart';
-import 'isar_service.dart';
 import 'property.dart';
 import 'property_data.dart';
 import 'property_type.dart';
@@ -19,6 +19,7 @@ final projectControllerProvider =
       bufferedProperty: Property(),
       bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
+      bufferedActivityConstraint: ActivityConstraint(),
       bufferedProjectConstraint: ProjectConstraint(),
       properties: Database<Property>(
           validator: (e) => e.name.trim().isNotEmpty && e.type != null),
@@ -39,7 +40,6 @@ final projectControllerProvider =
                   e.type != ConstraintType.equal &&
                   e.type != ConstraintType.notEqual)),
     ),
-    ref.watch(isarServiceProvider),
   );
 });
 
@@ -47,11 +47,7 @@ final projectControllerProvider =
 class ProjectController extends StateNotifier<ProjectState> {
   ProjectController(
     ProjectState state,
-    this.isarService,
   ) : super(state);
-
-  /// The service layer for the Isar database.
-  final IsarService isarService;
 
   /// Change the activity unit name.
   void updateActivityUnitName(String? updatedActivityUnitName) {
@@ -80,8 +76,16 @@ class ProjectController extends StateNotifier<ProjectState> {
       bufferedProperty: Property(),
       bufferedLabel: Label(),
       bufferedActivityUnit: ActivityUnit(),
+      bufferedActivityConstraint: ActivityConstraint(),
       bufferedProjectConstraint: ProjectConstraint(),
     );
+  }
+
+  /// Clear out the special [ActivityConstraint] buffer for a new one with the buffered [ActivityUnit] as the parent.
+  void resetActivityConstraintBuffer() {
+    state = state.copyWith(
+        bufferedActivityConstraint:
+            ActivityConstraint(parent: state.bufferedActivityUnit));
   }
 
   /// Attempt to load a specific [Property] to the buffer.
@@ -245,6 +249,74 @@ class ProjectController extends StateNotifier<ProjectState> {
           ..removeEntry(state.bufferedActivityUnit));
   }
 
+  /// Attempt to load a specific [ActivityConstraint] to the buffer, using the buffered [ActivityUnit] as the parent.
+  void loadBufferedActivityConstraint(String name) {
+    state = state.copyWith(
+        bufferedActivityConstraint: state.bufferedActivityUnit.constraints
+                .searchEntry((e) => e.dataName == name)
+                ?.copy ??
+            ActivityConstraint());
+  }
+
+  /// Make some changes to the buffered [ActivityConstraint].
+  void updateBufferedActivityConstraint({
+    String? updatedName,
+    PropertyData? updatedThreshold,
+    int? updatedBackupThreshold,
+    ActivityUnit? updatedRelation,
+    String? updatedType,
+    bool? updatedGlobal,
+    Label? updatedLabel,
+  }) {
+    ActivityConstraint newActivityConstraint =
+        state.bufferedActivityConstraint.copy;
+
+    if (updatedName != null) {
+      newActivityConstraint.name = updatedName;
+    }
+    if (updatedThreshold != null) {
+      newActivityConstraint.threshold = updatedThreshold;
+    }
+    if (updatedBackupThreshold != null) {
+      newActivityConstraint.threshold = null;
+      newActivityConstraint.backupThreshold = updatedBackupThreshold;
+    }
+    if (updatedRelation != null) {
+      newActivityConstraint.relation = updatedRelation;
+    }
+    if (updatedType != null) {
+      newActivityConstraint.type = ConstraintType.values
+          .firstWhere((element) => element.value == updatedType);
+    }
+    if (updatedGlobal != null) {
+      newActivityConstraint.global = updatedGlobal;
+    }
+    if (updatedLabel != null) {
+      newActivityConstraint.label = updatedLabel;
+    }
+
+    state = state.copyWith(bufferedActivityConstraint: newActivityConstraint);
+  }
+
+  /// Checks to see if the buffered [ActivityConstraint] is valid.
+  bool validateBufferedActivityConstraint() =>
+      state.bufferedActivityUnit.constraints
+          .validateEntry(state.bufferedActivityConstraint);
+
+  /// Saves the buffered [ActivityConstraint] to the buffered [ActivityUnit]'s database.
+  void saveBufferedActivityConstraint() {
+    state = state.copyWith(
+        bufferedActivityUnit: state.bufferedActivityUnit
+          ..constraints.setEntry(state.bufferedActivityConstraint));
+  }
+
+  /// Removes the buffered [ActivityConstraint] from the buffered [ActivityUnit]'s database.
+  void removeBufferedActivityConstraint() {
+    state = state.copyWith(
+        bufferedActivityUnit: state.bufferedActivityUnit
+          ..constraints.removeEntry(state.bufferedActivityConstraint));
+  }
+
   /// Attempt to load a specific [ProjectConstraint] to the buffer.
   void loadBufferedProjectConstraint(String name) {
     state = state.copyWith(
@@ -261,7 +333,7 @@ class ProjectController extends StateNotifier<ProjectState> {
     int? updatedBackupThreshold,
     String? updatedType,
     bool? updatedGlobal,
-    Label? updatedLabel,
+    String? updatedLabel,
   }) {
     ProjectConstraint newProjectConstraint =
         state.bufferedProjectConstraint.copy;
@@ -284,7 +356,9 @@ class ProjectController extends StateNotifier<ProjectState> {
       newProjectConstraint.global = updatedGlobal;
     }
     if (updatedLabel != null) {
-      newProjectConstraint.label = updatedLabel;
+      newProjectConstraint.label = state.labels
+          .getAll()
+          .firstWhere((element) => element.dataName == updatedLabel);
     }
 
     state = state.copyWith(bufferedProjectConstraint: newProjectConstraint);

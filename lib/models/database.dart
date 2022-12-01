@@ -8,8 +8,8 @@ class Database<T extends Data> {
   /// The function to validate the uniqueness of an entry.
   ///
   /// Returns true if the data entry is unique, otherwise returns false.
-  bool validateUniqueness(T entry) => _entries.values
-      .every((element) => element.uniquenessHash != entry.uniquenessHash);
+  bool validateUniqueness(T entry) => _entries.values.every((element) =>
+      element.id == entry.id || element.uniquenessHash != entry.uniquenessHash);
 
   /// The function to validate each data entry before being added to the database. Includes checking for the uniqueness hash along with the custom validator.
   ///
@@ -31,6 +31,11 @@ class Database<T extends Data> {
     // Place into database
     _entries[entry.id!] = entry;
     return result;
+  }
+
+  /// Attempt to insert all entries from one [Database] into another.
+  void setAll(Database<T> database) {
+    database.getAll().forEach((element) => setEntry(element));
   }
 
   /// Get a list of all entries in this [Database].

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'activity_constraint.dart';
 import 'activity_unit.dart';
 import 'database.dart';
 import 'label.dart';
@@ -30,6 +31,9 @@ class ProjectState {
   /// A buffer for modifying an [ActivityUnit] safely.
   final ActivityUnit bufferedActivityUnit;
 
+  /// A buffer for modifying an [ActivityConstraint] safely.
+  final ActivityConstraint bufferedActivityConstraint;
+
   /// A buffer for modifying a [ProjectConstraint] safely.
   final ProjectConstraint bufferedProjectConstraint;
 
@@ -53,6 +57,7 @@ class ProjectState {
     required this.bufferedProperty,
     required this.bufferedLabel,
     required this.bufferedActivityUnit,
+    required this.bufferedActivityConstraint,
     required this.bufferedProjectConstraint,
     required this.properties,
     required this.labels,
@@ -68,6 +73,7 @@ class ProjectState {
     Property? bufferedProperty,
     Label? bufferedLabel,
     ActivityUnit? bufferedActivityUnit,
+    ActivityConstraint? bufferedActivityConstraint,
     ProjectConstraint? bufferedProjectConstraint,
     Database<Property>? properties,
     Database<Label>? labels,
@@ -83,6 +89,8 @@ class ProjectState {
       bufferedProperty: bufferedProperty ?? this.bufferedProperty,
       bufferedLabel: bufferedLabel ?? this.bufferedLabel,
       bufferedActivityUnit: bufferedActivityUnit ?? this.bufferedActivityUnit,
+      bufferedActivityConstraint:
+          bufferedActivityConstraint ?? this.bufferedActivityConstraint,
       bufferedProjectConstraint:
           bufferedProjectConstraint ?? this.bufferedProjectConstraint,
       properties: properties ?? this.properties,
@@ -120,6 +128,7 @@ class ProjectState {
         other.bufferedProperty == bufferedProperty &&
         other.bufferedLabel == bufferedLabel &&
         other.bufferedActivityUnit == bufferedActivityUnit &&
+        other.bufferedActivityConstraint == bufferedActivityConstraint &&
         other.bufferedProjectConstraint == bufferedProjectConstraint &&
         other.properties == properties &&
         other.labels == labels &&
@@ -136,6 +145,7 @@ class ProjectState {
         bufferedProperty.hashCode ^
         bufferedLabel.hashCode ^
         bufferedActivityUnit.hashCode ^
+        bufferedActivityConstraint.hashCode ^
         bufferedProjectConstraint.hashCode ^
         properties.hashCode ^
         labels.hashCode ^

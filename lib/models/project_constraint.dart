@@ -1,6 +1,5 @@
 import 'package:planner_assistant/models/property_data.dart';
 
-import '../utils/conversions.dart';
 import 'constraint_type.dart';
 import 'database.dart';
 import 'label.dart';
@@ -80,7 +79,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
   }
 
   @override
-  int get uniquenessHash => Conversions.fastHash(dataName);
+  int get uniquenessHash => dataName.hashCode;
 
   @override
   ProjectConstraint get copy => ProjectConstraint(

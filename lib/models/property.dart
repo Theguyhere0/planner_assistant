@@ -1,4 +1,3 @@
-import '../utils/conversions.dart';
 import 'activity_unit.dart';
 import 'database.dart';
 import 'property_type.dart';
@@ -27,7 +26,7 @@ class Property implements Data {
   String get dataName => name;
 
   @override
-  int get uniquenessHash => Conversions.fastHash(dataName);
+  int get uniquenessHash => dataName.hashCode;
 
   @override
   Property get copy => Property(

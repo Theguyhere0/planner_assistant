@@ -1,4 +1,3 @@
-import '../utils/conversions.dart';
 import 'database.dart';
 
 /// A way to categorize, group, and divide up time units.
@@ -24,7 +23,7 @@ class Label implements Data {
   String get dataName => name;
 
   @override
-  int get uniquenessHash => Conversions.fastHash(dataName);
+  int get uniquenessHash => dataName.hashCode;
 
   @override
   Label get copy => Label(

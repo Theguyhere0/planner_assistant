@@ -1,9 +1,9 @@
-import '../utils/conversions.dart';
 import 'database.dart';
 import 'property.dart';
 import 'property_data.dart';
 import 'activity_instance.dart';
 import 'activity_constraint.dart';
+import 'property_type.dart';
 
 /// The basic units of activity that a project needs to have planned.
 class ActivityUnit implements Data, PropertyDataHolder {
@@ -26,7 +26,13 @@ class ActivityUnit implements Data, PropertyDataHolder {
   final instances = <ActivityInstance>[];
 
   /// All the [ActivityConstraint]s corresponding to this [ActivityUnit].
-  final constraints = <ActivityConstraint>[];
+  final constraints = Database<ActivityConstraint>(
+      validator: (e) =>
+          e.parent != null &&
+          (e.threshold?.properlyFormed ?? true) &&
+          !(e.threshold != null &&
+              (e.threshold!.property.type! == PropertyType.integer ||
+                  e.threshold!.property.type! == PropertyType.decimal)));
 
   ActivityUnit({this.name = '', this.unique = true, this.duration = 1});
 
@@ -34,7 +40,7 @@ class ActivityUnit implements Data, PropertyDataHolder {
   String get dataName => name;
 
   @override
-  int get uniquenessHash => Conversions.fastHash(dataName);
+  int get uniquenessHash => dataName.hashCode;
 
   @override
   ActivityUnit get copy => ActivityUnit(
@@ -44,7 +50,7 @@ class ActivityUnit implements Data, PropertyDataHolder {
       )
         ..data.addAll(data)
         ..instances.addAll(instances)
-        ..constraints.addAll(constraints)
+        ..constraints.setAll(constraints)
         ..id = id;
 
   @override
