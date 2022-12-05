@@ -25,11 +25,10 @@ class BuildPage extends StatelessWidget {
         child: SafeArea(
           // Bottom side shouldn't matter if it gets cut off
           bottom: false,
-          // Provide page margin on all sides that matter
-          minimum: const EdgeInsets.only(
-            left: pageSidePadding - defaultPadding * 2,
-            right: pageSidePadding - defaultPadding * 2,
-            top: pageTopPadding,
+          // Provide page margin on all sides
+          minimum: const EdgeInsets.symmetric(
+            horizontal: pageHorizontalPadding - defaultPadding * 2,
+            vertical: pageVerticalPadding,
           ),
           // Break up the page into rows
           child: Column(

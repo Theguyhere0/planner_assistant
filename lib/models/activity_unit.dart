@@ -1,4 +1,5 @@
 import 'database.dart';
+import 'dependency.dart';
 import 'property.dart';
 import 'property_data.dart';
 import 'activity_instance.dart';
@@ -33,6 +34,10 @@ class ActivityUnit implements Data, PropertyDataHolder {
           (e.threshold?.property.type! == PropertyType.integer ||
               e.threshold?.property.type! == PropertyType.decimal ||
               e.threshold == null));
+
+  /// All the [Dependency]s corresponding to this [ActivityUnit].
+  final dependencies = Database<Dependency>(
+      validator: (e) => e.parent != null && e.predecessor != null);
 
   ActivityUnit({this.name = '', this.unique = true, this.duration = 1});
 

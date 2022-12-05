@@ -1,5 +1,5 @@
 import 'database.dart';
-import 'label.dart';
+import 'time_period.dart';
 import 'property.dart';
 
 /// Important metrics that are being optimized in the project.
@@ -22,8 +22,8 @@ class Criterion implements RankedData {
   /// Whether this [Criterion] applies to an entire project or a specific time frame.
   bool global;
 
-  /// A potential time [Label] to apply the [Criterion] to. If null, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
-  Label? label;
+  /// A potential time [TimePeriod] to apply the [Criterion] to. If null, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
+  TimePeriod? period;
 
   Criterion({
     this.rank,
@@ -31,7 +31,7 @@ class Criterion implements RankedData {
     this.property,
     this.maximize = false,
     this.global = true,
-    this.label,
+    this.period,
   });
 
   @override
@@ -42,7 +42,7 @@ class Criterion implements RankedData {
     }
 
     // Return the default name with the criteria parameters
-    return '${maximize ? 'Maximize' : 'Minimize'} ${property?.dataName ?? 'Time Units'} for ${global == true || label == null ? 'Plan' : label!.name}';
+    return '${maximize ? 'Maximize' : 'Minimize'} ${property?.dataName ?? 'Time Units'} for ${global == true || period == null ? 'Plan' : period!.name}';
   }
 
   @override
@@ -55,6 +55,6 @@ class Criterion implements RankedData {
         property: property,
         maximize: maximize,
         global: global,
-        label: label,
+        period: period,
       )..id = id;
 }

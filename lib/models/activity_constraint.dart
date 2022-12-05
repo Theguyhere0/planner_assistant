@@ -1,7 +1,7 @@
 import 'activity_unit.dart';
 import 'constraint_type.dart';
 import 'database.dart';
-import 'label.dart';
+import 'time_period.dart';
 import 'property_data.dart';
 import 'property_type.dart';
 
@@ -28,8 +28,8 @@ class ActivityConstraint implements Data, PropertyDataHolder {
   /// Whether this constraint applies to the entire plan or a specific time frame.
   bool global;
 
-  /// A potential time [Label] to apply the constraint to.
-  Label? label;
+  /// A potential time [TimePeriod] to apply the constraint to.
+  TimePeriod? period;
 
   ActivityConstraint({
     this.name,
@@ -38,7 +38,7 @@ class ActivityConstraint implements Data, PropertyDataHolder {
     this.backupThreshold = 0,
     this.type = ConstraintType.equal,
     this.global = true,
-    this.label,
+    this.period,
   });
 
   @override
@@ -69,7 +69,7 @@ class ActivityConstraint implements Data, PropertyDataHolder {
       }
     }
 
-    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Plan' : label!.name}';
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || period == null ? 'Plan' : period!.name}';
   }
 
   @override
@@ -83,7 +83,7 @@ class ActivityConstraint implements Data, PropertyDataHolder {
         backupThreshold: backupThreshold,
         type: type,
         global: global,
-        label: label,
+        period: period,
       )..id = id;
 
   @override

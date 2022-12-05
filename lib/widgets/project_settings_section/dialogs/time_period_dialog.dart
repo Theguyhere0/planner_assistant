@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/label.dart';
+import '../../../models/time_period.dart';
 import '../../../models/project_controller.dart';
 import '../../../theme/palette.dart';
 import '../../common/card_tiles/button_card_tile.dart';
@@ -12,9 +12,9 @@ import '../../common/card_tiles/toggle_card_tile.dart';
 import '../../common/dialogs/card_dialog.dart';
 import '../../common/dialogs/delete_dialog.dart';
 
-/// A popup for modifying a [Label].
-class LabelDialog extends ConsumerWidget {
-  const LabelDialog({
+/// A popup for modifying a [TimePeriod].
+class TimePeriodDialog extends ConsumerWidget {
+  const TimePeriodDialog({
     Key? key,
     required this.setState,
     this.delete,
@@ -28,44 +28,46 @@ class LabelDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Label label = ref.watch(projectControllerProvider).bufferedLabel;
+    TimePeriod period = ref.watch(projectControllerProvider).bufferedTimePeriod;
     return CardDialog(
-      title: 'Label: ${label.name}',
+      title: 'Time Period: ${period.name}',
       content: Column(
         children: <Widget>[
-          // Label name
+          // Period name
           TextFieldCardTile(
-            'Label Name',
+            'Time Period Name',
             hintText: 'Enter the name',
-            value: label.name,
+            value: period.name,
             autofocus: delete == null,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedLabel(updatedName: newValue);
+                  .updateBufferedTimePeriod(updatedName: newValue);
             }),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return 'Label name cannot be blank';
+                return 'Time period name cannot be blank';
               } else if (!ref
                   .watch(projectControllerProvider)
-                  .labels
-                  .validateUniqueness(Label(name: value))) {
-                return 'Label name must be unique';
+                  .timePeriods
+                  .validateUniqueness(TimePeriod(name: value))) {
+                return 'Time period name must be unique';
               } else {
                 return null;
               }
             },
           ),
-          // Label duration
+          // Time period duration
           IntegerFieldCardTile(
             'Duration',
             units:
                 ref.read(projectControllerProvider).displayTimeUnitPluralName,
-            value: label.duration,
+            value: period.duration,
             onChanged: (newValue) => setState(() {
-              ref.read(projectControllerProvider.notifier).updateBufferedLabel(
-                  updatedDuration: int.tryParse(newValue) ?? 0);
+              ref
+                  .read(projectControllerProvider.notifier)
+                  .updateBufferedTimePeriod(
+                      updatedDuration: int.tryParse(newValue) ?? 0);
             }),
             validator: (value) {
               if (value!.isEmpty) {
@@ -79,15 +81,17 @@ class LabelDialog extends ConsumerWidget {
               }
             },
           ),
-          // Label start
+          // Time period start
           IntegerFieldCardTile(
             'Start',
             units: ref.read(projectControllerProvider).displayTimeUnitName,
             prefix: true,
-            value: label.start,
+            value: period.start,
             onChanged: (newValue) => setState(() {
-              ref.read(projectControllerProvider.notifier).updateBufferedLabel(
-                  updatedStart: int.tryParse(newValue) ?? 0);
+              ref
+                  .read(projectControllerProvider.notifier)
+                  .updateBufferedTimePeriod(
+                      updatedStart: int.tryParse(newValue) ?? 0);
             }),
             validator: (value) {
               if (value!.isEmpty) {
@@ -101,29 +105,29 @@ class LabelDialog extends ConsumerWidget {
               }
             },
           ),
-          // Whether label is periodic or not
+          // Whether the time period is periodic or not
           ToggleCardTile(
             'Periodic',
             offOption: 'No',
             onOption: 'Yes',
-            value: label.period != null,
+            value: period.period != null,
             onChanged: (newValue) => ref
                 .read(projectControllerProvider.notifier)
-                .updateBufferedLabel(periodOn: newValue),
+                .updateBufferedTimePeriod(periodOn: newValue),
           ),
-          // Label period
+          // Time period length
           Visibility(
-            visible: label.period != null,
+            visible: period.period != null,
             child: IntegerFieldCardTile(
               'Period',
               hintText: '0',
               units:
                   ref.read(projectControllerProvider).displayTimeUnitPluralName,
-              value: label.period,
+              value: period.period,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedLabel(
+                    .updateBufferedTimePeriod(
                         updatedPeriod: int.tryParse(newValue) ?? 0);
               }),
               validator: (value) {
@@ -147,11 +151,11 @@ class LabelDialog extends ConsumerWidget {
                   icon: Icons.save_alt_rounded,
                   onPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedLabel()
+                          .validateBufferedTimePeriod()
                       ? () {
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedLabel();
+                              .saveBufferedTimePeriod();
                           Navigator.pop(context);
                         }
                       : null,
@@ -173,11 +177,11 @@ class LabelDialog extends ConsumerWidget {
                   ),
                   firstOnPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedLabel()
+                          .validateBufferedTimePeriod()
                       ? () {
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedLabel();
+                              .saveBufferedTimePeriod();
                           Navigator.pop(context);
                         }
                       : null,
@@ -186,8 +190,8 @@ class LabelDialog extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => DeleteDialog(
-                        title: 'Delete Label: ${label.name}?',
-                        delete: () => delete!(label.name),
+                        title: 'Delete Time Period: ${period.name}?',
+                        delete: () => delete!(period.name),
                       ),
                     );
                   },

@@ -1,23 +1,23 @@
 import 'database.dart';
 
 /// A way to categorize, group, and divide up time units.
-class Label implements Data {
+class TimePeriod implements Data {
   @override
   int? id;
 
-  /// The name for this [Label].
+  /// The name for this [TimePeriod].
   String name;
 
-  /// How many time units this [Label] spans.
+  /// How many time units this [TimePeriod] spans.
   int duration;
 
-  /// On what time unit this [Label] starts.
+  /// On what time unit this [TimePeriod] starts.
   int start;
 
-  /// The time units after the previous instance of this [Label] ends before it repeats, if it does.
+  /// The time units after the previous instance of this [TimePeriod] ends before it repeats, if it does.
   int? period;
 
-  Label({this.name = '', this.duration = 1, this.start = 1, this.period});
+  TimePeriod({this.name = '', this.duration = 1, this.start = 1, this.period});
 
   @override
   String get dataName => name;
@@ -26,7 +26,7 @@ class Label implements Data {
   int get uniquenessHash => dataName.hashCode;
 
   @override
-  Label get copy => Label(
+  TimePeriod get copy => TimePeriod(
         name: name,
         duration: duration,
         start: start,

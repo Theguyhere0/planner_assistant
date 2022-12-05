@@ -8,6 +8,7 @@ import '../../../theme/palette.dart';
 import '../../common/card_tiles/button_card_tile.dart';
 import '../../common/card_tiles/double_button_card_tile.dart';
 import '../../common/card_tiles/dropdown_card_tile.dart';
+import '../../common/card_tiles/text_card_tile.dart';
 import '../../common/card_tiles/text_field_card_tile.dart';
 import '../../common/card_tiles/toggle_card_tile.dart';
 import '../../common/dialogs/card_dialog.dart';
@@ -94,16 +95,21 @@ class CriterionDialog extends ConsumerWidget {
                   );
             }),
           ),
-          // Criterion maximize or minimize
-          ToggleCardTile(
-            'Goal',
-            offOption: 'Minimize',
-            onOption: 'Maximize',
-            value: criterion.maximize,
-            onChanged: (newValue) => ref
-                .read(projectControllerProvider.notifier)
-                .updateBufferedCriterion(updatedMaximize: newValue),
-          ),
+          // Criterion maximize or minimize. If for time units, only allow for minimizing.
+          criterion.property == null
+              ? const TextCardTile(
+                  'Minimize',
+                  label: 'Goal',
+                )
+              : ToggleCardTile(
+                  'Goal',
+                  offOption: 'Minimize',
+                  onOption: 'Maximize',
+                  value: criterion.maximize,
+                  onChanged: (newValue) => ref
+                      .read(projectControllerProvider.notifier)
+                      .updateBufferedCriterion(updatedMaximize: newValue),
+                ),
           // Whether the criterion is global or not
           ToggleCardTile(
             'Scope',
@@ -114,7 +120,7 @@ class CriterionDialog extends ConsumerWidget {
                 .read(projectControllerProvider.notifier)
                 .updateBufferedCriterion(updatedGlobal: newValue),
           ),
-          // Criterion label, only visible if not global
+          // Criterion period, only visible if not global
           Visibility(
             visible: !criterion.global,
             child: DropdownCardTile(
@@ -122,15 +128,15 @@ class CriterionDialog extends ConsumerWidget {
               hintText: 'Select an option',
               options: ref
                   .watch(projectControllerProvider)
-                  .labels
+                  .timePeriods
                   .getAll()
                   .map((e) => e.name)
                   .toList(),
-              value: criterion.label?.name,
+              value: criterion.period?.name,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedCriterion(updatedLabel: newValue);
+                    .updateBufferedCriterion(updatedPeriod: newValue);
               }),
             ),
           ),

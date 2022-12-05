@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:planner_assistant/models/activity_constraint.dart';
 
+import '../../../models/activity_constraint.dart';
 import '../../../models/constraint_type.dart';
 import '../../../models/project_constraint.dart';
 import '../../../models/project_controller.dart';
@@ -174,7 +174,7 @@ class ActivityConstraintDialog extends ConsumerWidget {
                 .read(projectControllerProvider.notifier)
                 .updateBufferedActivityConstraint(updatedGlobal: newValue),
           ),
-          // Activity constraint label, only visible if not global
+          // Activity constraint period, only visible if not global
           Visibility(
             visible: !activityConstraint.global,
             child: DropdownCardTile(
@@ -182,15 +182,15 @@ class ActivityConstraintDialog extends ConsumerWidget {
               hintText: 'Select an option',
               options: ref
                   .watch(projectControllerProvider)
-                  .labels
+                  .timePeriods
                   .getAll()
                   .map((e) => e.name)
                   .toList(),
-              value: activityConstraint.label?.name,
+              value: activityConstraint.period?.name,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(updatedLabel: newValue);
+                    .updateBufferedProjectConstraint(updatedPeriod: newValue);
               }),
             ),
           ),

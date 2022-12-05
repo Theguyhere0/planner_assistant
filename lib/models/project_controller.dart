@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:planner_assistant/models/criterion.dart';
 
 import 'activity_constraint.dart';
 import 'activity_unit.dart';
 import 'constraint_type.dart';
+import 'criterion.dart';
 import 'database.dart';
-import 'label.dart';
+import 'dependency.dart';
+import 'dependency_type.dart';
+import 'time_period.dart';
 import 'project_constraint.dart';
 import 'project_state.dart';
 import 'property.dart';
@@ -18,14 +20,15 @@ final projectControllerProvider =
   return ProjectController(
     ProjectState(
       bufferedProperty: Property(),
-      bufferedLabel: Label(),
+      bufferedTimePeriod: TimePeriod(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedActivityConstraint: ActivityConstraint(),
+      bufferedDependency: Dependency(),
       bufferedProjectConstraint: ProjectConstraint(),
       bufferedCriterion: Criterion(),
       properties: Database<Property>(
           validator: (e) => e.name.trim().isNotEmpty && e.type != null),
-      labels: Database<Label>(
+      timePeriods: Database<TimePeriod>(
           validator: (e) =>
               e.name.trim().isNotEmpty && e.duration > 0 && e.start > 0),
       activityUnits: Database<ActivityUnit>(
@@ -81,7 +84,7 @@ class ProjectController extends StateNotifier<ProjectState> {
   void resetBuffers() {
     state = state.copyWith(
       bufferedProperty: Property(),
-      bufferedLabel: Label(),
+      bufferedTimePeriod: TimePeriod(),
       bufferedActivityUnit: ActivityUnit(),
       bufferedActivityConstraint: ActivityConstraint(),
       bufferedProjectConstraint: ProjectConstraint(),
@@ -94,6 +97,12 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(
         bufferedActivityConstraint:
             ActivityConstraint(parent: state.bufferedActivityUnit));
+  }
+
+  /// Clear out the special [Dependency] buffer for a new one with the buffered [ActivityUnit] as the parent.
+  void resetDependencyBuffer() {
+    state = state.copyWith(
+        bufferedDependency: Dependency(parent: state.bufferedActivityUnit));
   }
 
   /// Attempt to load a specific [Property] to the buffer.
@@ -149,59 +158,61 @@ class ProjectController extends StateNotifier<ProjectState> {
         properties: state.properties..removeEntry(state.bufferedProperty));
   }
 
-  /// Attempt to load a specific [Label] to the buffer.
-  void loadBufferedLabel(String name) {
+  /// Attempt to load a specific [TimePeriod] to the buffer.
+  void loadBufferedTimePeriod(String name) {
     state = state.copyWith(
-        bufferedLabel:
-            state.labels.searchEntry((e) => e.name == name)?.copy ?? Label());
+        bufferedTimePeriod:
+            state.timePeriods.searchEntry((e) => e.name == name)?.copy ??
+                TimePeriod());
   }
 
-  /// Make some changes to the buffered [Label].
-  void updateBufferedLabel({
+  /// Make some changes to the buffered [TimePeriod].
+  void updateBufferedTimePeriod({
     String? updatedName,
     int? updatedDuration,
     int? updatedStart,
     bool? periodOn,
     int? updatedPeriod,
   }) {
-    Label newLabel = state.bufferedLabel.copy;
+    TimePeriod newPeriod = state.bufferedTimePeriod.copy;
 
     if (updatedName != null) {
-      newLabel.name = updatedName;
+      newPeriod.name = updatedName;
     }
     if (updatedDuration != null) {
-      newLabel.duration = updatedDuration;
+      newPeriod.duration = updatedDuration;
     }
     if (updatedStart != null) {
-      newLabel.start = updatedStart;
+      newPeriod.start = updatedStart;
     }
     if (periodOn != null) {
       if (periodOn) {
-        newLabel.period = 0;
+        newPeriod.period = 0;
       } else {
-        newLabel.period = null;
+        newPeriod.period = null;
       }
     }
     if (updatedPeriod != null) {
-      newLabel.period = updatedPeriod;
+      newPeriod.period = updatedPeriod;
     }
 
-    state = state.copyWith(bufferedLabel: newLabel);
+    state = state.copyWith(bufferedTimePeriod: newPeriod);
   }
 
-  /// Checks to see if the buffered [Label] is valid.
-  bool validateBufferedLabel() =>
-      state.labels.validateEntry(state.bufferedLabel);
+  /// Checks to see if the buffered [TimePeriod] is valid.
+  bool validateBufferedTimePeriod() =>
+      state.timePeriods.validateEntry(state.bufferedTimePeriod);
 
-  /// Saves the buffered [Label] to the database.
-  void saveBufferedLabel() {
-    state = state.copyWith(labels: state.labels..setEntry(state.bufferedLabel));
+  /// Saves the buffered [TimePeriod] to the database.
+  void saveBufferedTimePeriod() {
+    state = state.copyWith(
+        timePeriods: state.timePeriods..setEntry(state.bufferedTimePeriod));
   }
 
-  /// Removes the buffered [Label] from the database.
-  void removeBufferedLabel() {
-    state =
-        state.copyWith(labels: state.labels..removeEntry(state.bufferedLabel));
+  /// Removes the buffered [TimePeriod] from the database.
+  void removeBufferedTimePeriod() {
+    state = state.copyWith(
+        timePeriods: state.timePeriods..removeEntry(state.bufferedTimePeriod));
   }
 
   /// Attempt to load a specific [ActivityUnit] to the buffer.
@@ -263,7 +274,7 @@ class ProjectController extends StateNotifier<ProjectState> {
         bufferedActivityConstraint: state.bufferedActivityUnit.constraints
                 .searchEntry((e) => e.dataName == name)
                 ?.copy ??
-            ActivityConstraint());
+            ActivityConstraint(parent: state.bufferedActivityUnit));
   }
 
   /// Make some changes to the buffered [ActivityConstraint].
@@ -273,7 +284,7 @@ class ProjectController extends StateNotifier<ProjectState> {
     int? updatedBackupThreshold,
     String? updatedType,
     bool? updatedGlobal,
-    Label? updatedLabel,
+    TimePeriod? updatedPeriod,
   }) {
     ActivityConstraint newActivityConstraint =
         state.bufferedActivityConstraint.copy;
@@ -295,8 +306,8 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedGlobal != null) {
       newActivityConstraint.global = updatedGlobal;
     }
-    if (updatedLabel != null) {
-      newActivityConstraint.label = updatedLabel;
+    if (updatedPeriod != null) {
+      newActivityConstraint.period = updatedPeriod;
     }
 
     state = state.copyWith(bufferedActivityConstraint: newActivityConstraint);
@@ -321,6 +332,56 @@ class ProjectController extends StateNotifier<ProjectState> {
           ..constraints.removeEntry(state.bufferedActivityConstraint));
   }
 
+  /// Attempt to load a specific [Dependency] to the buffer, using the buffered [ActivityUnit] as the parent.
+  void loadBufferedDependency(String name) {
+    state = state.copyWith(
+        bufferedDependency: state.bufferedActivityUnit.dependencies
+                .searchEntry((e) => e.dataName == name)
+                ?.copy ??
+            Dependency(parent: state.bufferedActivityUnit));
+  }
+
+  /// Make some changes to the buffered [Dependency].
+  void updateBufferedDependency({
+    String? updatedName,
+    String? updatedPredecessor,
+    String? updatedType,
+  }) {
+    Dependency newDependency = state.bufferedDependency.copy;
+
+    if (updatedName != null) {
+      newDependency.name = updatedName;
+    }
+    if (updatedPredecessor != null) {
+      newDependency.predecessor = state.activityUnits.searchEntry(
+          (activityUnit) => activityUnit.dataName == updatedPredecessor);
+    }
+    if (updatedType != null) {
+      newDependency.type = DependencyType.values
+          .firstWhere((element) => element.value == updatedType);
+    }
+
+    state = state.copyWith(bufferedDependency: newDependency);
+  }
+
+  /// Checks to see if the buffered [Dependency] is valid.
+  bool validateBufferedDependency() => state.bufferedActivityUnit.dependencies
+      .validateEntry(state.bufferedDependency);
+
+  /// Saves the buffered [Dependency] to the buffered [ActivityUnit]'s database.
+  void saveBufferedDependency() {
+    state = state.copyWith(
+        bufferedActivityUnit: state.bufferedActivityUnit
+          ..dependencies.setEntry(state.bufferedDependency));
+  }
+
+  /// Removes the buffered [Dependency] from the buffered [ActivityUnit]'s database.
+  void removeBufferedDependency() {
+    state = state.copyWith(
+        bufferedActivityUnit: state.bufferedActivityUnit
+          ..dependencies.removeEntry(state.bufferedDependency));
+  }
+
   /// Attempt to load a specific [ProjectConstraint] to the buffer.
   void loadBufferedProjectConstraint(String name) {
     state = state.copyWith(
@@ -337,7 +398,7 @@ class ProjectController extends StateNotifier<ProjectState> {
     int? updatedBackupThreshold,
     String? updatedType,
     bool? updatedGlobal,
-    String? updatedLabel,
+    String? updatedPeriod,
   }) {
     ProjectConstraint newProjectConstraint =
         state.bufferedProjectConstraint.copy;
@@ -359,10 +420,10 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedGlobal != null) {
       newProjectConstraint.global = updatedGlobal;
     }
-    if (updatedLabel != null) {
-      newProjectConstraint.label = state.labels
+    if (updatedPeriod != null) {
+      newProjectConstraint.period = state.timePeriods
           .getAll()
-          .firstWhere((element) => element.dataName == updatedLabel);
+          .firstWhere((element) => element.dataName == updatedPeriod);
     }
 
     state = state.copyWith(bufferedProjectConstraint: newProjectConstraint);
@@ -401,7 +462,7 @@ class ProjectController extends StateNotifier<ProjectState> {
     String? updatedProperty,
     bool? updatedMaximize,
     bool? updatedGlobal,
-    String? updatedLabel,
+    String? updatedPeriod,
   }) {
     Criterion newCriterion = state.bufferedCriterion.copy;
 
@@ -414,6 +475,9 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedProperty != null) {
       newCriterion.property = state.properties
           .searchEntry((entry) => entry.dataName == updatedProperty);
+      if (newCriterion.property == null) {
+        newCriterion.maximize = false;
+      }
     }
     if (updatedMaximize != null) {
       newCriterion.maximize = updatedMaximize;
@@ -421,10 +485,10 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedGlobal != null) {
       newCriterion.global = updatedGlobal;
     }
-    if (updatedLabel != null) {
-      newCriterion.label = state.labels
+    if (updatedPeriod != null) {
+      newCriterion.period = state.timePeriods
           .getAll()
-          .firstWhere((element) => element.dataName == updatedLabel);
+          .firstWhere((element) => element.dataName == updatedPeriod);
     }
 
     state = state.copyWith(bufferedCriterion: newCriterion);

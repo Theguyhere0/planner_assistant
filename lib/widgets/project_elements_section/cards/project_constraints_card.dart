@@ -23,7 +23,8 @@ class ProjectConstraintsCard extends ConsumerWidget {
 
     return SmallCard(
       'Project Constraints',
-      infoContent: 'Add constraints that apply to the entire project.',
+      infoContent:
+          'Add some restrictions that apply to either an entire plan or a specific time period.',
       content: Column(children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPadding),

@@ -28,7 +28,7 @@ class ActivityUnitsCard extends ConsumerWidget {
           .displayActivityUnitPluralName
           .toTitleCase(),
       infoContent:
-          'Input the activity units that this project needs to work with.',
+          'Create and define the activity units that this project will work with to create plans.',
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
         child: ListCardTile(

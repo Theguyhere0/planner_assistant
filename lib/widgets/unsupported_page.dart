@@ -15,9 +15,9 @@ class UnsupportedPage extends StatelessWidget {
       bottom: false,
       // Provide page margin on all sides that matter
       minimum: const EdgeInsets.only(
-        left: pageSidePadding - defaultPadding * 2,
-        right: pageSidePadding - defaultPadding * 2,
-        top: pageTopPadding,
+        left: pageHorizontalPadding - defaultPadding * 2,
+        right: pageHorizontalPadding - defaultPadding * 2,
+        top: pageVerticalPadding,
       ),
       // Error text
       child: Center(

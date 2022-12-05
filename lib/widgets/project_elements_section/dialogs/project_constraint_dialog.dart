@@ -180,7 +180,7 @@ class ProjectConstraintDialog extends ConsumerWidget {
                 .read(projectControllerProvider.notifier)
                 .updateBufferedProjectConstraint(updatedGlobal: newValue),
           ),
-          // Project constraint label, only visible if not global
+          // Project constraint period, only visible if not global
           Visibility(
             visible: !projectConstraint.global,
             child: DropdownCardTile(
@@ -188,15 +188,15 @@ class ProjectConstraintDialog extends ConsumerWidget {
               hintText: 'Select an option',
               options: ref
                   .watch(projectControllerProvider)
-                  .labels
+                  .timePeriods
                   .getAll()
                   .map((e) => e.name)
                   .toList(),
-              value: projectConstraint.label?.name,
+              value: projectConstraint.period?.name,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(updatedLabel: newValue);
+                    .updateBufferedProjectConstraint(updatedPeriod: newValue);
               }),
             ),
           ),

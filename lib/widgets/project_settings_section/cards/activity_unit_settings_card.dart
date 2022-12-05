@@ -24,7 +24,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
     return SmallCard(
       'Activity Unit Settings',
       infoContent:
-          'Set how activity units behave in this project. All settings are optional or have default values.',
+          'Describe what activity units represent by customizing the name. Properties provide a way to record specific types of data about each activity unit.',
       content: Column(children: <Widget>[
         // Activity unit name
         TextFieldCardTile(

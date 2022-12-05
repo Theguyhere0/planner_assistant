@@ -4,7 +4,8 @@ import 'activity_constraint.dart';
 import 'activity_unit.dart';
 import 'criterion.dart';
 import 'database.dart';
-import 'label.dart';
+import 'dependency.dart';
+import 'time_period.dart';
 import 'project_constraint.dart';
 import 'property.dart';
 
@@ -26,8 +27,8 @@ class ProjectState {
   /// A buffer for modifying a [Property] safely.
   final Property bufferedProperty;
 
-  /// A buffer for modifying a [Label] safely.
-  final Label bufferedLabel;
+  /// A buffer for modifying a [TimePeriod] safely.
+  final TimePeriod bufferedTimePeriod;
 
   /// A buffer for modifying an [ActivityUnit] safely.
   final ActivityUnit bufferedActivityUnit;
@@ -35,7 +36,10 @@ class ProjectState {
   /// A buffer for modifying an [ActivityConstraint] safely.
   final ActivityConstraint bufferedActivityConstraint;
 
-  /// A buffer for modifying a [ProjectConstraint] safely.
+  /// A buffer for modifying a [Dependency] safely.
+  final Dependency bufferedDependency;
+
+  /// A buffer for modifying a [Dependency] safely.
   final ProjectConstraint bufferedProjectConstraint;
 
   /// A buffer for modifying a [Criterion] safely.
@@ -44,8 +48,8 @@ class ProjectState {
   /// The [Database] of all [Property]s for the project.
   final Database<Property> properties;
 
-  /// The [Database] for all [Label]s for the project
-  final Database<Label> labels;
+  /// The [Database] for all [TimePeriod]s for the project
+  final Database<TimePeriod> timePeriods;
 
   /// The [Database] for all [ActivityUnit]s for the project
   final Database<ActivityUnit> activityUnits;
@@ -62,13 +66,14 @@ class ProjectState {
     this.timeUnitName = '',
     this.timeUnitPluralName = '',
     required this.bufferedProperty,
-    required this.bufferedLabel,
+    required this.bufferedTimePeriod,
     required this.bufferedActivityUnit,
     required this.bufferedActivityConstraint,
+    required this.bufferedDependency,
     required this.bufferedProjectConstraint,
     required this.bufferedCriterion,
     required this.properties,
-    required this.labels,
+    required this.timePeriods,
     required this.activityUnits,
     required this.projectConstraints,
     required this.criteria,
@@ -80,13 +85,14 @@ class ProjectState {
     String? timeUnitName,
     String? timeUnitPluralName,
     Property? bufferedProperty,
-    Label? bufferedLabel,
+    TimePeriod? bufferedTimePeriod,
     ActivityUnit? bufferedActivityUnit,
     ActivityConstraint? bufferedActivityConstraint,
+    Dependency? bufferedDependency,
     ProjectConstraint? bufferedProjectConstraint,
     Criterion? bufferedCriterion,
     Database<Property>? properties,
-    Database<Label>? labels,
+    Database<TimePeriod>? timePeriods,
     Database<ActivityUnit>? activityUnits,
     Database<ProjectConstraint>? projectConstraints,
     Database<Criterion>? criteria,
@@ -98,15 +104,16 @@ class ProjectState {
       timeUnitName: timeUnitName ?? this.timeUnitName,
       timeUnitPluralName: timeUnitPluralName ?? this.timeUnitPluralName,
       bufferedProperty: bufferedProperty ?? this.bufferedProperty,
-      bufferedLabel: bufferedLabel ?? this.bufferedLabel,
+      bufferedTimePeriod: bufferedTimePeriod ?? this.bufferedTimePeriod,
       bufferedActivityUnit: bufferedActivityUnit ?? this.bufferedActivityUnit,
       bufferedActivityConstraint:
           bufferedActivityConstraint ?? this.bufferedActivityConstraint,
+      bufferedDependency: bufferedDependency ?? this.bufferedDependency,
       bufferedProjectConstraint:
           bufferedProjectConstraint ?? this.bufferedProjectConstraint,
       bufferedCriterion: bufferedCriterion ?? this.bufferedCriterion,
       properties: properties ?? this.properties,
-      labels: labels ?? this.labels,
+      timePeriods: timePeriods ?? this.timePeriods,
       activityUnits: activityUnits ?? this.activityUnits,
       projectConstraints: projectConstraints ?? this.projectConstraints,
       criteria: criteria ?? this.criteria,
@@ -139,13 +146,14 @@ class ProjectState {
         other.timeUnitName == timeUnitName &&
         other.timeUnitPluralName == timeUnitPluralName &&
         other.bufferedProperty == bufferedProperty &&
-        other.bufferedLabel == bufferedLabel &&
+        other.bufferedTimePeriod == bufferedTimePeriod &&
         other.bufferedActivityUnit == bufferedActivityUnit &&
         other.bufferedActivityConstraint == bufferedActivityConstraint &&
+        other.bufferedDependency == bufferedDependency &&
         other.bufferedProjectConstraint == bufferedProjectConstraint &&
         other.bufferedCriterion == bufferedCriterion &&
         other.properties == properties &&
-        other.labels == labels &&
+        other.timePeriods == timePeriods &&
         other.activityUnits == activityUnits &&
         other.projectConstraints == projectConstraints &&
         other.criteria == criteria;
@@ -158,13 +166,14 @@ class ProjectState {
         timeUnitName.hashCode ^
         timeUnitPluralName.hashCode ^
         bufferedProperty.hashCode ^
-        bufferedLabel.hashCode ^
+        bufferedTimePeriod.hashCode ^
         bufferedActivityUnit.hashCode ^
         bufferedActivityConstraint.hashCode ^
+        bufferedDependency.hashCode ^
         bufferedProjectConstraint.hashCode ^
         bufferedCriterion.hashCode ^
         properties.hashCode ^
-        labels.hashCode ^
+        timePeriods.hashCode ^
         activityUnits.hashCode ^
         projectConstraints.hashCode ^
         criteria.hashCode;

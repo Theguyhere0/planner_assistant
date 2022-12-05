@@ -15,6 +15,7 @@ import '../../common/card_tiles/toggle_card_tile.dart';
 import '../../common/dialogs/card_dialog.dart';
 import '../../common/dialogs/delete_dialog.dart';
 import 'activity_constraint_dialog.dart';
+import 'dependency_dialog.dart';
 
 /// A popup for modifying an [ActivityUnit].
 class ActivityUnitDialog extends ConsumerWidget {
@@ -38,6 +39,12 @@ class ActivityUnitDialog extends ConsumerWidget {
       ref.read(projectControllerProvider.notifier)
         ..loadBufferedActivityConstraint(name)
         ..removeBufferedActivityConstraint();
+    }
+
+    void deleteDependency(name) {
+      ref.read(projectControllerProvider.notifier)
+        ..loadBufferedDependency(name)
+        ..removeBufferedDependency();
     }
 
     List<Widget> children = [
@@ -149,6 +156,44 @@ class ActivityUnitDialog extends ConsumerWidget {
       },
       delete: deleteActivityConstraint,
     ));
+
+    // Dependencies, only if there are valid options
+    if (ref
+        .watch(projectControllerProvider)
+        .activityUnits
+        .getAll()
+        .any((e) => e != activityUnit)) {
+      children.add(ListCardTile(
+        title: 'Depend- encies',
+        type: 'Dependency',
+        dialog: (name) {
+          ref
+              .read(projectControllerProvider.notifier)
+              .loadBufferedDependency(name);
+          showDialog(
+            context: context,
+            builder: (context) => StatefulBuilder(
+              builder: (context, setState) => DependencyDialog(
+                setState: setState,
+                delete: deleteDependency,
+              ),
+            ),
+          );
+        },
+        instances: activityUnit.dependencies.getAll(),
+        createNew: () {
+          ref.read(projectControllerProvider.notifier).resetDependencyBuffer();
+          showDialog(
+            context: context,
+            builder: (context) => StatefulBuilder(
+              builder: (context, setState) =>
+                  DependencyDialog(setState: setState),
+            ),
+          );
+        },
+        delete: deleteDependency,
+      ));
+    }
 
     // Save
     if (delete == null) {

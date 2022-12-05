@@ -1,8 +1,7 @@
-import 'package:planner_assistant/models/property_data.dart';
-
 import 'constraint_type.dart';
 import 'database.dart';
-import 'label.dart';
+import 'time_period.dart';
+import 'property_data.dart';
 import 'property_type.dart';
 
 /// Constraints that apply to the entire project.
@@ -25,8 +24,8 @@ class ProjectConstraint implements Data, PropertyDataHolder {
   /// Whether this constraint applies to the entire plan or a specific time frame.
   bool global;
 
-  /// A potential time [Label] to apply the constraint to. If null, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
-  Label? label;
+  /// A potential time [TimePeriod] to apply the constraint to. If null, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
+  TimePeriod? period;
 
   ProjectConstraint({
     this.name,
@@ -34,7 +33,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
     this.backupThreshold = 0,
     this.type = ConstraintType.equal,
     this.global = true,
-    this.label,
+    this.period,
   });
 
   @override
@@ -75,7 +74,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
       }
     }
 
-    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Plan' : label!.name}';
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || period == null ? 'Plan' : period!.name}';
   }
 
   @override
@@ -88,7 +87,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
         backupThreshold: backupThreshold,
         type: type,
         global: global,
-        label: label,
+        period: period,
       )..id = id;
 
   @override
