@@ -33,9 +33,10 @@ class Database<T extends Data> {
     return result;
   }
 
-  /// Attempt to insert all entries from one [Database] into another.
-  void setAll(Database<T> database) {
+  /// Attempt to insert all entries from one [Database] into another as a form of lazy initialization.
+  void lazyInit(Database<T> database) {
     database.getAll().forEach((element) => setEntry(element));
+    _nextAvailableId = database._nextAvailableId;
   }
 
   /// Get a list of all entries in this [Database].
@@ -75,4 +76,10 @@ abstract class Data {
 
   /// A copy of this piece of data.
   Data get copy;
+}
+
+/// A class of [Data] that has rank.
+abstract class RankedData extends Data {
+  /// The 1-based rank for this piece of data.
+  int? rank;
 }

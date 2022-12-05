@@ -22,13 +22,10 @@ class ActivityConstraint implements Data, PropertyDataHolder {
   /// The backup integer threshold to check against, which represents time unit count.
   int backupThreshold;
 
-  /// A possible relationship to another [ActivityUnit].
-  ActivityUnit? relation;
-
   /// What constraint should be applied comparing the actual value to the threshold value.
   ConstraintType type;
 
-  /// Whether this constraint applies to an entire project or a specific time frame.
+  /// Whether this constraint applies to the entire plan or a specific time frame.
   bool global;
 
   /// A potential time [Label] to apply the constraint to.
@@ -39,7 +36,6 @@ class ActivityConstraint implements Data, PropertyDataHolder {
     this.parent,
     this.threshold,
     this.backupThreshold = 0,
-    this.relation,
     this.type = ConstraintType.equal,
     this.global = true,
     this.label,
@@ -73,7 +69,7 @@ class ActivityConstraint implements Data, PropertyDataHolder {
       }
     }
 
-    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Project' : label!.name}';
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Plan' : label!.name}';
   }
 
   @override
@@ -85,7 +81,6 @@ class ActivityConstraint implements Data, PropertyDataHolder {
         parent: parent,
         threshold: threshold,
         backupThreshold: backupThreshold,
-        relation: relation,
         type: type,
         global: global,
         label: label,

@@ -30,9 +30,9 @@ class ActivityUnit implements Data, PropertyDataHolder {
       validator: (e) =>
           e.parent != null &&
           (e.threshold?.properlyFormed ?? true) &&
-          !(e.threshold != null &&
-              (e.threshold!.property.type! == PropertyType.integer ||
-                  e.threshold!.property.type! == PropertyType.decimal)));
+          (e.threshold?.property.type! == PropertyType.integer ||
+              e.threshold?.property.type! == PropertyType.decimal ||
+              e.threshold == null));
 
   ActivityUnit({this.name = '', this.unique = true, this.duration = 1});
 
@@ -50,7 +50,7 @@ class ActivityUnit implements Data, PropertyDataHolder {
       )
         ..data.addAll(data)
         ..instances.addAll(instances)
-        ..constraints.setAll(constraints)
+        ..constraints.lazyInit(constraints)
         ..id = id;
 
   @override

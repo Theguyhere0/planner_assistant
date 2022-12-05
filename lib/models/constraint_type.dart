@@ -1,10 +1,10 @@
 enum ConstraintType {
-  equal('Is'),
-  greaterThan('Is Over'),
-  greaterThanEqual('Is At Least'),
-  lessThan('Is Under'),
-  lessThanEqual('Is At Most'),
-  notEqual('Is Not');
+  equal('Must Be'),
+  greaterThan('Must Be Over'),
+  greaterThanEqual('Must Be At Least'),
+  lessThan('Must Be Under'),
+  lessThanEqual('Must Be At Most'),
+  notEqual('Must Not Be');
 
   final String value;
 

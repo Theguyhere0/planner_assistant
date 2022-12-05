@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:planner_assistant/models/activity_constraint.dart';
 
-import '../../../models/constraint_type.dart';
-import '../../../models/project_constraint.dart';
+import '../../../models/criterion.dart';
 import '../../../models/project_controller.dart';
-import '../../../models/property.dart';
-import '../../../models/property_data.dart';
 import '../../../models/property_type.dart';
 import '../../../theme/palette.dart';
 import '../../common/card_tiles/button_card_tile.dart';
 import '../../common/card_tiles/double_button_card_tile.dart';
 import '../../common/card_tiles/dropdown_card_tile.dart';
-import '../../common/card_tiles/integer_field_card_tile.dart';
-import '../../common/card_tiles/property_card_tile.dart';
 import '../../common/card_tiles/text_field_card_tile.dart';
 import '../../common/card_tiles/toggle_card_tile.dart';
 import '../../common/dialogs/card_dialog.dart';
 import '../../common/dialogs/delete_dialog.dart';
 
-/// A popup for modifying a [ProjectConstraint].
-class ActivityConstraintDialog extends ConsumerWidget {
-  const ActivityConstraintDialog({
+/// A popup for modifying a [Criterion].
+class CriterionDialog extends ConsumerWidget {
+  const CriterionDialog({
     Key? key,
     required this.setState,
     this.delete,
@@ -35,148 +29,94 @@ class ActivityConstraintDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activityConstraint =
-        ref.watch(projectControllerProvider).bufferedActivityConstraint;
-    final modifiedName = activityConstraint.dataName.replaceFirst('Time Units',
+    final criterion = ref.watch(projectControllerProvider).bufferedCriterion;
+    final modifiedName = criterion.dataName.replaceFirst('Time Units',
         ref.watch(projectControllerProvider).displayTimeUnitPluralName);
-    final property = activityConstraint.threshold?.property;
     final propertyOptions = ref
         .watch(projectControllerProvider)
         .properties
         .getAll()
         .where((e) =>
-            (e.type == PropertyType.integer ||
-                e.type == PropertyType.decimal) &&
-            e.mandatory)
+            e.mandatory &&
+            (e.type == PropertyType.integer || e.type == PropertyType.decimal))
         .map((e) => e.name)
         .toList();
     propertyOptions
         .add(ref.watch(projectControllerProvider).displayTimeUnitPluralName);
 
     return CardDialog(
-      title: 'Activity Constraint: $modifiedName',
+      title: 'Project Criterion: $modifiedName',
       content: Column(
         children: <Widget>[
-          // Activity constraint name
+          // Criterion name
           TextFieldCardTile(
             'Name',
             hintText: modifiedName,
-            value: activityConstraint.name,
+            value: criterion.name,
             autofocus: delete == null,
             onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedActivityConstraint(updatedName: newValue);
+                  .updateBufferedCriterion(updatedName: newValue);
             }),
             validator: (value) {
               if (value != null &&
                   !ref
                       .watch(projectControllerProvider)
-                      .bufferedActivityUnit
-                      .constraints
-                      .validateUniqueness(ActivityConstraint(name: value))) {
-                return 'Activity constraint name must be unique';
+                      .criteria
+                      .validateUniqueness(Criterion(name: value))) {
+                return 'Project criterion name must be unique';
               } else {
                 return null;
               }
             },
           ),
-          // Activity constraint property
+          // Criterion property
           DropdownCardTile(
             'Property',
             hintText: 'Select an option',
             options: propertyOptions,
-            value: property?.name ??
+            value: criterion.property?.name ??
                 ref.watch(projectControllerProvider).displayTimeUnitPluralName,
             onChanged: (newValue) => setState(() {
               // Check for an actual difference
-              if ((property?.name ??
+              if ((criterion.property?.name ??
                       ref
                           .watch(projectControllerProvider)
                           .displayTimeUnitPluralName) ==
                   newValue) {
                 return;
               }
-
-              Property? baseProperty = ref
-                  .watch(projectControllerProvider)
-                  .properties
-                  .searchEntry((property) => property.name == newValue);
-              if (baseProperty == null) {
-                ref
-                    .read(projectControllerProvider.notifier)
-                    .updateBufferedActivityConstraint(
-                        updatedBackupThreshold: 0);
-              } else {
-                ref
-                    .read(projectControllerProvider.notifier)
-                    .updateBufferedActivityConstraint(
-                        updatedThreshold: PropertyData(
-                      property: baseProperty,
-                      parent: activityConstraint,
-                      intData: 0,
-                      doubleData: 0,
-                    ));
-              }
-            }),
-          ),
-          // Activity constraint threshold value
-          property == null
-              ? IntegerFieldCardTile(
-                  ref
-                      .watch(projectControllerProvider)
-                      .displayTimeUnitPluralName,
-                  value: activityConstraint.backupThreshold,
-                  onChanged: (newValue) => setState(() {
-                    ref
-                        .read(projectControllerProvider.notifier)
-                        .updateBufferedActivityConstraint(
-                            updatedBackupThreshold:
-                                int.tryParse(newValue) ?? 0);
-                  }),
-                  validator: (value) {
-                    if (value != null && value.startsWith('-')) {
-                      return 'Positive';
-                    } else {
-                      return null;
-                    }
-                  },
-                )
-              : PropertyCardTile(
-                  property: property,
-                  data: activityConstraint.threshold!,
-                  onChanged: (newValue) => setState(() {
-                    ref
-                        .read(projectControllerProvider.notifier)
-                        .updateBufferedActivityConstraint(
-                            updatedThreshold: newValue);
-                  }),
-                ),
-          // Activity constraint type
-          DropdownCardTile(
-            'Type',
-            hintText: 'Select an option',
-            options: ConstraintType.values.map((e) => e.value).toList(),
-            value: activityConstraint.type.value,
-            onChanged: (newValue) => setState(() {
               ref
                   .read(projectControllerProvider.notifier)
-                  .updateBufferedActivityConstraint(updatedType: newValue);
+                  .updateBufferedCriterion(
+                    updatedProperty: newValue,
+                  );
             }),
           ),
-          // Whether the activity constraint is global or not
+          // Criterion maximize or minimize
+          ToggleCardTile(
+            'Goal',
+            offOption: 'Minimize',
+            onOption: 'Maximize',
+            value: criterion.maximize,
+            onChanged: (newValue) => ref
+                .read(projectControllerProvider.notifier)
+                .updateBufferedCriterion(updatedMaximize: newValue),
+          ),
+          // Whether the criterion is global or not
           ToggleCardTile(
             'Scope',
             offOption: 'Restricted',
             onOption: 'Global',
-            value: activityConstraint.global,
+            value: criterion.global,
             onChanged: (newValue) => ref
                 .read(projectControllerProvider.notifier)
-                .updateBufferedActivityConstraint(updatedGlobal: newValue),
+                .updateBufferedCriterion(updatedGlobal: newValue),
           ),
-          // Activity constraint label, only visible if not global
+          // Criterion label, only visible if not global
           Visibility(
-            visible: !activityConstraint.global,
+            visible: !criterion.global,
             child: DropdownCardTile(
               'Constraint Period',
               hintText: 'Select an option',
@@ -186,11 +126,11 @@ class ActivityConstraintDialog extends ConsumerWidget {
                   .getAll()
                   .map((e) => e.name)
                   .toList(),
-              value: activityConstraint.label?.name,
+              value: criterion.label?.name,
               onChanged: (newValue) => setState(() {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(updatedLabel: newValue);
+                    .updateBufferedCriterion(updatedLabel: newValue);
               }),
             ),
           ),
@@ -202,17 +142,24 @@ class ActivityConstraintDialog extends ConsumerWidget {
                   icon: Icons.save_alt_rounded,
                   onPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedActivityConstraint()
+                          .validateBufferedCriterion()
                       ? () {
                           // If the name was default, set actual name to default value
                           ref
                               .read(projectControllerProvider.notifier)
-                              .updateBufferedActivityConstraint(
-                                  updatedName: modifiedName);
+                              .updateBufferedCriterion(
+                                updatedName: modifiedName,
+                                updatedRank: ref
+                                        .watch(projectControllerProvider)
+                                        .criteria
+                                        .getAll()
+                                        .length +
+                                    1,
+                              );
 
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedActivityConstraint();
+                              .saveBufferedCriterion();
                           Navigator.pop(context);
                         }
                       : null,
@@ -234,17 +181,17 @@ class ActivityConstraintDialog extends ConsumerWidget {
                   ),
                   firstOnPressed: ref
                           .read(projectControllerProvider.notifier)
-                          .validateBufferedActivityConstraint()
+                          .validateBufferedCriterion()
                       ? () {
                           // If the name was default, set actual name to default value
                           ref
                               .read(projectControllerProvider.notifier)
-                              .updateBufferedActivityConstraint(
+                              .updateBufferedCriterion(
                                   updatedName: modifiedName);
 
                           ref
                               .read(projectControllerProvider.notifier)
-                              .saveBufferedActivityConstraint();
+                              .saveBufferedCriterion();
                           Navigator.pop(context);
                         }
                       : null,
@@ -254,8 +201,8 @@ class ActivityConstraintDialog extends ConsumerWidget {
                       context: context,
                       builder: (BuildContext context) => DeleteDialog(
                         title:
-                            'Delete Activity Constraint: ${activityConstraint.dataName}?',
-                        delete: () => delete!(activityConstraint.dataName),
+                            'Delete Project Criterion: ${criterion.dataName}?',
+                        delete: () => delete!(criterion.dataName),
                       ),
                     );
                   },

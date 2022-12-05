@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'activity_constraint.dart';
 import 'activity_unit.dart';
+import 'criterion.dart';
 import 'database.dart';
 import 'label.dart';
 import 'project_constraint.dart';
@@ -37,6 +38,9 @@ class ProjectState {
   /// A buffer for modifying a [ProjectConstraint] safely.
   final ProjectConstraint bufferedProjectConstraint;
 
+  /// A buffer for modifying a [Criterion] safely.
+  final Criterion bufferedCriterion;
+
   /// The [Database] of all [Property]s for the project.
   final Database<Property> properties;
 
@@ -46,8 +50,11 @@ class ProjectState {
   /// The [Database] for all [ActivityUnit]s for the project
   final Database<ActivityUnit> activityUnits;
 
-  /// Resolved [ProjectConstraint]s for the project
+  /// The [Database] for all [ProjectConstraint]s for the project
   final Database<ProjectConstraint> projectConstraints;
+
+  /// The [Database] for all [Criterion] for the project
+  final Database<Criterion> criteria;
 
   const ProjectState({
     this.activityUnitName = '',
@@ -59,10 +66,12 @@ class ProjectState {
     required this.bufferedActivityUnit,
     required this.bufferedActivityConstraint,
     required this.bufferedProjectConstraint,
+    required this.bufferedCriterion,
     required this.properties,
     required this.labels,
     required this.activityUnits,
     required this.projectConstraints,
+    required this.criteria,
   });
 
   ProjectState copyWith({
@@ -75,10 +84,12 @@ class ProjectState {
     ActivityUnit? bufferedActivityUnit,
     ActivityConstraint? bufferedActivityConstraint,
     ProjectConstraint? bufferedProjectConstraint,
+    Criterion? bufferedCriterion,
     Database<Property>? properties,
     Database<Label>? labels,
     Database<ActivityUnit>? activityUnits,
     Database<ProjectConstraint>? projectConstraints,
+    Database<Criterion>? criteria,
   }) {
     return ProjectState(
       activityUnitName: activityUnitName ?? this.activityUnitName,
@@ -93,10 +104,12 @@ class ProjectState {
           bufferedActivityConstraint ?? this.bufferedActivityConstraint,
       bufferedProjectConstraint:
           bufferedProjectConstraint ?? this.bufferedProjectConstraint,
+      bufferedCriterion: bufferedCriterion ?? this.bufferedCriterion,
       properties: properties ?? this.properties,
       labels: labels ?? this.labels,
       activityUnits: activityUnits ?? this.activityUnits,
       projectConstraints: projectConstraints ?? this.projectConstraints,
+      criteria: criteria ?? this.criteria,
     );
   }
 
@@ -130,10 +143,12 @@ class ProjectState {
         other.bufferedActivityUnit == bufferedActivityUnit &&
         other.bufferedActivityConstraint == bufferedActivityConstraint &&
         other.bufferedProjectConstraint == bufferedProjectConstraint &&
+        other.bufferedCriterion == bufferedCriterion &&
         other.properties == properties &&
         other.labels == labels &&
         other.activityUnits == activityUnits &&
-        other.projectConstraints == projectConstraints;
+        other.projectConstraints == projectConstraints &&
+        other.criteria == criteria;
   }
 
   @override
@@ -147,9 +162,11 @@ class ProjectState {
         bufferedActivityUnit.hashCode ^
         bufferedActivityConstraint.hashCode ^
         bufferedProjectConstraint.hashCode ^
+        bufferedCriterion.hashCode ^
         properties.hashCode ^
         labels.hashCode ^
         activityUnits.hashCode ^
-        projectConstraints.hashCode;
+        projectConstraints.hashCode ^
+        criteria.hashCode;
   }
 }

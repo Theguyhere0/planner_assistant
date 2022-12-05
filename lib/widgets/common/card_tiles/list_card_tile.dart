@@ -47,7 +47,7 @@ class ListCardTile extends StatelessWidget {
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Column(
-              children: <Widget>[
+              children: [
                 LimitedBox(
                   maxHeight: 250,
                   child: Card(
@@ -99,7 +99,7 @@ class ListCardTile extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.only(top: 2),
               child: Column(
-                children: <Widget>[
+                children: [
                   LimitedBox(
                     maxHeight: 150,
                     child: Card(

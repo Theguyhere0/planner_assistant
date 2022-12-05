@@ -44,6 +44,7 @@ class ProjectConstraintDialog extends ConsumerWidget {
         .watch(projectControllerProvider)
         .properties
         .getAll()
+        .where((e) => e.mandatory)
         .map((e) => e.name)
         .toList();
     propertyOptions.add(
@@ -110,13 +111,18 @@ class ProjectConstraintDialog extends ConsumerWidget {
               if (baseProperty == null) {
                 ref
                     .read(projectControllerProvider.notifier)
-                    .updateBufferedProjectConstraint(updatedBackupThreshold: 0);
+                    .updateBufferedProjectConstraint(
+                      updatedBackupThreshold: 0,
+                      updatedType: ConstraintType.equal.value,
+                    );
               } else {
                 ref
                     .read(projectControllerProvider.notifier)
                     .updateBufferedProjectConstraint(
-                        updatedThreshold: PropertyData(
-                            property: baseProperty, parent: projectConstraint));
+                      updatedThreshold: PropertyData(
+                          property: baseProperty, parent: projectConstraint),
+                      updatedType: ConstraintType.equal.value,
+                    );
               }
             }),
           ),
@@ -204,6 +210,12 @@ class ProjectConstraintDialog extends ConsumerWidget {
                           .read(projectControllerProvider.notifier)
                           .validateBufferedProjectConstraint()
                       ? () {
+                          // If the name was default, set actual name to default value
+                          ref
+                              .read(projectControllerProvider.notifier)
+                              .updateBufferedProjectConstraint(
+                                  updatedName: modifiedName);
+
                           ref
                               .read(projectControllerProvider.notifier)
                               .saveBufferedProjectConstraint();
@@ -230,6 +242,12 @@ class ProjectConstraintDialog extends ConsumerWidget {
                           .read(projectControllerProvider.notifier)
                           .validateBufferedProjectConstraint()
                       ? () {
+                          // If the name was default, set actual name to default value
+                          ref
+                              .read(projectControllerProvider.notifier)
+                              .updateBufferedProjectConstraint(
+                                  updatedName: modifiedName);
+
                           ref
                               .read(projectControllerProvider.notifier)
                               .saveBufferedProjectConstraint();

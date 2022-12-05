@@ -22,7 +22,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
   /// What constraint should be applied comparing the actual value to the threshold value. Boolean and string values will default to [ConstraintType.equal] if not [ConstraintType.notEqual].
   ConstraintType type;
 
-  /// Whether this constraint applies to an entire project or a specific time frame.
+  /// Whether this constraint applies to the entire plan or a specific time frame.
   bool global;
 
   /// A potential time [Label] to apply the constraint to. If null, the threshold will apply to each [TimeUnit]. Ignored if global is set to true.
@@ -75,7 +75,7 @@ class ProjectConstraint implements Data, PropertyDataHolder {
       }
     }
 
-    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Project' : label!.name}';
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || label == null ? 'Plan' : label!.name}';
   }
 
   @override

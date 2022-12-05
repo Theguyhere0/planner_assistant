@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:planner_assistant/models/criterion.dart';
 
 import 'activity_constraint.dart';
 import 'activity_unit.dart';
@@ -21,6 +22,7 @@ final projectControllerProvider =
       bufferedActivityUnit: ActivityUnit(),
       bufferedActivityConstraint: ActivityConstraint(),
       bufferedProjectConstraint: ProjectConstraint(),
+      bufferedCriterion: Criterion(),
       properties: Database<Property>(
           validator: (e) => e.name.trim().isNotEmpty && e.type != null),
       labels: Database<Label>(
@@ -39,6 +41,11 @@ final projectControllerProvider =
                       e.threshold!.property.type! == PropertyType.string) &&
                   e.type != ConstraintType.equal &&
                   e.type != ConstraintType.notEqual)),
+      criteria: Database<Criterion>(
+          validator: (e) =>
+              e.property == null ||
+              e.property?.type! == PropertyType.integer ||
+              e.property?.type! == PropertyType.decimal),
     ),
   );
 });
@@ -78,6 +85,7 @@ class ProjectController extends StateNotifier<ProjectState> {
       bufferedActivityUnit: ActivityUnit(),
       bufferedActivityConstraint: ActivityConstraint(),
       bufferedProjectConstraint: ProjectConstraint(),
+      bufferedCriterion: Criterion(),
     );
   }
 
@@ -263,7 +271,6 @@ class ProjectController extends StateNotifier<ProjectState> {
     String? updatedName,
     PropertyData? updatedThreshold,
     int? updatedBackupThreshold,
-    ActivityUnit? updatedRelation,
     String? updatedType,
     bool? updatedGlobal,
     Label? updatedLabel,
@@ -280,9 +287,6 @@ class ProjectController extends StateNotifier<ProjectState> {
     if (updatedBackupThreshold != null) {
       newActivityConstraint.threshold = null;
       newActivityConstraint.backupThreshold = updatedBackupThreshold;
-    }
-    if (updatedRelation != null) {
-      newActivityConstraint.relation = updatedRelation;
     }
     if (updatedType != null) {
       newActivityConstraint.type = ConstraintType.values
@@ -380,5 +384,97 @@ class ProjectController extends StateNotifier<ProjectState> {
     state = state.copyWith(
         projectConstraints: state.projectConstraints
           ..removeEntry(state.bufferedProjectConstraint));
+  }
+
+  /// Attempt to load a specific [Criterion] to the buffer.
+  void loadBufferedCriterion(String name) {
+    state = state.copyWith(
+        bufferedCriterion:
+            state.criteria.searchEntry((e) => e.dataName == name)?.copy ??
+                Criterion());
+  }
+
+  /// Make some changes to the buffered [Criterion].
+  void updateBufferedCriterion({
+    String? updatedName,
+    int? updatedRank,
+    String? updatedProperty,
+    bool? updatedMaximize,
+    bool? updatedGlobal,
+    String? updatedLabel,
+  }) {
+    Criterion newCriterion = state.bufferedCriterion.copy;
+
+    if (updatedName != null) {
+      newCriterion.name = updatedName;
+    }
+    if (updatedRank != null) {
+      newCriterion.rank = updatedRank;
+    }
+    if (updatedProperty != null) {
+      newCriterion.property = state.properties
+          .searchEntry((entry) => entry.dataName == updatedProperty);
+    }
+    if (updatedMaximize != null) {
+      newCriterion.maximize = updatedMaximize;
+    }
+    if (updatedGlobal != null) {
+      newCriterion.global = updatedGlobal;
+    }
+    if (updatedLabel != null) {
+      newCriterion.label = state.labels
+          .getAll()
+          .firstWhere((element) => element.dataName == updatedLabel);
+    }
+
+    state = state.copyWith(bufferedCriterion: newCriterion);
+  }
+
+  /// Performs reordering of all the [Criterion].
+  void reOrderCriteria(int oldRank, int newRank) {
+    Criterion reOrdered =
+        state.criteria.searchEntry((criterion) => criterion.rank! == oldRank)!;
+
+    // Increase rank
+    if (newRank > oldRank) {
+      state.criteria
+          .getAll()
+          .where((criterion) =>
+              criterion.rank! <= newRank && criterion.rank! > oldRank)
+          .forEach((criterion) {
+        state.criteria.setEntry(criterion..rank = criterion.rank! - 1);
+      });
+    }
+
+    // Decrease rank
+    else {
+      state.criteria
+          .getAll()
+          .where((criterion) =>
+              criterion.rank! >= newRank && criterion.rank! < oldRank)
+          .forEach((criterion) {
+        state.criteria.setEntry(criterion..rank = criterion.rank! + 1);
+      });
+    }
+
+    /// Make changes
+    state.criteria.setEntry(reOrdered..rank = newRank);
+    state = state.copyWith();
+  }
+
+  /// Checks to see if the buffered [Criterion] is valid.
+  bool validateBufferedCriterion() =>
+      state.criteria.validateEntry(state.bufferedCriterion);
+
+  /// Saves the buffered [Criterion] to the database.
+  void saveBufferedCriterion() {
+    state = state.copyWith(
+        criteria: state.criteria..setEntry(state.bufferedCriterion));
+  }
+
+  /// Removes the buffered [Criterion] from the database.
+  void removeBufferedCriterion() {
+    state = state.copyWith(
+        criteria: state.criteria..removeEntry(state.bufferedCriterion));
   }
 }
