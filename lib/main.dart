@@ -19,7 +19,7 @@ class PlannerAssistantApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Planner Assistant',
       // Set up custom theme for the entire app
-      theme: CustomTheme.theme(),
+      theme: CustomTheme.modernTheme(),
       // Display app only if the screen is within desktop width limit
       home: const Scaffold(
         body: Responsive(

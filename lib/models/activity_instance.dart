@@ -1,18 +1,12 @@
-import 'package:isar/isar.dart';
-
 import 'activity_unit.dart';
 
-part 'activity_instance.g.dart';
-
 /// An instance of an [ActivityUnit] to put in a plan.
-@Collection()
 class ActivityInstance {
-  @Id()
-  int id = Isar.autoIncrement;
+  int? id;
 
   /// The [ActivityUnit] that was instantiated.
-  final parent = IsarLink<ActivityUnit>();
+  ActivityUnit? parent;
 
   /// The time units that this [ActivityInstance] starts on.
-  late int start;
+  int? start;
 }

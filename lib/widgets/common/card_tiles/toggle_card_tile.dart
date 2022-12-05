@@ -33,6 +33,7 @@ class ToggleCardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: titleGap,
       leading: Container(
         width: cardTileTitleWidth,
         alignment: Alignment.centerRight,
@@ -43,7 +44,7 @@ class ToggleCardTile extends StatelessWidget {
         ),
       ),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           // Off value
           Text(

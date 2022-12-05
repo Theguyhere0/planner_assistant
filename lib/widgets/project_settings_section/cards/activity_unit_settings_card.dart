@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/card_tiles/list_card_tile.dart';
-import '../common/cards/small_card.dart';
-import '../common/card_tiles/text_field_card_tile.dart';
-import '../../models/project_controller.dart';
-import 'create_property_dialog.dart';
-import 'edit_property_dialog.dart';
+import '../../common/card_tiles/list_card_tile.dart';
+import '../../common/cards/small_card.dart';
+import '../../common/card_tiles/text_field_card_tile.dart';
+import '../../../models/project_controller.dart';
+import '../dialogs/property_dialog.dart';
 
 /// A card for managing the settings for activity units of the project.
 class ActivityUnitSettingsCard extends ConsumerWidget {
@@ -25,7 +24,7 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
     return SmallCard(
       'Activity Unit Settings',
       infoContent:
-          'Set how activity units behave in this project. All settings are optional or have default values.',
+          'Describe what activity units represent by customizing the name. Properties provide a way to record specific types of data about each activity unit.',
       content: Column(children: <Widget>[
         // Activity unit name
         TextFieldCardTile(
@@ -50,14 +49,15 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
         // Properties of activity units
         ListCardTile(
           title: 'Properties',
+          type: 'Property',
           dialog: (name) {
             ref
                 .read(projectControllerProvider.notifier)
                 .loadBufferedProperty(name);
             showDialog(
               context: context,
-              builder: (BuildContext context) => StatefulBuilder(
-                builder: (context, setState) => EditPropertyDialog(
+              builder: (context) => StatefulBuilder(
+                builder: (context, setState) => PropertyDialog(
                   setState: setState,
                   delete: delete,
                 ),
@@ -70,9 +70,8 @@ class ActivityUnitSettingsCard extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) => CreatePropertyDialog(
-                  setState: setState,
-                ),
+                builder: (context, setState) =>
+                    PropertyDialog(setState: setState),
               ),
             );
           },

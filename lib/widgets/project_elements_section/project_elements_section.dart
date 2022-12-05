@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../common/page_section.dart';
-import 'activity_units_card.dart';
-import 'project_constraints_card.dart';
-import 'project_criteria_card.dart';
+import 'cards/activity_units_card.dart';
+import 'cards/project_constraints_card.dart';
+import 'cards/project_criteria_card.dart';
 
 /// The section for managing project elements.
 class ProjectElementsSection extends StatelessWidget {

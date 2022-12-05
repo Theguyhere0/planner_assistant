@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import '../../../theme/palette.dart';
 import '../../../utils/constants.dart';
 
-/// A tile for custom cards with a field for numbers.
-class NumberFieldCardTile extends StatelessWidget {
-  /// Creates a card tile with a field for numbers.
-  const NumberFieldCardTile(
+/// A tile for custom cards with a field for decimal numbers.
+class DecimalFieldCardTile extends StatelessWidget {
+  /// Creates a card tile with a field for decimal numbers.
+  const DecimalFieldCardTile(
     this.title, {
     this.hintText,
-    required this.units,
+    this.units,
     this.prefix = false,
     required this.value,
     this.onChanged,
@@ -18,20 +18,20 @@ class NumberFieldCardTile extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// What the numbers are counting for.
+  /// What the number is counting for.
   final String title;
 
   /// Default option or hint for what to input.
   final String? hintText;
 
-  /// The units at the numbers represent.
-  final String units;
+  /// The units at the number represent.
+  final String? units;
 
   /// Whether the units should go before or after the number.
   final bool prefix;
 
-  /// What value the number input holds.
-  final String? value;
+  /// What value the decimal input holds.
+  final double? value;
 
   /// What should happen when changes occur.
   final void Function(String)? onChanged;
@@ -42,6 +42,7 @@ class NumberFieldCardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: titleGap,
       leading: Container(
         width: cardTileTitleWidth,
         alignment: Alignment.centerRight,
@@ -55,11 +56,11 @@ class NumberFieldCardTile extends StatelessWidget {
         children: <Widget>[
           // Units in prefix mode
           Visibility(
-            visible: prefix,
+            visible: prefix && units != null,
             child: Padding(
               padding: const EdgeInsets.only(right: defaultPadding),
               child: Text(
-                units,
+                units ?? '',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
@@ -71,14 +72,17 @@ class NumberFieldCardTile extends StatelessWidget {
           SizedBox(
             width: 60,
             child: TextFormField(
-              initialValue: value,
+              initialValue: value?.toString(),
               decoration: InputDecoration(
                 hintText: hintText,
                 border: const UnderlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: const TextInputType.numberWithOptions(
+                signed: true,
+                decimal: true,
+              ),
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
+                FilteringTextInputFormatter.allow(RegExp('^-?[0-9]*\\.?[0-9]*'))
               ],
               onChanged: onChanged,
               validator: validator,
@@ -87,11 +91,11 @@ class NumberFieldCardTile extends StatelessWidget {
           ),
           // Units in suffix mode
           Visibility(
-            visible: !prefix,
+            visible: !prefix && units != null,
             child: Padding(
               padding: const EdgeInsets.only(left: defaultPadding),
               child: Text(
-                units,
+                units ?? '',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium

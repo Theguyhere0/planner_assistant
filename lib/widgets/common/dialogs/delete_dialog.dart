@@ -33,17 +33,9 @@ class DeleteDialog extends StatelessWidget {
             delete();
             Navigator.pop(context);
           },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered)) {
-                  return Palette.focus;
-                }
-                return Colors.transparent;
-              },
-            ),
+          style: Theme.of(context).textButtonTheme.style?.copyWith(
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+              (states) {
                 if (states.contains(MaterialState.hovered)) {
                   return Palette.highlight;
                 }

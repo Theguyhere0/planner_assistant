@@ -24,7 +24,7 @@ class TextFieldCardTile extends StatelessWidget {
   /// What value the text input holds.
   final String? value;
 
-  /// What the input should do when changes occur.
+  /// What should happen when changes occur.
   final void Function(String)? onChanged;
 
   /// Verifies the input is valid.
@@ -36,6 +36,7 @@ class TextFieldCardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: titleGap,
       leading: Container(
         width: cardTileTitleWidth,
         alignment: Alignment.centerRight,

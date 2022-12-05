@@ -39,6 +39,7 @@ class DropdownCardTile extends StatelessWidget {
     return label
         // Title is displayed on the left
         ? ListTile(
+            horizontalTitleGap: titleGap,
             leading: Container(
               width: cardTileTitleWidth,
               alignment: Alignment.centerRight,

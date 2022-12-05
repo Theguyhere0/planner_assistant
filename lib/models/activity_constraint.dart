@@ -1,43 +1,93 @@
-import 'package:isar/isar.dart';
-
 import 'activity_unit.dart';
-import 'property.dart';
-
-part 'activity_constraint.g.dart';
+import 'constraint_type.dart';
+import 'database.dart';
+import 'time_period.dart';
+import 'property_data.dart';
+import 'property_type.dart';
 
 /// Constraints that apply to individual [ActivityUnit]s.
-@Collection()
-class ActivityConstraint {
-  @Id()
-  int id = isarAutoIncrementId;
+class ActivityConstraint implements Data, PropertyDataHolder {
+  @override
+  int? id;
 
-  /// A possible [Property] that is being constrained.
-  ///
-  /// If the link is empty, the threshold will represent number of time units.
-  @Ignore()
-  final property = IsarLink<Property>();
+  /// An optional name for this [ActivityConstraint].
+  String? name;
 
   /// What [ActivityUnit] this constraint applies to.
-  final parent = IsarLink<ActivityUnit>();
+  ActivityUnit? parent;
 
-  /// The integer threshold to check against.
-  int? intThreshold;
+  /// The threshold value to check against.
+  PropertyData? threshold;
 
-  /// The string threshold to check against.
-  String? stringThreshold;
+  /// The backup integer threshold to check against, which represents time unit count.
+  int backupThreshold;
 
-  /// The boolean threshold to check against.
-  bool? boolThreshold;
+  /// What constraint should be applied comparing the actual value to the threshold value.
+  ConstraintType type;
 
-  /// The double threshold to check against.
-  double? doubleThreshold;
+  /// Whether this constraint applies to the entire plan or a specific time frame.
+  bool global;
 
-  /// The time threshold to check against.
-  DateTime? timeThreshold;
+  /// A potential time [TimePeriod] to apply the constraint to.
+  TimePeriod? period;
 
-  /// Whether the actual value should be greater than the threshold value. If null, it should match.
-  bool? greaterThan;
+  ActivityConstraint({
+    this.name,
+    this.parent,
+    this.threshold,
+    this.backupThreshold = 0,
+    this.type = ConstraintType.equal,
+    this.global = true,
+    this.period,
+  });
 
-  /// A possible relationship to another [ActivityUnit].
-  final relation = IsarLink<ActivityUnit>();
+  @override
+  String get dataName {
+    // Return name if the name is not null
+    if (name != null && name!.isNotEmpty) {
+      return name!;
+    }
+
+    // Create the default name with the constraint parameters
+    dynamic value;
+    String units;
+
+    if (threshold == null) {
+      value = backupThreshold;
+      units = 'Time Units';
+    } else {
+      units = threshold!.property.name;
+      switch (threshold!.property.type!) {
+        case PropertyType.integer:
+          value = threshold!.intData;
+          break;
+        case PropertyType.decimal:
+          value = threshold!.doubleData;
+          break;
+        default:
+          value = 'INVALID';
+      }
+    }
+
+    return '$units ${type.value.toLowerCase()} ${value == null ? '__' : value.toString()} for ${global == true || period == null ? 'Plan' : period!.name}';
+  }
+
+  @override
+  int get uniquenessHash => dataName.hashCode;
+
+  @override
+  ActivityConstraint get copy => ActivityConstraint(
+        name: name,
+        parent: parent,
+        threshold: threshold,
+        backupThreshold: backupThreshold,
+        type: type,
+        global: global,
+        period: period,
+      )..id = id;
+
+  @override
+  void removePropertyData(PropertyData propertyData) {
+    threshold = null;
+  }
 }

@@ -5,9 +5,10 @@ import '../utils/constants.dart';
 
 /// The default themes for this app.
 class CustomTheme {
-  static ThemeData theme() {
+  static ThemeData modernTheme() {
     return ThemeData.dark().copyWith(
       scaffoldBackgroundColor: Palette.background,
+      backgroundColor: Palette.background,
       cardColor: Palette.card,
       hoverColor: Colors.transparent,
       focusColor: Palette.focus,
@@ -22,7 +23,39 @@ class CustomTheme {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(cardCornerRadius)),
       ),
-      colorScheme: const ColorScheme.dark(primary: Palette.highlight),
+      colorScheme: const ColorScheme.dark(
+        primary: Palette.highlight,
+        surface: Palette.card,
+      ),
+      timePickerTheme: TimePickerThemeData(
+        helpTextStyle: const TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.standard,
+        ),
+        hourMinuteTextStyle: const TextStyle(
+            fontFamily: 'M PLUS Rounded 1c',
+            color: Palette.highlight,
+            fontSize: 48),
+        dayPeriodTextStyle: const TextStyle(
+          fontFamily: 'Noto Sans',
+          color: Palette.standard,
+          fontSize: 16,
+        ),
+        dialBackgroundColor: Palette.focus,
+        dayPeriodBorderSide: BorderSide.none,
+        dayPeriodColor: MaterialStateColor.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return Palette.focus;
+          }
+          return Colors.transparent;
+        }),
+        hourMinuteColor: MaterialStateColor.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return Palette.focus;
+          }
+          return Colors.transparent;
+        }),
+      ),
       toggleableActiveColor: Palette.standard,
       tooltipTheme: const TooltipThemeData(
         waitDuration: Duration(milliseconds: 350),
@@ -38,6 +71,7 @@ class CustomTheme {
       dividerColor: Colors.transparent,
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: Palette.highlight,
+        selectionColor: Palette.focus,
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
@@ -82,12 +116,12 @@ class CustomTheme {
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (Set<MaterialState> states) => const TextStyle(
+            (states) => const TextStyle(
               fontFamily: 'Noto Sans',
             ),
           ),
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
+            (states) {
               if (states.contains(MaterialState.hovered)) {
                 return Palette.focus;
               }
@@ -141,5 +175,9 @@ class CustomTheme {
             })),
       ),
     );
+  }
+
+  static ThemeData oldTheme() {
+    return modernTheme().copyWith();
   }
 }
